@@ -4,7 +4,7 @@
         xmlns:vm="clr-namespace:TV_Reminder.ViewModel"
         Title="MainWindow" Height="700" Width="1000">
     <Window.DataContext>
-        <vm:HelloViewModel />
+        <vm:MainViewModel />
     </Window.DataContext>
     <Window.Resources>
         <Style TargetType="{x:Type Button}" x:Key="Style1" >
@@ -37,14 +37,14 @@
     </Window.Resources>
     
     <Grid>
-        <UserControl Margin="0,100,0,0" Content="{Binding content}"/>
+        <UserControl Name="Frame" Margin="0,100,0,0" Content="{Binding content}"/>
 
-        <Button Content="Dodaj serial" Style="{StaticResource Style1}" FontSize="25" HorizontalAlignment="Left" Margin="50,10,0,0" VerticalAlignment="Top" Width="215" Height="85"/>
+        <Button Content="Dodaj serial" Command="{Binding AddSeries}" Style="{StaticResource Style1}" FontSize="25" HorizontalAlignment="Left" Margin="50,10,0,0" VerticalAlignment="Top" Width="215" Height="85"/>
 
-        <Button  Content="Wyświetl śledzone seriale" Style="{StaticResource Style1}" FontSize="20" HorizontalAlignment="Left" Margin="368,10,0,0" VerticalAlignment="Top" Width="250" Height="85"/>
+        <Button  Content="Wyświetl śledzone seriale" Command="{Binding Tracked}" Style="{StaticResource Style1}" FontSize="20" HorizontalAlignment="Left" Margin="368,10,0,0" VerticalAlignment="Top" Width="250" Height="85"/>
 
-        <Button  Content="Nieobejrzane odcinki" Style="{StaticResource Style1}"  FontSize="20"  HorizontalAlignment="Right" Margin="0,10,50,0" VerticalAlignment="Top" Width="215" Height="85"/>
-
+        <Button  Content="Nieobejrzane odcinki" Command="{Binding Unwatched}" Style="{StaticResource Style1}"  FontSize="20"  HorizontalAlignment="Right" Margin="0,10,50,0" VerticalAlignment="Top" Width="215" Height="85"/>
+        
         <Grid.Background>
             <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
                 <GradientStop Color="DarkGreen" Offset="0.0" />
