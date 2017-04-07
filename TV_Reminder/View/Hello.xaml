@@ -10,14 +10,14 @@
                          TV Reminder" 
                    HorizontalAlignment="Left" Margin="24,24,0,0" 
                    FontSize="70" TextWrapping="Wrap" VerticalAlignment="Top" 
-                   Height="184" Width="570" FontFamily="Kristen ITC" Foreground="Silver"/>
+                   Height="184" Width="570" FontFamily="Kristen ITC" />
 
         <TextBlock Text="Serialowy zarządca" HorizontalAlignment="Left" Margin="24,226,0,0" FontSize="40" TextWrapping="Wrap"
-                   VerticalAlignment="Top" Height="97" Width="842" FontFamily="Kristen ITC" Foreground="Silver"/>
+                   VerticalAlignment="Top" Height="97" Width="842" FontFamily="Kristen ITC" />
         <TextBlock Text="Dane dotyczące seriali są pobierane z http://thetvdb.com/" HorizontalAlignment="Left" Margin="24,389,0,0"
-                   FontSize="20" TextWrapping="Wrap" VerticalAlignment="Top" Height="201" Width="384" FontFamily="Kristen ITC" Foreground="Silver"/>
+                   FontSize="20" TextWrapping="Wrap" VerticalAlignment="Top" Height="201" Width="384" FontFamily="Kristen ITC" />
         <Image HorizontalAlignment="Left" Height="566" Margin="542,24,0,0" VerticalAlignment="Top" Width="448" />
-        <Image Margin="518,10,-275,-134" Source="/TV_Reminder;component/Other/Image/HelloImage.jpg"/>
+        <Image Margin="474,24,-231,-148" Source="/TV_Reminder;component/Other/Image/HelloImage.jpg"/>
 
     </Grid>
 </UserControl>

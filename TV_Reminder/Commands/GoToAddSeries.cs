@@ -35,7 +35,7 @@ namespace TV_Reminder.Commands
         //Czy kontrolka jest aktywna
         public bool CanExecute(object parameter)
         {
-            return true;
+            return false;
         }
 
         public void Execute(object parameter)
