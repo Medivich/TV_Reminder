@@ -58,6 +58,7 @@
     <Compile Include="Commands\GoToAddSeries.cs" />
     <Compile Include="Commands\GoToTracked.cs" />
     <Compile Include="Commands\GoToUnwatched.cs" />
+    <Compile Include="ViewModel\AddSeriesViewModel.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
     <Compile Include="ViewModel\MotherViewModel.cs" />
     <Compile Include="View\AddSeries.xaml.cs">
@@ -66,11 +67,17 @@
     <Compile Include="View\Hello.xaml.cs">
       <DependentUpon>Hello.xaml</DependentUpon>
     </Compile>
+    <Compile Include="View\Loading.xaml.cs">
+      <DependentUpon>Loading.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\Tracked.xaml.cs">
       <DependentUpon>Tracked.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\Unwatched.xaml.cs">
       <DependentUpon>Unwatched.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Waiting.xaml.cs">
+      <DependentUpon>Waiting.xaml</DependentUpon>
     </Compile>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -92,11 +99,19 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="View\Loading.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="View\Tracked.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\Unwatched.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Waiting.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -130,6 +145,18 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Other\DataBase\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Other\Image\B2.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Other\Image\B1.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Other\Image\icon.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Other\Image\loading.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

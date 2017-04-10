@@ -6,6 +6,7 @@ using System.Text;
 using System.Windows.Input;
 using TV_Reminder.ViewModel;
 using TV_Reminder.View;
+using System.Threading;
 
 namespace TV_Reminder.Commands
 {
@@ -35,12 +36,23 @@ namespace TV_Reminder.Commands
         //Czy kontrolka jest aktywna
         public bool CanExecute(object parameter)
         {
-            return false;
+            return true;
         }
 
         public void Execute(object parameter)
         {
-            main.content = new AddSeries();
+            main.content = new Loading();
+            // Start a thread that calls a parameterized instance method.
+
+            Thread thr = new Thread(doSomething);
+            thr.SetApartmentState(ApartmentState.STA);
+            thr.Start();
+        }
+
+        void doSomething()
+        {
+            Thread.Sleep(2500);
+            main.content.Dispatcher.Invoke(new Action(() => main.content = new AddSeries()));        
         }
     }
 }

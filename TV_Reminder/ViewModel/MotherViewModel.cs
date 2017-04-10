@@ -18,5 +18,6 @@ namespace TV_Reminder.ViewModel
                 foreach (string up in update)
                     PropertyChanged(this, new PropertyChangedEventArgs(up));
         }
+
     }
 }

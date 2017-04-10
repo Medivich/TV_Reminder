@@ -1,0 +1,37 @@
+﻿<UserControl x:Class="TV_Reminder.View.Loading"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             mc:Ignorable="d" 
+             d:DesignHeight="600" d:DesignWidth="1000">
+    <UserControl.Resources>
+        <Style x:Key="Spinner" TargetType="Image">
+            <Setter Property="Image.RenderTransform">
+            <Setter.Value>
+                <RotateTransform CenterX="0" CenterY="0" />
+            </Setter.Value>
+        </Setter>
+        <Style.Triggers>
+            <Trigger Property="IsEnabled" Value="True">
+                <Trigger.EnterActions>
+                    <BeginStoryboard>
+                        <Storyboard>
+                            <DoubleAnimation
+                                        Storyboard.TargetProperty="RenderTransform.Angle"
+                                        From="0"
+                                        To="360"
+                                        Duration="0:0:3"
+                                        RepeatBehavior="Forever" />
+                        </Storyboard>
+                    </BeginStoryboard>
+                </Trigger.EnterActions>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+    </UserControl.Resources>
+    
+    <Grid Background="#99020402">
+        <Image Margin="330,180,330,180" Style="{StaticResource Spinner}" Source="/TV_Reminder;component/Other/Image/loading.png" x:Name="load" RenderTransformOrigin="0.5,0.5"/>
+    </Grid>
+</UserControl>
