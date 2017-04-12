@@ -7,6 +7,7 @@ using System.Windows.Input;
 using TV_Reminder.ViewModel;
 using TV_Reminder.View;
 using System.Threading;
+using TV_Reminder.Control;
 
 namespace TV_Reminder.Commands
 {
@@ -42,17 +43,19 @@ namespace TV_Reminder.Commands
         public void Execute(object parameter)
         {
             main.content = new Loading();
-            // Start a thread that calls a parameterized instance method.
 
-            Thread thr = new Thread(doSomething);
-            thr.SetApartmentState(ApartmentState.STA);
+            // Zaczyna nowy wątek, żeby w międzyczasie UI było updatowane
+            Thread thr = new Thread(getToken);
             thr.Start();
         }
 
-        void doSomething()
+        void getToken()
         {
-            Thread.Sleep(2500);
-            main.content.Dispatcher.Invoke(new Action(() => main.content = new AddSeries()));        
+            LogToTvdb L = new LogToTvdb();
+            if((Model.Token.tvdb_token = L.GetToken()) != null)
+                main.content.Dispatcher.Invoke(new Action(() => main.content = new AddSeries()));      
+            else
+                main.content.Dispatcher.Invoke(new Action(() => main.content = new Hello()));   
         }
     }
 }

@@ -7,10 +7,47 @@
              mc:Ignorable="d" 
              d:DesignHeight="600" d:DesignWidth="1000">
     <UserControl.DataContext>
-        <vm:MainViewModel />
+        <vm:AddSeriesViewModel />
     </UserControl.DataContext>
-    <Grid>
-        <Button Content="Button" HorizontalAlignment="Left" Margin="439,266,0,0" VerticalAlignment="Top" Width="218" Height="87"/>
 
+    <UserControl.Resources>
+        <ControlTemplate x:Key="ButtonControlTemplate" TargetType="{x:Type Button}">
+            <Grid>
+                <Rectangle Stroke="LightGreen" RadiusX="90" RadiusY="10" StrokeThickness="3" VerticalAlignment="Top" Height="40" x:Name="rect">
+                    <Rectangle.Fill>
+                        <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                            <GradientStop Color="Black" Offset="0"/>
+                            <GradientStop Color="DarkGreen" Offset="1"/>
+                        </LinearGradientBrush>
+                    </Rectangle.Fill>
+                </Rectangle>
+                <ContentPresenter VerticalAlignment="Center" HorizontalAlignment="Center"/>
+            </Grid>
+            <ControlTemplate.Triggers>
+                <Trigger Property="IsEnabled" Value="True">
+                    <Setter Property = "Foreground" Value="White"/>
+                </Trigger>
+                <Trigger Property="IsEnabled" Value="False">
+                    <Setter Property = "Foreground" Value="#FF888888"/>
+                    <Setter Property="Fill" Value="#FF222222" TargetName="rect"/>
+                    <Setter Property="Stroke" Value="DarkGreen" TargetName="rect"/>
+                </Trigger>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Stroke" Value="#c7f26f" TargetName="rect"/>
+                </Trigger>
+                <Trigger Property="IsPressed" Value="True">
+                    <Setter Property="Stroke" Value="White" TargetName="rect"/>
+                </Trigger>
+            </ControlTemplate.Triggers>
+        </ControlTemplate>
+    </UserControl.Resources>
+
+
+    <Grid>
+        <DockPanel HorizontalAlignment="Left" Height="40" LastChildFill="False" Margin="44,25,0,0" VerticalAlignment="Top" Width="438">
+            <Image Source="/TV_Reminder;component/Other/Image/magnifier.png" Height="40" VerticalAlignment="Top" Width="49"/>
+            <TextBox Width="285" FontSize="16" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
+            <Button Content="Szukaj" FontSize="20" Command="{Binding Search}" Template="{DynamicResource ButtonControlTemplate}" HorizontalAlignment="Left"  VerticalAlignment="Top" Width="104" Height="40"/>
+        </DockPanel>
     </Grid>
 </UserControl>

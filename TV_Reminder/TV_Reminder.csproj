@@ -34,6 +34,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Newtonsoft.Json, Version=4.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL" />
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
@@ -58,6 +59,10 @@
     <Compile Include="Commands\GoToAddSeries.cs" />
     <Compile Include="Commands\GoToTracked.cs" />
     <Compile Include="Commands\GoToUnwatched.cs" />
+    <Compile Include="Commands\SearchSeries.cs" />
+    <Compile Include="Control\LogToTvdb.cs" />
+    <Compile Include="Control\SearchTvdb.cs" />
+    <Compile Include="Model\Token.cs" />
     <Compile Include="ViewModel\AddSeriesViewModel.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
     <Compile Include="ViewModel\MotherViewModel.cs" />
@@ -141,9 +146,6 @@
     <AppDesigner Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Other\Image\HelloImage.jpg" />
-  </ItemGroup>
-  <ItemGroup>
     <Folder Include="Other\DataBase\" />
   </ItemGroup>
   <ItemGroup>
@@ -157,6 +159,9 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Other\Image\loading.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Other\Image\magnifier.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
