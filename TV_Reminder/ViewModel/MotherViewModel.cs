@@ -7,7 +7,7 @@ using System.Text;
 
 namespace TV_Reminder.ViewModel
 {
-    class MotherViewModel : INotifyPropertyChanged
+    abstract class MotherViewModel : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
 

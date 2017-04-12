@@ -49,6 +49,8 @@ namespace TV_Reminder.Commands
             thr.Start();
         }
 
+
+
         void getToken()
         {
             LogToTvdb L = new LogToTvdb();

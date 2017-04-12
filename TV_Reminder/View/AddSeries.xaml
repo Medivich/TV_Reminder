@@ -4,6 +4,8 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:vm="clr-namespace:TV_Reminder.ViewModel"
+             xmlns:toolkit="clr-namespace:System.Windows.Controls;assembly=System.Windows.Controls.Input.Toolkit"
+               
              mc:Ignorable="d" 
              d:DesignHeight="600" d:DesignWidth="1000">
     <UserControl.DataContext>
@@ -40,14 +42,49 @@
                 </Trigger>
             </ControlTemplate.Triggers>
         </ControlTemplate>
+        
+        <DataTemplate x:Key="Propositions">
+            <StackPanel Orientation="Horizontal" Width="{Binding ActualWidth, ElementName=SearchEngine}" Background="LightGreen" >       
+                    <Image Source="{Binding _poster}">
+                    </Image>
+                <StackPanel Orientation="Vertical" VerticalAlignment="Stretch">
+                    <TextBlock Text="{Binding _title, 
+                                        StringFormat='Tytuł: {0}'}">
+                    </TextBlock>
+                    <TextBlock Text="{Binding _season_number, 
+                                        StringFormat='Liczba sezonów: {0}'}">
+                    </TextBlock>
+                    <TextBlock Text="{Binding _episode_number, 
+                                        StringFormat='Liczba odcinków: {0}'}">
+                    </TextBlock>
+                </StackPanel>
+            </StackPanel>
+        </DataTemplate>
+        
     </UserControl.Resources>
-
-
+        
     <Grid>
-        <DockPanel HorizontalAlignment="Left" Height="40" LastChildFill="False" Margin="44,25,0,0" VerticalAlignment="Top" Width="438">
+
+        
+        <DockPanel HorizontalAlignment="Left" Height="45" LastChildFill="False" Margin="44,25,0,0" VerticalAlignment="Top" Width="558">
             <Image Source="/TV_Reminder;component/Other/Image/magnifier.png" Height="40" VerticalAlignment="Top" Width="49"/>
-            <TextBox Width="285" FontSize="16" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
-            <Button Content="Szukaj" FontSize="20" Command="{Binding Search}" Template="{DynamicResource ButtonControlTemplate}" HorizontalAlignment="Left"  VerticalAlignment="Top" Width="104" Height="40"/>
+            <toolkit:AutoCompleteBox x:Name="SearchEngine" Text="{Binding Path=Search, UpdateSourceTrigger=PropertyChanged}"
+                ItemsSource="{Binding Series}"
+                ValueMemberPath="_title"
+                ItemTemplate="{StaticResource Propositions}" 
+                ItemFilter="{Binding PersonFilter}" Width="405" FontSize="18" Background="#FF17461E" Foreground="White">
+                <toolkit:AutoCompleteBox.BorderBrush>
+                    <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                        <GradientStop Color="#FFA3AEB9" Offset="0"/>
+                        <GradientStop Color="#FF8399A9" Offset="0.375"/>
+                        <GradientStop Color="#FF718597" Offset="0.375"/>
+                        <GradientStop Color="#FF44FF1A" Offset="1"/>
+                    </LinearGradientBrush>
+                </toolkit:AutoCompleteBox.BorderBrush>
+
+            </toolkit:AutoCompleteBox>
+            <Button Content="Szukaj" FontSize="20" Command="{Binding SearchButton}" Template="{DynamicResource ButtonControlTemplate}" HorizontalAlignment="Left"  VerticalAlignment="Top" Width="104" Height="40"/>
         </DockPanel>
+
     </Grid>
 </UserControl>
