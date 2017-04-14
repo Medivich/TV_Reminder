@@ -26,6 +26,22 @@ namespace TV_Reminder.Model
 
         //Różne konstruktory
 
+        public Series(string title, string description, int id)
+        {
+            this._title = title;
+            this._description = description;
+            this._id = id;
+        }
+
+        public Series(string title, string description, int id, ImageSource poster)
+        {
+            this._title = title;
+            this._description = description;
+            this._id = id;
+            this._poster = poster;
+        }
+
+
         public Series(string title, string description, int season_number, int episode_number, int id)
         {
             this._title = title;

@@ -9,6 +9,9 @@ using TV_Reminder.Model;
 using System.Drawing;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using TV_Reminder.Control;
+using System.Collections.ObjectModel;
+using System.Windows;
 
 namespace TV_Reminder.Commands
 {
@@ -42,17 +45,9 @@ namespace TV_Reminder.Commands
 
         public void Execute(object parameter)
         {
-            BitmapImage a = new BitmapImage(new Uri(@"C:\Users\user\Source\Repos\TV_Reminder\TV_Reminder\Other\Image\loading.png"));
-            var bitmap = new TransformedBitmap(a,
-                        new ScaleTransform(
-                            200 / a.Width ,
-                            300 / a.Height ));
-
-            ImageSource _image = bitmap;
-            
-
-            main.Series.Add(new Series("tytul1", "bla", 3, 4, 1, _image, false));
-            Debug.WriteLine("Search");
+            SearchTvdb _search = new SearchTvdb();
+            main.Series = _search.SearchForSeries(main.Search);
+            main.SearchList = Visibility.Visible;
         }
     }
 }

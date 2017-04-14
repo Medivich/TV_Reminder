@@ -4,8 +4,11 @@ using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
 using TV_Reminder.Commands;
 using TV_Reminder.Model;
 
@@ -15,13 +18,26 @@ namespace TV_Reminder.ViewModel
     {
         ObservableCollection<Series> _Series = new ObservableCollection<Series>();
         string _search;
+        Visibility _searchList = Visibility.Hidden;
+
+        public Visibility SearchList
+        {
+            set
+            {
+                _searchList = value;
+                OnPropertyChanged("SearchList");
+            }
+            get
+            {
+                return _searchList;
+            }
+        }
 
         public string Search 
         { 
             set
             {
                 _search = value;
-                Debug.WriteLine(value);
             }
             get
             {
@@ -38,16 +54,9 @@ namespace TV_Reminder.ViewModel
             set
             {
                 _Series = value;
-                OnPropertyChanged("Series");
-            }
-        }
 
-        public AutoCompleteFilterPredicate<object> PersonFilter
-        {
-            get
-            {
-                return (searchText, obj) =>
-                    (obj as Series)._title.Contains(searchText);
+                OnPropertyChanged("Series");
+                OnPropertyChanged("Search");
             }
         }
 
