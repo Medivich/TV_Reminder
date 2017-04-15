@@ -12,13 +12,14 @@ using System.Windows.Media.Imaging;
 using TV_Reminder.Control;
 using System.Collections.ObjectModel;
 using System.Windows;
+using System.Threading;
+using System.Windows.Threading;
 
 namespace TV_Reminder.Commands
 {
     class SearchSeries : ICommand
     {
         private readonly AddSeriesViewModel main;
-
         public SearchSeries(AddSeriesViewModel main)
         {
             if (main == null) throw new ArgumentNullException("SearchSeries command");
@@ -45,9 +46,19 @@ namespace TV_Reminder.Commands
 
         public void Execute(object parameter)
         {
+            main.Searching = Visibility.Visible;
+            // Zaczyna nowy wątek, żeby w międzyczasie UI było updatowane
+            Thread t = new Thread(search);
+            t.IsBackground = true;
+            t.Start();        
+        }
+
+        void search()
+        {
             SearchTvdb _search = new SearchTvdb();
-            main.Series = _search.SearchForSeries(main.Search);
-            main.SearchList = Visibility.Visible;
+            ObservableCollection<Series> _Series = new ObservableCollection<Series>();
+            _Series = _search.SearchForSeries(main.Search);
+            Application.Current.Dispatcher.Invoke(DispatcherPriority.Background,new Action(() => main.Series = _Series));
         }
     }
 }

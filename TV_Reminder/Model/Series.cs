@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Windows.Media;
+using System.Windows.Media.Imaging;
 
 namespace TV_Reminder.Model
 {
@@ -23,6 +25,19 @@ namespace TV_Reminder.Model
 
         public ImageSource _poster { get; set; }
 
+        public byte[] _memoryStream { get; set; }
+
+        public ImageSource Poster
+        {
+            get
+            {
+                return _poster;
+            }  
+            set
+            {
+                this._poster = value;
+            }
+        }
 
         //Różne konstruktory
 
@@ -33,12 +48,18 @@ namespace TV_Reminder.Model
             this._id = id;
         }
 
+        public Series()
+        {
+            ;
+        }
+
         public Series(string title, string description, int id, ImageSource poster)
         {
             this._title = title;
             this._description = description;
             this._id = id;
             this._poster = poster;
+
         }
 
 

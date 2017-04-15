@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
@@ -18,7 +20,27 @@ namespace TV_Reminder.ViewModel
     {
         ObservableCollection<Series> _Series = new ObservableCollection<Series>();
         string _search;
-        Visibility _searchList = Visibility.Hidden;
+        Series _selectedSeries = null;
+        Visibility _searchList = Visibility.Hidden, _searching = Visibility.Hidden;
+
+        public Series SelectedSeries
+        {
+            set
+            {
+                if (value != null)
+                {
+                    _selectedSeries = value;
+                    Debug.WriteLine("Selected: " + _selectedSeries._title + " id: " + _selectedSeries._id);
+                    _searchList = Visibility.Hidden;
+                    _search = _selectedSeries._title;
+                    OnPropertyChanged("SelectedSeries", "SearchList", "Search");
+                }
+            }
+            get
+            {
+                return _selectedSeries;
+            }
+        }
 
         public Visibility SearchList
         {
@@ -30,6 +52,19 @@ namespace TV_Reminder.ViewModel
             get
             {
                 return _searchList;
+            }
+        }
+
+        public Visibility Searching
+        {
+            set
+            {
+                _searching = value;
+                OnPropertyChanged("Searching");
+            }
+            get
+            {
+                return _searching;
             }
         }
 
@@ -53,10 +88,14 @@ namespace TV_Reminder.ViewModel
             }
             set
             {
-                _Series = value;
+                if (value != null)
+                {
+                    _Series = value;
 
-                OnPropertyChanged("Series");
-                OnPropertyChanged("Search");
+                    SearchList = Visibility.Visible;
+                    Searching = Visibility.Hidden;
+                    OnPropertyChanged("Search", "Series");
+                }
             }
         }
 
