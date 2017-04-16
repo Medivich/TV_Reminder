@@ -47,6 +47,8 @@ namespace TV_Reminder.Commands
         public void Execute(object parameter)
         {
             main.Searching = Visibility.Visible;
+            main.SearchList = Visibility.Hidden;
+            main.Found = 0;
             // Zaczyna nowy wątek, żeby w międzyczasie UI było updatowane
             Thread t = new Thread(search);
             t.IsBackground = true;
@@ -57,7 +59,8 @@ namespace TV_Reminder.Commands
         {
             SearchTvdb _search = new SearchTvdb();
             ObservableCollection<Series> _Series = new ObservableCollection<Series>();
-            _Series = _search.SearchForSeries(main.Search);
+            _Series = _search.SearchForSeries(main.Search, main);
+
             Application.Current.Dispatcher.Invoke(DispatcherPriority.Background,new Action(() => main.Series = _Series));
         }
     }

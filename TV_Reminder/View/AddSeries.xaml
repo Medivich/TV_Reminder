@@ -15,7 +15,7 @@
     <UserControl.Resources>
         <ControlTemplate x:Key="ButtonControlTemplate" TargetType="{x:Type Button}">
             <Grid>
-                <Rectangle Stroke="LightGreen" RadiusX="90" RadiusY="10" StrokeThickness="3" VerticalAlignment="Top" Height="40" x:Name="rect">
+                <Rectangle Stroke="LightGreen" RadiusX="90" RadiusY="10" StrokeThickness="3" Height="45" VerticalAlignment="Top" x:Name="rect">
                     <Rectangle.Fill>
                         <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
                             <GradientStop Color="Black" Offset="0"/>
@@ -64,6 +64,21 @@
     </UserControl.Resources>
 
     <Grid>
+
+        <TextBlock HorizontalAlignment="Left" Margin="456,92,0,0" FontSize="26" FontWeight="Bold"
+                   Foreground="White" TextWrapping="Wrap" Text="{Binding SelectedSeries._title}" Visibility="{Binding Picked}"
+                   VerticalAlignment="Top" Height="62" Width="499"/>
+
+        <TextBlock HorizontalAlignment="Left" Margin="456,176,0,0" Foreground="White" TextWrapping="Wrap" FontSize="22"
+                   Text="{Binding EpisodeNumber, StringFormat='Liczba odcinków: {0}'}" Visibility="{Binding Picked}"
+                   VerticalAlignment="Top" Height="26" Width="215"/>
+
+        <TextBlock HorizontalAlignment="Left" Margin="456,234,0,0" Foreground="White" TextWrapping="Wrap" Visibility="{Binding Picked}"
+                   Text="{Binding SelectedSeries._description}" VerticalAlignment="Top" Height="267" Width="499" Background="#A5041B02"/>
+
+
+
+
         <DockPanel HorizontalAlignment="Left" Height="45" LastChildFill="False" Margin="44,25,0,0" VerticalAlignment="Top" Width="558">
             <Image Source="/TV_Reminder;component/Other/Image/magnifier.png" Height="40" VerticalAlignment="Top" Width="49"/>
             <TextBox x:Name="SearchEngine"  Text="{Binding Path=Search, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="405" 
@@ -71,22 +86,53 @@
                      FontSize="18" FontWeight="Bold" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" >
 
             </TextBox>
-            <Button Content="Szukaj" FontSize="20" Command="{Binding SearchButton}" Template="{DynamicResource ButtonControlTemplate}" HorizontalAlignment="Left"  VerticalAlignment="Top" Width="104" Height="40" Background="#FF106C07"/>
+            <Button Content="Szukaj" FontSize="20" Command="{Binding SearchButton}" Template="{DynamicResource ButtonControlTemplate}" HorizontalAlignment="Left"  VerticalAlignment="Top" Width="104" Height="45" Background="#FF106C07"/>
         </DockPanel>
+
+        <ListBox ItemsSource="{Binding PosterList}" SelectedItem="{Binding SelectedPoster, UpdateSourceTrigger=PropertyChanged}"
+                 ScrollViewer.CanContentScroll="False" Visibility="{Binding Picked}"
+                 Margin="44,92,610,30" Background="#FF062703" BorderBrush="#FF199E04" Width="305" >
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <StackPanel Orientation="Horizontal" MaxWidth="300">
+                        <Image Source="{Binding Post}" MaxWidth="300" MaxHeight="400">
+                        </Image>
+                    </StackPanel>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+            <ListBox.ItemContainerStyle>
+                <Style TargetType="ListBoxItem">
+                    <Setter Property="BorderBrush" Value="Black"/>
+                    <Style.Triggers>
+                        <Trigger Property="IsSelected" Value="True">
+                            <Setter Property="BorderThickness" Value="3"/>
+                            <Setter Property="BorderBrush" Value="White"/>
+                        </Trigger>
+                    </Style.Triggers>
+                </Style>
+            </ListBox.ItemContainerStyle>
+        </ListBox>
+
+        <Button Content="Dodaj serial do bazy" FontSize="20" Command="{Binding AddToDatabaseButton}"
+                Template="{DynamicResource ButtonControlTemplate}"
+                HorizontalAlignment="Left"  VerticalAlignment="Top" Width="225" Height="45" Background="#FF106C07" Margin="637,25,0,0"
+                HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
+
 
         <ListBox x:Name="ListBox" ItemsSource="{Binding Series}" Visibility="{Binding SearchList}"
                  ScrollViewer.CanContentScroll="False" SelectedItem="{Binding SelectedSeries, UpdateSourceTrigger=PropertyChanged}"
-                 Margin="44,70,398,10"  >
+                 Margin="44,70,398,10" Background="#FF062703" BorderBrush="#FF21F300"  >
             <ListBox.ItemTemplate>
                 <DataTemplate>
-                    <StackPanel Orientation="Horizontal" Background="DarkGreen" Width="500">
+                    <StackPanel Orientation="Horizontal" Width="520">
                         <Image Source="{Binding _memoryStream}" MaxWidth="300" MaxHeight="400">
                         </Image>
                         <StackPanel Orientation="Vertical" VerticalAlignment="Stretch">
-                            <TextBlock Text="{Binding _title, StringFormat='Tytuł: {0}'}" MaxWidth="250" Foreground="White" FontSize="26" TextWrapping="WrapWithOverflow">
-                            </TextBlock>
-                            <TextBlock Text="{Binding _description, 
-                                        StringFormat='Opis: {0}'}" MaxWidth="200" Foreground="White" TextWrapping="WrapWithOverflow">
+                            <TextBlock Text="{Binding _title}" MaxWidth="250" Foreground="White" Margin="10,10,10,10"
+                                       FontSize="26" FontWeight="Bold" TextWrapping="WrapWithOverflow"/>
+
+                            <TextBlock Text="{Binding _description, StringFormat='Opis: {0}'}" Margin="10,10,10,10"
+                                       MaxWidth="200" Foreground="White" TextWrapping="WrapWithOverflow">
                             </TextBlock>
                         </StackPanel>
                     </StackPanel>
@@ -95,5 +141,6 @@
         </ListBox>
 
         <View:Loading Visibility="{Binding Searching}"/>
+        <View:Searching Visibility="{Binding Searching}"/>
     </Grid>
 </UserControl>

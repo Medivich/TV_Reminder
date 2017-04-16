@@ -83,12 +83,15 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Commands\AbortSearch.cs" />
+    <Compile Include="Commands\AddSeriesToDatabase.cs" />
     <Compile Include="Commands\GoToAddSeries.cs" />
     <Compile Include="Commands\GoToTracked.cs" />
     <Compile Include="Commands\GoToUnwatched.cs" />
     <Compile Include="Commands\SearchSeries.cs" />
     <Compile Include="Control\LogToTvdb.cs" />
     <Compile Include="Control\SearchTvdb.cs" />
+    <Compile Include="Model\Poster.cs" />
     <Compile Include="Model\Series.cs" />
     <Compile Include="Model\Token.cs" />
     <Compile Include="ViewModel\AddSeriesViewModel.cs" />
@@ -103,6 +106,9 @@
     </Compile>
     <Compile Include="View\Loading.xaml.cs">
       <DependentUpon>Loading.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Searching.xaml.cs">
+      <DependentUpon>Searching.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\Tracked.xaml.cs">
       <DependentUpon>Tracked.xaml</DependentUpon>
@@ -134,6 +140,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="View\Loading.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Searching.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

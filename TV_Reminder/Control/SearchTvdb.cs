@@ -12,40 +12,16 @@ using System.Threading;
 using System.Windows;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using System.Windows.Threading;
 using TV_Reminder.Model;
+using TV_Reminder.ViewModel;
 
 namespace TV_Reminder.Control
 {
     class SearchTvdb
     {
-        int balance = 0;
-        private Object thisLock = new Object();
-
-        private void Podnies()
-        {
-            lock (thisLock)
-            {
-                balance += 1;
-            }
-        }
-
-        private void Opusc()
-        {
-            lock (thisLock)
-            {
-                balance -= 1;
-            }
-        }
-
-        private int getLock()
-        {
-            lock (thisLock)
-            {
-                return balance;
-            }
-        }
-
-        public ObservableCollection<Series> SearchForSeries(string _seriesName)
+        int _found = 0;
+        public ObservableCollection<Series> SearchForSeries(string _seriesName, AddSeriesViewModel main)
         {
             ObservableCollection<Series> _series = new ObservableCollection<Series>();
 
@@ -77,7 +53,6 @@ namespace TV_Reminder.Control
                             while (reader.Value == null);
 
                             _title = reader.Value.ToString();
-                            Debug.WriteLine(_title);
                         }
                         else if (reader.Value != null && reader.Value.ToString().Equals("overview"))
                         {
@@ -85,7 +60,6 @@ namespace TV_Reminder.Control
                             while (reader.Value == null);
 
                             _overview = reader.Value.ToString();
-                            Debug.WriteLine(_overview); 
                         }
 
                         if (_overview != "" && _title != "" && _id != 0)
@@ -100,6 +74,14 @@ namespace TV_Reminder.Control
                             _id = 0;
                             _title = "";
                             _overview = "";
+                            _found++;
+
+                            if (main.Abort)
+                            {
+                                main.Abort = false;
+                                return _series;
+                            }
+                            main.Found = _found;
                         }
                     }
                 }
@@ -149,26 +131,94 @@ namespace TV_Reminder.Control
                 {
                     array = client.DownloadData(new Uri(fullUrl));
                 }
-                return array;
-                /*
-                WebRequest requestPic = WebRequest.Create(_url);
-                WebResponse responsePic = requestPic.GetResponse();
-                Stream responseStream = responsePic.GetResponseStream();
-
-
-
-                BitmapImage a = new BitmapImage();
-                a.BeginInit();
-                Podnies();
-                a.CacheOption = BitmapCacheOption.OnLoad;
-                a.StreamSource = responseStream;      
-                a.EndInit();*/
-                
+                return array;                
             }
             catch (Exception e)
             {
                 return null;
             }
         }
+
+        public void SearchForAllPosters(int _id, AddSeriesViewModel main)
+        {
+            var httpWebRequest = (HttpWebRequest)WebRequest.Create("https://api.thetvdb.com/series/" + _id + "/images/query?keyType=poster");
+            httpWebRequest.Accept = "application/json";
+            httpWebRequest.Headers.Add("Authorization", "Bearer " + Model.Token.tvdb_token);
+            ObservableCollection<Poster> _PosterList = new ObservableCollection<Poster>();
+            try
+            {
+                
+                var httpResponse = (HttpWebResponse)httpWebRequest.GetResponse();
+
+                using (var streamReader = new StreamReader(httpResponse.GetResponseStream()))
+                {
+                    string result = streamReader.ReadToEnd();
+
+                    JsonTextReader reader = new JsonTextReader(new StringReader(result));
+                    
+                    while (reader.Read())
+                    {
+                        if (reader.Value != null && reader.Value.ToString().Equals("fileName"))
+                        {
+                            do { reader.Read(); }
+                            while (reader.Value == null);
+
+                            string _url = "http://thetvdb.com/banners/" + reader.Value.ToString();
+                            byte[] array;
+
+                            using (WebClient client = new WebClient())
+                            {
+                                array = client.DownloadData(new Uri(_url));
+                            }
+                            Application.Current.Dispatcher.Invoke(DispatcherPriority.Background, new Action(() => main.PosterList.Add(new Poster(array))));
+                        }
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                ;
+            }
+        }
+
+
+
+        public void getMoreSeriesInfo(int _id, AddSeriesViewModel main)
+        {
+            var httpWebRequest = (HttpWebRequest)WebRequest.Create("https://api.thetvdb.com/series/" + _id + "/episodes/summary");
+            httpWebRequest.Accept = "application/json";
+            httpWebRequest.Headers.Add("Authorization", "Bearer " + Model.Token.tvdb_token);
+            ObservableCollection<Poster> _PosterList = new ObservableCollection<Poster>();
+            try
+            {
+                var httpResponse = (HttpWebResponse)httpWebRequest.GetResponse();
+
+                using (var streamReader = new StreamReader(httpResponse.GetResponseStream()))
+                {
+                    string result = streamReader.ReadToEnd();
+
+                    JsonTextReader reader = new JsonTextReader(new StringReader(result));
+                    while (reader.Read())
+                    {                        
+                        if (reader.Value != null && reader.Value.ToString().Equals("airedEpisodes"))
+                        {
+                            do { reader.Read(); }
+                            while (reader.Value == null);
+
+                            int p;
+                            Int32.TryParse(reader.Value.ToString(), out p);
+                            Application.Current.Dispatcher.Invoke(DispatcherPriority.Background, new Action(()
+                                => main.EpisodeNumber = p));
+                        }
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                ;
+            }
+        }
+
+        
     }
 }
