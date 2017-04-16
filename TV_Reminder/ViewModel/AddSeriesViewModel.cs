@@ -20,52 +20,52 @@ namespace TV_Reminder.ViewModel
 {
     class AddSeriesViewModel : SeriesViewModel
     {
-        ObservableCollection<Series> _SeriesList = new ObservableCollection<Series>();
-        ObservableCollection<Poster> _PosterList = new ObservableCollection<Poster>();
+        ObservableCollection<Series> _seriesList = new ObservableCollection<Series>();
+        ObservableCollection<Poster> _posterList = new ObservableCollection<Poster>();
         private AddSeriesViewModel main;
 
-        string _search;
+        string _searchQuery;
         Series _selectedSeries = null;
-        Visibility _searchList = Visibility.Hidden, _searching = Visibility.Hidden, _picked = Visibility.Hidden;
-        int _found = 0;
-        bool _abort = false;
+        Visibility _replyList = Visibility.Hidden, _searchingScreen = Visibility.Hidden, _seriesInfo = Visibility.Hidden;
+        int _foundSeries = 0;
+        bool _abortSearch = false;
 
         public ObservableCollection<Poster> PosterList
         {
             set
             {
-                _PosterList = value;
+                _posterList = value;
                 OnPropertyChanged("PosterList");
             }
             get
             {
-                return _PosterList;
+                return _posterList;
             }
         }
 
-        public bool Abort
+        public bool AbortSearch
         {
             set
             {
-                _abort = value;
-                OnPropertyChanged("Abort");
+                _abortSearch = value;
+                OnPropertyChanged("AbortSearch");
             }
             get
             {
-                return _abort;
+                return _abortSearch;
             }
         }
 
-        public int Found
+        public int FoundSeries
         {
             set
             {
-                _found = value;
-                OnPropertyChanged("Found");
+                _foundSeries = value;
+                OnPropertyChanged("FoundSeries");
             }
             get
             {
-                return _found;
+                return _foundSeries;
             }
         }
 
@@ -96,21 +96,21 @@ namespace TV_Reminder.ViewModel
                 {
                     PosterList.Clear();
                     _selectedSeries = value;
-                    _searchList = Visibility.Hidden;
-                    _search = _selectedSeries._title;
+                    ReplyList = Visibility.Hidden;
+                    _searchQuery = _selectedSeries._title;
 
                     main = this;
-                    Thread t = new Thread(searchForPost);
-                    t.IsBackground = true;
-                    t.Start();
+                    Thread posterSearcher = new Thread(searchForPost);
+                    posterSearcher.IsBackground = true;
+                    posterSearcher.Start();
 
-                    Thread t2 = new Thread(searchForEpisodes);
-                    t2.IsBackground = true;
-                    t2.Start();
+                    Thread episodeNumberSearcher = new Thread(searchForEpisodeNumber);
+                    episodeNumberSearcher.IsBackground = true;
+                    episodeNumberSearcher.Start();
 
-                    Picked = Visibility.Visible;
+                    SeriesInfo = Visibility.Visible;
 
-                    OnPropertyChanged("SelectedSeries", "SearchList", "Search", "PosterList");
+                    OnPropertyChanged("SelectedSeries", "SearchQuery", "PosterList");
                 }
             }
             get
@@ -125,10 +125,10 @@ namespace TV_Reminder.ViewModel
             S.SearchForAllPosters(_selectedSeries._id, this);
         }
 
-        private void searchForEpisodes()
+        private void searchForEpisodeNumber()
         {
             SearchTvdb S = new SearchTvdb();
-            S.getMoreSeriesInfo(_selectedSeries._id, this);
+            S.getOverallEpisodesNumber(_selectedSeries._id, this);
         }
 
         public Poster SelectedPoster
@@ -149,54 +149,54 @@ namespace TV_Reminder.ViewModel
 
 
 
-        public Visibility SearchList
+        public Visibility ReplyList
         {
             set
             {
-                _searchList = value;
-                OnPropertyChanged("SearchList");
+                _replyList = value;
+                OnPropertyChanged("ReplyList");
             }
             get
             {
-                return _searchList;
+                return _replyList;
             }
         }
 
-        public Visibility Searching
+        public Visibility SearchingScreen
         {
             set
             {
-                _searching = value;
-                OnPropertyChanged("Searching");
+                _searchingScreen = value;
+                OnPropertyChanged("SearchingScreen");
             }
             get
             {
-                return _searching;
+                return _searchingScreen;
             }
         }
 
-        public Visibility Picked
+        public Visibility SeriesInfo
         {
             set
             {
-                _picked = value;
-                OnPropertyChanged("Picked");
+                _seriesInfo = value;
+                OnPropertyChanged("SeriesInfo");
             }
             get
             {
-                return _picked;
+                return _seriesInfo;
             }
         }
 
-        public string Search 
+        public string SearchQuery 
         { 
             set
             {
-                _search = value;
+                _searchQuery = value;
             }
             get
             {
-                return _search;
+                return _searchQuery;
             }
         }
 
@@ -204,53 +204,53 @@ namespace TV_Reminder.ViewModel
         { 
             get
             {
-                return _SeriesList;
+                return _seriesList;
             }
             set
             {           
-                Searching = Visibility.Hidden;
+                SearchingScreen = Visibility.Hidden;
                 if (value != null)
                 {
-                    SearchList = Visibility.Visible;
-                    _SeriesList = value;
-                    OnPropertyChanged("Search", "Series");
+                    ReplyList = Visibility.Visible;
+                    _seriesList = value;
+                    OnPropertyChanged("SearchQuery", "Series");
                 }
             }
         }
 
-        private ICommand SearchSeries;
+        private ICommand SearchSeriesCommand;
 
         public ICommand SearchButton
         {
             get
             {
-                if (SearchSeries == null)
-                    SearchSeries = new SearchSeries(this);
-                return SearchSeries;
+                if (SearchSeriesCommand == null)
+                    SearchSeriesCommand = new SearchSeries(this);
+                return SearchSeriesCommand;
             }
         }
 
-        private ICommand AbortSearch;
+        private ICommand AbortSearchCommand;
 
         public ICommand AbortSearchButton
         {
             get
             {
-                if (AbortSearch == null)
-                    AbortSearch = new AbortSearch(this);
-                return AbortSearch;
+                if (AbortSearchCommand == null)
+                    AbortSearchCommand = new AbortSearch(this);
+                return AbortSearchCommand;
             }
         }
 
-        private ICommand AddToDatabase;
+        private ICommand AddToDatabaseCommand;
 
         public ICommand AddToDatabaseButton
         {
             get
             {
-                if (AddToDatabase == null)
-                    AddToDatabase = new AddSeriesToDatabase(this);
-                return AddToDatabase;
+                if (AddToDatabaseCommand == null)
+                    AddToDatabaseCommand = new AddSeriesToDatabase(this);
+                return AddToDatabaseCommand;
             }
         }   
     }

@@ -38,7 +38,7 @@ namespace TV_Reminder.Commands
 
         public void Execute(object parameter)
         {
-            main.Abort = true;
+            main.AbortSearch = true;
         }
     }
 }

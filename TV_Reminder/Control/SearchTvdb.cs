@@ -21,10 +21,10 @@ namespace TV_Reminder.Control
     class SearchTvdb
     {
         int _found = 0;
+
+        //Zwraca listę seriali, a dokładnie ich: id, najnowszy plakat jako byte[], tytuł, opis
         public ObservableCollection<Series> SearchForSeries(string _seriesName, AddSeriesViewModel main)
         {
-            ObservableCollection<Series> _series = new ObservableCollection<Series>();
-
             var httpWebRequest = (HttpWebRequest)WebRequest.Create("https://api.thetvdb.com/search/series?name=" + _seriesName);
             httpWebRequest.Accept = "application/json";
             httpWebRequest.Headers.Add("Authorization", "Bearer " + Model.Token.tvdb_token);
@@ -36,30 +36,36 @@ namespace TV_Reminder.Control
                     string result = streamReader.ReadToEnd();
 
                     JsonTextReader reader = new JsonTextReader(new StringReader(result));
+
                     int _id = 0;
                     string _title = "", _overview = "";
+                    ObservableCollection<Series> _series = new ObservableCollection<Series>();
+
                     while (reader.Read())
                     {
-                        if (reader.Value != null && reader.Value.ToString().Equals("id"))
+                        if (reader.Value != null)
                         {
-                            do  { reader.Read(); }
-                            while (reader.Value == null);
+                            if (reader.Value.ToString().Equals("id"))
+                            {
+                                do { reader.Read(); }
+                                while (reader.Value == null);
 
-                            _id = Convert.ToInt32(reader.Value);
-                        }
-                        else if(reader.Value != null && reader.Value.ToString().Equals("seriesName"))
-                        {
-                            do { reader.Read(); }
-                            while (reader.Value == null);
+                                _id = Convert.ToInt32(reader.Value);
+                            }
+                            else if (reader.Value.ToString().Equals("seriesName"))
+                            {
+                                do { reader.Read(); }
+                                while (reader.Value == null);
 
-                            _title = reader.Value.ToString();
-                        }
-                        else if (reader.Value != null && reader.Value.ToString().Equals("overview"))
-                        {
-                            do { reader.Read(); }
-                            while (reader.Value == null);
+                                _title = reader.Value.ToString();
+                            }
+                            else if (reader.Value.ToString().Equals("overview"))
+                            {
+                                do { reader.Read(); }
+                                while (reader.Value == null);
 
-                            _overview = reader.Value.ToString();
+                                _overview = reader.Value.ToString();
+                            }
                         }
 
                         if (_overview != "" && _title != "" && _id != 0)
@@ -76,18 +82,16 @@ namespace TV_Reminder.Control
                             _overview = "";
                             _found++;
 
-                            if (main.Abort)
+                            if (main.AbortSearch) // Jak naciśnięty przycisk AbortSearch
                             {
-                                main.Abort = false;
+                                main.AbortSearch = false;
                                 return _series;
                             }
-                            main.Found = _found;
+                            main.FoundSeries = _found;
                         }
                     }
+                    return _series;
                 }
-
-
-                return _series;
             }
             catch (Exception e)
             {
@@ -96,6 +100,7 @@ namespace TV_Reminder.Control
             }
         }
 
+        //Zwraca najnowszy plakat
         private byte[] SearchForPosters(int _id)
         {
             var httpWebRequest = (HttpWebRequest)WebRequest.Create("https://api.thetvdb.com/series/" + _id + "/images/query?keyType=poster");
@@ -124,7 +129,6 @@ namespace TV_Reminder.Control
                     }
                 }
                 string fullUrl = "http://thetvdb.com/banners/" + _url;
-
                 byte[] array;
 
                 using (WebClient client = new WebClient())
@@ -139,6 +143,7 @@ namespace TV_Reminder.Control
             }
         }
 
+        //Wyszukuje plakaty i zwraca je po kolei do _PosterList
         public void SearchForAllPosters(int _id, AddSeriesViewModel main)
         {
             var httpWebRequest = (HttpWebRequest)WebRequest.Create("https://api.thetvdb.com/series/" + _id + "/images/query?keyType=poster");
@@ -170,7 +175,8 @@ namespace TV_Reminder.Control
                             {
                                 array = client.DownloadData(new Uri(_url));
                             }
-                            Application.Current.Dispatcher.Invoke(DispatcherPriority.Background, new Action(() => main.PosterList.Add(new Poster(array))));
+                            Application.Current.Dispatcher.Invoke(DispatcherPriority.Background, new Action(() =>
+                                main.PosterList.Add(new Poster(array))));
                         }
                     }
                 }
@@ -182,8 +188,8 @@ namespace TV_Reminder.Control
         }
 
 
-
-        public void getMoreSeriesInfo(int _id, AddSeriesViewModel main)
+        //Zwraca ilosc odcinkow
+        public void getOverallEpisodesNumber(int _id, AddSeriesViewModel main)
         {
             var httpWebRequest = (HttpWebRequest)WebRequest.Create("https://api.thetvdb.com/series/" + _id + "/episodes/summary");
             httpWebRequest.Accept = "application/json";
@@ -218,7 +224,5 @@ namespace TV_Reminder.Control
                 ;
             }
         }
-
-        
     }
 }

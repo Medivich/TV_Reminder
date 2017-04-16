@@ -42,8 +42,8 @@
 
         <Button Content="Przerwij" FontSize="22" HorizontalAlignment="Left" Command="{Binding AbortSearchButton}"
                 Template="{DynamicResource ButtonControlTemplate}" Margin="629,180,0,0" VerticalAlignment="Top" Width="169" Height="42"/>
-        
-        <TextBlock HorizontalAlignment="Left" Text="{Binding Found, StringFormat = 'Pasujące seriale: {0}'}" 
+
+        <TextBlock HorizontalAlignment="Left" Text="{Binding FoundSeries, StringFormat = 'Pasujące seriale: {0}'}" 
                    Foreground="White" FontSize="24" Margin="629,261,0,0" TextWrapping="Wrap" 
                    VerticalAlignment="Top" Height="142" Width="331" FontWeight="Bold"/>
     </Grid>

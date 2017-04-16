@@ -33,7 +33,7 @@ namespace TV_Reminder.Commands
         //Czy kontrolka jest aktywna
         public bool CanExecute(object parameter)
         {
-            if (main.Picked == System.Windows.Visibility.Visible)
+            if (main.SeriesInfo == System.Windows.Visibility.Visible)
                 return true;
             else
                 return false;
