@@ -143,7 +143,7 @@
             </ListBox.ItemTemplate>
         </ListBox>
 
-        <View:Loading Visibility="{Binding SearchingScreen}"/>
+        <View:Loading Visibility="{Binding LoadingScreen}"/>
         <View:Searching Visibility="{Binding SearchingScreen}"/>
 
     </Grid>

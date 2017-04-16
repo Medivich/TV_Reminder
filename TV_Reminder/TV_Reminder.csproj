@@ -89,8 +89,10 @@
     <Compile Include="Commands\GoToTracked.cs" />
     <Compile Include="Commands\GoToUnwatched.cs" />
     <Compile Include="Commands\SearchSeries.cs" />
+    <Compile Include="Control\getJSONreply.cs" />
     <Compile Include="Control\LogToTvdb.cs" />
     <Compile Include="Control\SearchTvdb.cs" />
+    <Compile Include="Model\Episode.cs" />
     <Compile Include="Model\Poster.cs" />
     <Compile Include="Model\Series.cs" />
     <Compile Include="Model\Token.cs" />

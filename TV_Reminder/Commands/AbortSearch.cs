@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using TV_Reminder.ViewModel;
+using TV_Reminder.Control;
 
 namespace TV_Reminder.Commands
 {

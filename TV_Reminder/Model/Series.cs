@@ -25,9 +25,12 @@ namespace TV_Reminder.Model
 
         public byte[] _memoryStream { get; set; }
 
-        public Series()
+        public Series(string title, string description, int id, byte[] memoryStream)
         {
-            ;
+            this._id = id;
+            this._title = title;
+            this._memoryStream = memoryStream;
+            this._description = description;
         }
     }
 }

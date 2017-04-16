@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Input;
+using TV_Reminder.Control;
 using TV_Reminder.ViewModel;
 
 namespace TV_Reminder.Commands
@@ -41,7 +43,9 @@ namespace TV_Reminder.Commands
 
         public void Execute(object parameter)
         {
-            ;
+            main.LoadingScreen = Visibility.Visible;
+            SearchTvdb S = new SearchTvdb();
+            S.getAllEpisodes(main.SelectedSeries._id);
         }
     }
 }

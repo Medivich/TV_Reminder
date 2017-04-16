@@ -26,7 +26,8 @@ namespace TV_Reminder.ViewModel
 
         string _searchQuery;
         Series _selectedSeries = null;
-        Visibility _replyList = Visibility.Hidden, _searchingScreen = Visibility.Hidden, _seriesInfo = Visibility.Hidden;
+        Visibility _replyList = Visibility.Hidden, _loadingScreen = Visibility.Hidden,
+            _searchingScreen = Visibility.Hidden, _seriesInfo = Visibility.Hidden;
         int _foundSeries = 0;
         bool _abortSearch = false;
 
@@ -188,6 +189,19 @@ namespace TV_Reminder.ViewModel
             }
         }
 
+        public Visibility LoadingScreen
+        {
+            set
+            {
+                _loadingScreen = value;
+                OnPropertyChanged("LoadingScreen");
+            }
+            get
+            {
+                return _loadingScreen;
+            }
+        }
+
         public string SearchQuery 
         { 
             set
@@ -207,7 +221,8 @@ namespace TV_Reminder.ViewModel
                 return _seriesList;
             }
             set
-            {           
+            {
+                LoadingScreen = Visibility.Hidden;
                 SearchingScreen = Visibility.Hidden;
                 if (value != null)
                 {

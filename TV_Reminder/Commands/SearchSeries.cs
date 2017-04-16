@@ -47,6 +47,7 @@ namespace TV_Reminder.Commands
         public void Execute(object parameter)
         {
             main.SearchingScreen = Visibility.Visible;
+            main.LoadingScreen = Visibility.Visible;
             main.ReplyList = Visibility.Hidden;
             main.FoundSeries = 0;
             // Zaczyna nowy wątek, żeby w międzyczasie UI było updatowane
