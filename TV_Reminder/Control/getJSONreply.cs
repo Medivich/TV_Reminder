@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -12,7 +13,7 @@ namespace TV_Reminder.Control
 {
     class getJSONreply
     {
-        public JsonTextReader getReply(string uri)
+        public string getReply(string uri)
         {
             var httpWebRequest = (HttpWebRequest)WebRequest.Create(uri);
             httpWebRequest.Accept = "application/json";
@@ -21,14 +22,8 @@ namespace TV_Reminder.Control
             try
             {
                 var httpResponse = (HttpWebResponse)httpWebRequest.GetResponse();
-
-                using (var streamReader = new StreamReader(httpResponse.GetResponseStream()))
-                {
-                    string result = streamReader.ReadToEnd();
-
-                    JsonTextReader reader = new JsonTextReader(new StringReader(result));
-                    return reader;
-                }
+                StreamReader s = new StreamReader(httpResponse.GetResponseStream());
+                return s.ReadToEnd();
             }
             catch (Exception e)
             {

@@ -48,10 +48,10 @@
                 <Image Source="{Binding _poster}">
                 </Image>
                 <StackPanel Orientation="Vertical" VerticalAlignment="Stretch">
-                    <TextBlock Text="{Binding _title, 
+                    <TextBlock Text="{Binding _seriesName, 
                                         StringFormat='Tytuł: {0}'}">
                     </TextBlock>
-                    <TextBlock Text="{Binding _description, 
+                    <TextBlock Text="{Binding _overview, 
                                         StringFormat='Liczba sezonów: {0}'}">
                     </TextBlock>
                     <TextBlock Text="{Binding _id, 
@@ -66,7 +66,7 @@
     <Grid>
 
         <TextBlock HorizontalAlignment="Left" Margin="456,92,0,0" FontSize="26" FontWeight="Bold"
-                   Foreground="White" TextWrapping="Wrap" Text="{Binding SelectedSeries._title}" Visibility="{Binding SeriesInfo}"
+                   Foreground="White" TextWrapping="Wrap" Text="{Binding SelectedSeries._seriesName}" Visibility="{Binding SeriesInfo}"
                    VerticalAlignment="Top" Height="62" Width="499"/>
 
         <TextBlock HorizontalAlignment="Left" Margin="456,176,0,0" Foreground="White" TextWrapping="Wrap" FontSize="22"
@@ -74,7 +74,7 @@
                    VerticalAlignment="Top" Height="26" Width="215"/>
 
         <TextBlock HorizontalAlignment="Left" Margin="456,234,0,0" Foreground="White" TextWrapping="Wrap" Visibility="{Binding SeriesInfo}"
-                   Text="{Binding SelectedSeries._description}" VerticalAlignment="Top" Height="267" Width="499" Background="#A5041B02"/>
+                   Text="{Binding SelectedSeries._overview}" VerticalAlignment="Top" Height="267" Width="499" Background="#A5041B02"/>
 
 
 
@@ -86,7 +86,9 @@
                      FontSize="18" FontWeight="Bold" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" >
 
             </TextBox>
-            <Button Content="Szukaj" Margin="15,0,0,0" FontSize="20" Command="{Binding SearchButton}" Template="{DynamicResource ButtonControlTemplate}" HorizontalAlignment="Left"  VerticalAlignment="Top" Width="104" Height="45" Background="#FF106C07" RenderTransformOrigin="0.736,0.578"/>
+            <Button Content="Szukaj" Margin="15,0,0,0" FontSize="20" Command="{Binding SearchButton}" 
+                    Template="{DynamicResource ButtonControlTemplate}" HorizontalAlignment="Left"  
+                    VerticalAlignment="Top" Width="104" Height="45" Background="#FF106C07" RenderTransformOrigin="0.736,0.578"/>
         </DockPanel>
 
         <Label Content="Wybierz plakat:" Foreground="White" FontSize="22" FontWeight="Bold" Visibility="{Binding SeriesInfo}"
@@ -128,13 +130,13 @@
             <ListBox.ItemTemplate>
                 <DataTemplate>
                     <StackPanel Orientation="Horizontal" Width="520">
-                        <Image Source="{Binding _memoryStream}" MaxWidth="300" MaxHeight="400">
+                        <Image Source="{Binding _poster}" MaxWidth="300" MaxHeight="400">
                         </Image>
                         <StackPanel Orientation="Vertical" VerticalAlignment="Stretch">
-                            <TextBlock Text="{Binding _title}" MaxWidth="250" Foreground="White" Margin="10,10,10,10"
+                            <TextBlock Text="{Binding _seriesName}" MaxWidth="250" Foreground="White" Margin="10,10,10,10"
                                        FontSize="26" FontWeight="Bold" TextWrapping="WrapWithOverflow"/>
 
-                            <TextBlock Text="{Binding _description, StringFormat='Opis: {0}'}" Margin="10,10,10,10"
+                            <TextBlock Text="{Binding _overview, StringFormat='Opis: {0}'}" Margin="10,10,10,10"
                                        MaxWidth="200" Foreground="White" TextWrapping="WrapWithOverflow">
                             </TextBlock>
                         </StackPanel>

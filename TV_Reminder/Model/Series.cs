@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
@@ -11,26 +12,38 @@ namespace TV_Reminder.Model
 {
     class Series
     {
-        public string _description { get; set; }
+        [JsonProperty("overview")]
+        public string _overview { get; set; }
 
-        public string _title { get; set; }
+        [JsonProperty("seriesName")]
+        public string _seriesName { get; set; }
 
         public int _season_number { get; set; }
 
+        [JsonProperty("airedEpisodes")]
         public int _episode_number { get; set; }
 
+        [JsonProperty("id")]
         public int _id { get; set; }
 
         public bool _watched { get; set; }
 
-        public byte[] _memoryStream { get; set; }
+        public byte[] _poster { get; set; }
 
-        public Series(string title, string description, int id, byte[] memoryStream)
+        public Series(string seriesName, string overview, int id, byte[] poster)
         {
             this._id = id;
-            this._title = title;
-            this._memoryStream = memoryStream;
-            this._description = description;
+            this._seriesName = seriesName;
+            this._poster = poster;
+            this._overview = overview;
+        }
+
+        [JsonConstructor]
+        public Series(string seriesName, string overview, int id)
+        {
+            this._id = id;
+            this._seriesName = seriesName;
+            this._overview = overview;
         }
     }
 }

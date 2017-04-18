@@ -23,7 +23,7 @@ namespace TV_Reminder.ViewModel
         ObservableCollection<Series> _seriesList = new ObservableCollection<Series>();
         ObservableCollection<Poster> _posterList = new ObservableCollection<Poster>();
         private AddSeriesViewModel main;
-
+        
         string _searchQuery;
         Series _selectedSeries = null;
         Visibility _replyList = Visibility.Hidden, _loadingScreen = Visibility.Hidden,
@@ -98,7 +98,7 @@ namespace TV_Reminder.ViewModel
                     PosterList.Clear();
                     _selectedSeries = value;
                     ReplyList = Visibility.Hidden;
-                    _searchQuery = _selectedSeries._title;
+                    _searchQuery = _selectedSeries._seriesName;
 
                     main = this;
                     Thread posterSearcher = new Thread(searchForPost);
@@ -137,12 +137,12 @@ namespace TV_Reminder.ViewModel
             set
             {
                 if(value != null)
-                    _selectedSeries._memoryStream = value._memoryStream;
+                    _selectedSeries._poster = value._memoryStream;
             }
             get
             {
                 if (_selectedSeries != null)
-                    return new Poster(_selectedSeries._memoryStream);
+                    return new Poster(_selectedSeries._poster);
                 else
                     return null;
             }

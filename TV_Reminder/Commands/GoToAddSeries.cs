@@ -46,6 +46,7 @@ namespace TV_Reminder.Commands
 
             // Zaczyna nowy wątek, żeby w międzyczasie UI było updatowane
             Thread thr = new Thread(getToken);
+            thr.IsBackground = true;
             thr.Start();
         }
 

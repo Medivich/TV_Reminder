@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
@@ -44,8 +45,25 @@ namespace TV_Reminder.Commands
         public void Execute(object parameter)
         {
             main.LoadingScreen = Visibility.Visible;
+            
+
+            Thread thr = new Thread(getToken);
+            thr.IsBackground = true;
+            thr.Start();
+
+            
+            
+            
+        }
+
+        void getToken()
+        {
             SearchTvdb S = new SearchTvdb();
-            S.getAllEpisodes(main.SelectedSeries._id);
+            //if(NIE ISTNIEJE W BAZIE)
+
+            //main.SelectedSeries._episode_number = 1;
+            S.getAllEpisodes(main.SelectedSeries._id, 2);
+            Application.Current.Dispatcher.Invoke(new Action(() => main.LoadingScreen = Visibility.Hidden));
         }
     }
 }

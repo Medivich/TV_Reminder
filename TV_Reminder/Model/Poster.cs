@@ -8,6 +8,8 @@ namespace TV_Reminder.Model
 {
     class Poster
     {
+        public string fileName { get; set; }
+
         public byte[] _memoryStream { get; set; }
 
         public byte[] Post
@@ -17,6 +19,16 @@ namespace TV_Reminder.Model
             {
                 _memoryStream = value;
             }
+        }
+
+        public Poster()
+        {
+            ;
+        }
+
+        public Poster(string fileName)
+        {
+            this.fileName = fileName;
         }
 
         public Poster(byte[] stream)
