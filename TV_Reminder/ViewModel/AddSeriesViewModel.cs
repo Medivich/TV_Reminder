@@ -36,6 +36,12 @@ namespace TV_Reminder.ViewModel
             set
             {
                 _posterList = value;
+                if (value != null && SelectedPoster == null)
+                {
+                    SelectedPoster = _posterList[0];
+                    OnPropertyChanged("SelectedPoster");
+                }
+
                 OnPropertyChanged("PosterList");
             }
             get

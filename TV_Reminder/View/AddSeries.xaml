@@ -96,7 +96,8 @@
 
         <ListBox ItemsSource="{Binding PosterList}" SelectedItem="{Binding SelectedPoster, UpdateSourceTrigger=PropertyChanged}"
                  ScrollViewer.CanContentScroll="False" Visibility="{Binding SeriesInfo}"
-                 Margin="64,122,630,30" Background="#FF062703" BorderBrush="#FF199E04" Width="305" >
+                 ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                 Margin="64,122,630,30" Background="#FF062703" BorderBrush="#FF199E04" Width="300" >
             <ListBox.ItemTemplate>
                 <DataTemplate>
                     <StackPanel Orientation="Horizontal" MaxWidth="300">
@@ -110,7 +111,7 @@
                     <Setter Property="BorderBrush" Value="Black"/>
                     <Style.Triggers>
                         <Trigger Property="IsSelected" Value="True">
-                            <Setter Property="BorderThickness" Value="3"/>
+                            <Setter Property="BorderThickness" Value="2"/>
                             <Setter Property="BorderBrush" Value="White"/>
                         </Trigger>
                     </Style.Triggers>

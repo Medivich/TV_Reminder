@@ -120,10 +120,36 @@ namespace TV_Reminder.Control
                 => main.EpisodeNumber = tvdbSearch["data"]["airedEpisodes"].ToObject<int>()));
         }
 
-        public void getAllEpisodes(int seriesID, int page)
+        public List<Episode> getAllEpisodes(int seriesID, int page)
         {
             string JSON = getReply("https://api.thetvdb.com/series/" + seriesID + "/episodes?page=" + page);
-            Debug.WriteLine(JSON);
+
+            List<Episode> _episodeList = new List<Episode>();
+            try
+            {
+                JObject tvdbSearch = JObject.Parse(JSON);
+                IList<JToken> results = tvdbSearch["data"].Children().ToList();
+
+                foreach (JToken result in results)
+                {
+                    try
+                    {
+                        Episode searchResult = result.ToObject<Episode>();
+                        _episodeList.Add(searchResult);
+                    }
+                    catch (Exception)
+                    {
+                        ;
+                    }
+
+                }
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+
+            return _episodeList;
         }
     }
 }

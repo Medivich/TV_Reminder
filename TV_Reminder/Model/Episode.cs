@@ -25,7 +25,7 @@ namespace TV_Reminder.Model
         [JsonProperty("id")]
         public int _id { get; set; }
 
-        public int _SeasonId { get; set; }
+        public int _absoluteNumber { get; set; }
 
         public bool _watched { get; set; }
 
@@ -35,5 +35,15 @@ namespace TV_Reminder.Model
         [JsonProperty("lastUpdated")]
         public int _lastUpdate { get; set; }
 
+        [JsonConstructor]
+        public Episode(string overview, string episodeName, int airedEpisodeNumber, int id, DateTime firstAired, int lastUpdated)
+        {
+            this._overview = overview;
+            this._episodeName = episodeName;
+            this._episodeNumber = airedEpisodeNumber;
+            this._id = id;
+            this._aired = firstAired;
+            this._lastUpdate = lastUpdated;
+        }
     }
 }
