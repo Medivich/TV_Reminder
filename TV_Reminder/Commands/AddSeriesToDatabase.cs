@@ -76,8 +76,16 @@ namespace TV_Reminder.Commands
             ep = ep.OrderBy(x => x._seasonNumber).ThenBy(y => y._episodeNumber).ToList();
 
             deleteSpecials();
-
-            //Dodaj serial do bazy
+     
+            try
+            {
+                AddToDataBase add = new AddToDataBase();
+                add.addTvSeries(main.SelectedSeries._seriesName, main.SelectedSeries._id, main.SelectedSeries._overview);
+            }
+            catch(Exception e)
+            {
+                MessageBox.Show(e.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
 
             Application.Current.Dispatcher.Invoke(new Action(() => main.LoadingScreen = Visibility.Hidden));
         }

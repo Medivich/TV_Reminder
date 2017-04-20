@@ -25,8 +25,6 @@ namespace TV_Reminder.Model
         [JsonProperty("id")]
         public int _id { get; set; }
 
-        public int _absoluteNumber { get; set; }
-
         public bool _watched { get; set; }
 
         [JsonProperty("firstAired")]
