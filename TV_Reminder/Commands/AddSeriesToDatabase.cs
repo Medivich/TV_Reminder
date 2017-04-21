@@ -73,6 +73,13 @@ namespace TV_Reminder.Commands
                     add.addTvSeries(main.SelectedSeries._seriesName, main.SelectedSeries._id, main.SelectedSeries._overview, main.SelectedPoster._memoryStream);
                 else
                     add.addTvSeries(main.SelectedSeries._seriesName, main.SelectedSeries._id, main.SelectedSeries._overview);
+
+
+                foreach(Episode e in ep)
+                {
+                    add.addEpisodes(main.SelectedSeries._id, e._seasonNumber, e._episodeNumber, e._episodeName, e._id, e._overview,
+                        e._lastUpdate, e._aired);
+                }
             }
             catch(Exception e)
             {

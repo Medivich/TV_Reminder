@@ -4,7 +4,11 @@ using System.Linq;
 using System.Text;
 using TV_Reminder.ViewModel;
 using TV_Reminder.View;
+using TV_Reminder.Control;
 using System.Windows.Input;
+using System.Threading;
+using System.Collections.ObjectModel;
+using TV_Reminder.Model;
 
 namespace TV_Reminder.Commands
 {
@@ -20,7 +24,21 @@ namespace TV_Reminder.Commands
 
         override public void Execute(object parameter)
         {
-            main.content = new Tracked();
+            main.content = new Loading();
+
+            Thread thr = new Thread(getToken);
+            thr.IsBackground = true;
+            thr.Start();
+        }
+
+        void getToken()
+        {
+            ReadFromDataBase RD = new ReadFromDataBase();
+
+            if (RD.DatabaseConnected())
+                main.content.Dispatcher.Invoke(new Action(() => main.content = new Tracked()));
+            else
+                main.content.Dispatcher.Invoke(new Action(() => main.content = new Hello())); 
         }
     }
 }

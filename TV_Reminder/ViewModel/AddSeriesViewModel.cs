@@ -18,7 +18,7 @@ using System.Threading;
 
 namespace TV_Reminder.ViewModel
 {
-    class AddSeriesViewModel : SeriesViewModel
+    class AddSeriesViewModel : MotherViewModel
     {
         ObservableCollection<Series> _seriesList = new ObservableCollection<Series>();
         ObservableCollection<Poster> _posterList = new ObservableCollection<Poster>();

@@ -43,5 +43,10 @@ namespace TV_Reminder.Model
             this._aired = firstAired;
             this._lastUpdate = lastUpdated;
         }
+
+        public Episode()
+        {
+            ;
+        }
     }
 }

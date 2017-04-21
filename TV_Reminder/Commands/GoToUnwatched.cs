@@ -10,6 +10,7 @@ namespace TV_Reminder.Commands
 {
     class GoToUnwatched : MotherCommand
     {
+        //To zmienić jak powstanie viewmodel
         private readonly MainViewModel main;
 
         public GoToUnwatched(MainViewModel main)

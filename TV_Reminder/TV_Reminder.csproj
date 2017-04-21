@@ -85,12 +85,17 @@
     </ApplicationDefinition>
     <Compile Include="Commands\AbortSearch.cs" />
     <Compile Include="Commands\AddSeriesToDatabase.cs" />
+    <Compile Include="Commands\DeleteSelectedSeries.cs" />
     <Compile Include="Commands\GoToAddSeries.cs" />
     <Compile Include="Commands\GoToTracked.cs" />
     <Compile Include="Commands\GoToUnwatched.cs" />
     <Compile Include="Commands\MotherCommand.cs" />
     <Compile Include="Commands\SearchSeries.cs" />
+    <Compile Include="Commands\ShowSelectedSeries.cs" />
+    <Compile Include="Commands\UpdateManySeries.cs" />
+    <Compile Include="Commands\UpdateSelectedSeries.cs" />
     <Compile Include="Control\AddToDataBase.cs" />
+    <Compile Include="Control\DeleteFromDataBase.cs" />
     <Compile Include="Control\getJSONreply.cs" />
     <Compile Include="Control\LogToTvdb.cs" />
     <Compile Include="Control\ReadFromDataBase.cs" />
@@ -103,7 +108,7 @@
     <Compile Include="ViewModel\AddSeriesViewModel.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
     <Compile Include="ViewModel\MotherViewModel.cs" />
-    <Compile Include="ViewModel\SeriesViewModel.cs" />
+    <Compile Include="ViewModel\SeriesDescriptionViewModel.cs" />
     <Compile Include="ViewModel\TrackedViewModel.cs" />
     <Compile Include="View\AddSeries.xaml.cs">
       <DependentUpon>AddSeries.xaml</DependentUpon>
@@ -116,6 +121,9 @@
     </Compile>
     <Compile Include="View\Searching.xaml.cs">
       <DependentUpon>Searching.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\SeriesDescription.xaml.cs">
+      <DependentUpon>SeriesDescription.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\Tracked.xaml.cs">
       <DependentUpon>Tracked.xaml</DependentUpon>
@@ -151,6 +159,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\Searching.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\SeriesDescription.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

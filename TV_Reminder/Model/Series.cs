@@ -5,6 +5,8 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Windows.Controls;
+using System.Windows.Forms;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 
@@ -29,6 +31,18 @@ namespace TV_Reminder.Model
         public bool _update { get; set; }
 
         public byte[] _poster { get; set; }
+
+        public bool Update
+        {
+            set
+            {
+                this._update = value;
+            }
+            get
+            {
+                return _update;
+            }
+        }
 
         public Series()
         {

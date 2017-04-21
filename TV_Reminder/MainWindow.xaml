@@ -2,7 +2,8 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:vm="clr-namespace:TV_Reminder.ViewModel"
-        Title="Tv_Reminder" Height="700" Width="1000" Icon="/Other/Image/icon.ico">
+        ResizeMode="NoResize"
+        Title="Tv_Reminder" Height="750" Width="1000" Icon="/Other/Image/icon.ico">
     <Window.DataContext>
         <vm:MainViewModel />
     </Window.DataContext>
