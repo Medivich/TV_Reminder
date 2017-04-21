@@ -4,10 +4,10 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:vm="clr-namespace:TV_Reminder.ViewModel"
-             xmlns:toolkit="clr-namespace:System.Windows.Controls;assembly=System.Windows.Controls.Input.Toolkit"
                
              mc:Ignorable="d" 
              d:DesignHeight="600" d:DesignWidth="1000">
+    
     <UserControl.DataContext>
         <vm:AddSeriesViewModel />
     </UserControl.DataContext>
@@ -119,7 +119,7 @@
             </ListBox.ItemContainerStyle>
         </ListBox>
 
-        <Button Content="Dodaj serial do bazy" FontSize="20" Command="{Binding AddToDatabaseButton}"
+        <Button Content="{Binding SeriesExist}" FontSize="20" Command="{Binding AddToDatabaseButton}"
                 Template="{DynamicResource ButtonControlTemplate}"
                 HorizontalAlignment="Left"  VerticalAlignment="Top" Width="225" Height="45" Background="#FF106C07" Margin="637,25,0,0"
                 HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>

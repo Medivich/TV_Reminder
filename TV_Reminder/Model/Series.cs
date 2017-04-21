@@ -18,17 +18,22 @@ namespace TV_Reminder.Model
         [JsonProperty("seriesName")]
         public string _seriesName { get; set; }
 
-        public int _season_number { get; set; }
-
         [JsonProperty("airedEpisodes")]
-        public int _episode_number { get; set; }
+        public int _airedEpisodes { get; set; }
 
         [JsonProperty("id")]
         public int _id { get; set; }
 
-        public bool _watched { get; set; }
+        public int _rating { get; set; }
+
+        public bool _update { get; set; }
 
         public byte[] _poster { get; set; }
+
+        public Series()
+        {
+            ;
+        }
 
         public Series(string seriesName, string overview, int id, byte[] poster)
         {

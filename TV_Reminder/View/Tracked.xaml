@@ -4,9 +4,35 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              mc:Ignorable="d" 
+             xmlns:tr="clr-namespace:TV_Reminder.ViewModel"
              d:DesignHeight="600" d:DesignWidth="1000">
+    
+    <UserControl.DataContext>
+        <tr:TrackedViewModel/>
+    </UserControl.DataContext>
+    
     <Grid>
-        <Button Content="Button" HorizontalAlignment="Left" Margin="387,152,0,0" VerticalAlignment="Top" Width="35" Height="242"/>
+        <ListBox x:Name="ListBox" ItemsSource="{Binding seriesList}"
+                 ScrollViewer.CanContentScroll="False"
+                 Margin="44,70,398,10" Background="#FF062703" BorderBrush="#FF21F300"  >
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <StackPanel Orientation="Horizontal" Width="520">
+                        <Image Source="{Binding _poster}" MaxWidth="300" MaxHeight="400">
+                        </Image>
+                        <StackPanel Orientation="Vertical" VerticalAlignment="Stretch">
+                            <TextBlock Text="{Binding _seriesName}" MaxWidth="250" Foreground="White" Margin="10,10,10,10"
+                                       FontSize="26" FontWeight="Bold" TextWrapping="WrapWithOverflow"/>
+
+                            <TextBlock Text="{Binding _overview, StringFormat='Opis: {0}'}" Margin="10,10,10,10"
+                                       MaxWidth="200" Foreground="White" TextWrapping="WrapWithOverflow">
+                            </TextBlock>
+                        </StackPanel>
+                    </StackPanel>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
 
     </Grid>
+    
 </UserControl>

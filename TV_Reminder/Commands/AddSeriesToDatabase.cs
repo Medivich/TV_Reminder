@@ -13,7 +13,7 @@ using TV_Reminder.ViewModel;
 
 namespace TV_Reminder.Commands
 {
-    class AddSeriesToDatabase : ICommand
+    class AddSeriesToDatabase : MotherCommand
     {
         private readonly AddSeriesViewModel main;
         private Object thisLock = new Object();
@@ -25,28 +25,16 @@ namespace TV_Reminder.Commands
             this.main = main;
         }
 
-        public event EventHandler CanExecuteChanged
-        {
-            add
-            {
-                CommandManager.RequerySuggested += value;
-            }
-            remove
-            {
-                CommandManager.RequerySuggested -= value;
-            }
-        }
-
         //Czy kontrolka jest aktywna
-        public bool CanExecute(object parameter)
+        override public bool CanExecute(object parameter)
         {
-            if (main.SeriesInfo == System.Windows.Visibility.Visible)
+            if (main.SeriesInfo == System.Windows.Visibility.Visible && !main.getExist())
                 return true;
             else
                 return false;
         }
 
-        public void Execute(object parameter)
+        override public void Execute(object parameter)
         {
             main.LoadingScreen = Visibility.Visible;
 
@@ -75,36 +63,45 @@ namespace TV_Reminder.Commands
             //Po dodaniu przez wątki list - sortowanie
             ep = ep.OrderBy(x => x._seasonNumber).ThenBy(y => y._episodeNumber).ToList();
 
-            deleteSpecials();
+            if(ep.Count > 0)
+                deleteSpecials();
      
             try
             {
                 AddToDataBase add = new AddToDataBase();
-                add.addTvSeries(main.SelectedSeries._seriesName, main.SelectedSeries._id, main.SelectedSeries._overview);
+                if(main.SelectedPoster != null)
+                    add.addTvSeries(main.SelectedSeries._seriesName, main.SelectedSeries._id, main.SelectedSeries._overview, main.SelectedPoster._memoryStream);
+                else
+                    add.addTvSeries(main.SelectedSeries._seriesName, main.SelectedSeries._id, main.SelectedSeries._overview);
             }
             catch(Exception e)
             {
                 MessageBox.Show(e.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
 
+            Application.Current.Dispatcher.Invoke(new Action(() => main.setExist(true)));
             Application.Current.Dispatcher.Invoke(new Action(() => main.LoadingScreen = Visibility.Hidden));
         }
 
         private void deleteSpecials()
         {
-            int j = 0;
-            bool cont = true;
-            while (cont)
+          
+            if (ep[0]._seasonNumber == 0)
             {
-                if (ep[j]._seasonNumber != 0)
+                int j = 0;
+                bool cont = true;
+                while (cont)
                 {
-                    cont = false;
+                    if (ep[j]._seasonNumber != 0)
+                    {
+                        cont = false;
+                    }
+                    else
+                        j++;
                 }
-                else
-                    j++;
-            }
 
-            ep.RemoveRange(0, j);
+                ep.RemoveRange(0, j);
+            }
         }
  
 

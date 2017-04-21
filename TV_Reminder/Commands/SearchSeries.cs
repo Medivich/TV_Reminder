@@ -17,7 +17,7 @@ using System.Windows.Threading;
 
 namespace TV_Reminder.Commands
 {
-    class SearchSeries : ICommand
+    class SearchSeries : MotherCommand
     {
         private readonly AddSeriesViewModel main;
         public SearchSeries(AddSeriesViewModel main)
@@ -26,25 +26,7 @@ namespace TV_Reminder.Commands
             this.main = main;
         }
 
-        public event EventHandler CanExecuteChanged
-        {
-            add
-            {
-                CommandManager.RequerySuggested += value;
-            }
-            remove
-            {
-                CommandManager.RequerySuggested -= value;
-            }
-        }
-
-        //Czy kontrolka jest aktywna
-        public bool CanExecute(object parameter)
-        {
-            return true;
-        }
-
-        public void Execute(object parameter)
+        override public void Execute(object parameter)
         {
             main.SearchingScreen = Visibility.Visible;
             main.LoadingScreen = Visibility.Visible;

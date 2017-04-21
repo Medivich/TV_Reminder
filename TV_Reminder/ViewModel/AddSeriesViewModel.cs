@@ -23,20 +23,49 @@ namespace TV_Reminder.ViewModel
         ObservableCollection<Series> _seriesList = new ObservableCollection<Series>();
         ObservableCollection<Poster> _posterList = new ObservableCollection<Poster>();
         private AddSeriesViewModel main;
-        
+
         string _searchQuery;
         Series _selectedSeries = null;
         Visibility _replyList = Visibility.Hidden, _loadingScreen = Visibility.Hidden,
             _searchingScreen = Visibility.Hidden, _seriesInfo = Visibility.Hidden;
         int _foundSeries = 0;
-        bool _abortSearch = false;
+        bool _abortSearch = false, _seriesExist = false;
+        
+
+        public void setExist(bool exist)
+        {
+            this._seriesExist = exist;
+            OnPropertyChanged("SeriesExist");
+        }
+
+        public bool getExist()
+        {
+            return this._seriesExist;
+        }
+
+        public string SeriesExist
+        {
+            set
+            {
+                ;
+            }
+            get
+            {
+                if (_seriesExist)
+                    return "Serial dodany do bazy";
+                else
+                    return "Dodaj serial do bazy";
+            }
+
+        }   
+ 
 
         public ObservableCollection<Poster> PosterList
         {
             set
             {
                 _posterList = value;
-                if (value != null && SelectedPoster == null)
+                if (value != null && _posterList.Count > 0)
                 {
                     SelectedPoster = _posterList[0];
                     OnPropertyChanged("SelectedPoster");
@@ -82,14 +111,14 @@ namespace TV_Reminder.ViewModel
             {
                 if (value != 0 && _selectedSeries != null)
                 {
-                    _selectedSeries._episode_number = value;
+                    _selectedSeries._airedEpisodes = value;
                     OnPropertyChanged("EpisodeNumber");
                 }
             }
             get
             {
                 if (_selectedSeries != null)
-                    return _selectedSeries._episode_number;
+                    return _selectedSeries._airedEpisodes;
                 else
                     return 0;
             }
@@ -106,6 +135,10 @@ namespace TV_Reminder.ViewModel
                     ReplyList = Visibility.Hidden;
                     _searchQuery = _selectedSeries._seriesName;
 
+                    ReadFromDataBase RD = new ReadFromDataBase();
+                    _seriesExist = RD.SeriesExist(_selectedSeries._id);
+
+
                     main = this;
                     Thread posterSearcher = new Thread(searchForPost);
                     posterSearcher.IsBackground = true;
@@ -117,7 +150,7 @@ namespace TV_Reminder.ViewModel
 
                     SeriesInfo = Visibility.Visible;
 
-                    OnPropertyChanged("SelectedSeries", "SearchQuery", "PosterList");
+                    OnPropertyChanged("SelectedSeries", "SearchQuery", "PosterList", "SeriesExist");
                 }
             }
             get
@@ -147,7 +180,7 @@ namespace TV_Reminder.ViewModel
             }
             get
             {
-                if (_selectedSeries != null)
+                if (_selectedSeries != null && _selectedSeries._poster != null)
                     return new Poster(_selectedSeries._poster);
                 else
                     return null;

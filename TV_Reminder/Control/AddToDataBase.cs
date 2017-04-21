@@ -8,18 +8,15 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Forms;
+using TV_Reminder.Model;
 
 namespace TV_Reminder.Control
 {
     class AddToDataBase
     {
-        string connString = @"Data Source=(LocalDB)\v11.0;AttachDbFilename="
-                            + Path.GetDirectoryName(System.Windows.Forms.Application.ExecutablePath) +
-                            @"\Other\DataBase\Tv_Reminder_Database.mdf;Integrated Security=True;Connect Timeout=30";
-
         public bool addTvSeries(string Name, int Id, string Overview)
         {
-            SqlConnection Connect = new SqlConnection(connString);    
+            SqlConnection Connect = new SqlConnection(DataBaseConnection.connString);    
             SqlCommand Command = new SqlCommand(@"Insert Into Series(Name, Id, Overview) 
                                                     Values(@Name, @Id, @Overview)", Connect);
 
@@ -32,12 +29,29 @@ namespace TV_Reminder.Control
             Connect.Close();
 
             return true;
-            
+        }
+
+        public bool addTvSeries(string Name, int Id, string Overview, byte[] Poster)
+        {
+            SqlConnection Connect = new SqlConnection(DataBaseConnection.connString);
+            SqlCommand Command = new SqlCommand(@"Insert Into Series(Name, Id, Overview, Poster) 
+                                                    Values(@Name, @Id, @Overview, @Poster)", Connect);
+
+            Command.Parameters.AddWithValue("@Name", Name);
+            Command.Parameters.AddWithValue("@Id", Id);
+            Command.Parameters.AddWithValue("@Overview", Overview);
+            Command.Parameters.AddWithValue("@Poster", Poster);
+
+            Connect.Open();
+            Command.ExecuteNonQuery();
+            Connect.Close();
+
+            return true;
         }
 
         public void trun()
         {
-            SqlConnection Connect = new SqlConnection(connString);
+            SqlConnection Connect = new SqlConnection(DataBaseConnection.connString);
             string sqlTrunc = "TRUNCATE TABLE Series";
             SqlCommand cmd = new SqlCommand(sqlTrunc, Connect);
 
@@ -48,7 +62,7 @@ namespace TV_Reminder.Control
 
         public void printTvShows()
         {
-            SqlConnection Connect = new SqlConnection(connString);
+            SqlConnection Connect = new SqlConnection(DataBaseConnection.connString);
             SqlCommand cmd = new SqlCommand("select * from Series", Connect);
 
             Debug.WriteLine("TV showy");

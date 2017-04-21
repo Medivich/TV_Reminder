@@ -90,22 +90,24 @@ namespace TV_Reminder.Control
         public void SearchForAllPosters(int _seriesID, AddSeriesViewModel main)
         {
             string JSON = getReply("https://api.thetvdb.com/series/" + _seriesID + "/images/query?keyType=poster");
-
-            JObject tvdbSearch = JObject.Parse(JSON);
-            IList<JToken> results = tvdbSearch["data"].Children().ToList();
-
-            foreach (JToken result in results)
+            if (JSON != null)
             {
-                Poster p = result.ToObject<Poster>();
+                JObject tvdbSearch = JObject.Parse(JSON);
+                IList<JToken> results = tvdbSearch["data"].Children().ToList();
 
-                byte[] array;
-                using (WebClient client = new WebClient())
+                foreach (JToken result in results)
                 {
-                    array = client.DownloadData(new Uri("http://thetvdb.com/banners/" + p.fileName));
-                }
+                    Poster p = result.ToObject<Poster>();
 
-                Application.Current.Dispatcher.Invoke(DispatcherPriority.Background, new Action(() =>
-                    main.PosterList.Add(new Poster(array))));
+                    byte[] array;
+                    using (WebClient client = new WebClient())
+                    {
+                        array = client.DownloadData(new Uri("http://thetvdb.com/banners/" + p.fileName));
+                    }
+
+                    Application.Current.Dispatcher.Invoke(DispatcherPriority.Background, new Action(() =>
+                        main.PosterList.Add(new Poster(array))));
+                }
             }
         }
 

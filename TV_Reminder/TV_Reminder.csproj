@@ -88,11 +88,14 @@
     <Compile Include="Commands\GoToAddSeries.cs" />
     <Compile Include="Commands\GoToTracked.cs" />
     <Compile Include="Commands\GoToUnwatched.cs" />
+    <Compile Include="Commands\MotherCommand.cs" />
     <Compile Include="Commands\SearchSeries.cs" />
     <Compile Include="Control\AddToDataBase.cs" />
     <Compile Include="Control\getJSONreply.cs" />
     <Compile Include="Control\LogToTvdb.cs" />
+    <Compile Include="Control\ReadFromDataBase.cs" />
     <Compile Include="Control\SearchTvdb.cs" />
+    <Compile Include="Model\DataBaseConnection.cs" />
     <Compile Include="Model\Episode.cs" />
     <Compile Include="Model\Poster.cs" />
     <Compile Include="Model\Series.cs" />
@@ -101,6 +104,7 @@
     <Compile Include="ViewModel\MainViewModel.cs" />
     <Compile Include="ViewModel\MotherViewModel.cs" />
     <Compile Include="ViewModel\SeriesViewModel.cs" />
+    <Compile Include="ViewModel\TrackedViewModel.cs" />
     <Compile Include="View\AddSeries.xaml.cs">
       <DependentUpon>AddSeries.xaml</DependentUpon>
     </Compile>
@@ -231,9 +235,9 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Other\DataBase\Tv_Reminder_Database.mdf">
+    <None Include="Other\DataBase\Tv_Reminder_Database.mdf">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
+    </None>
     <Content Include="Other\DataBase\Tv_Reminder_Database_log.ldf">
       <DependentUpon>Tv_Reminder_Database.mdf</DependentUpon>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
