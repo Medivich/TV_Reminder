@@ -131,7 +131,7 @@ namespace TV_Reminder.Control
             {
                 JObject tvdbSearch = JObject.Parse(JSON);
                 IList<JToken> results = tvdbSearch["data"].Children().ToList();
-
+                
                 foreach (JToken result in results)
                 {
                     try
@@ -139,11 +139,34 @@ namespace TV_Reminder.Control
                         Episode searchResult = result.ToObject<Episode>();
                         _episodeList.Add(searchResult);
                     }
-                    catch (Exception)
+                    catch (Exception) // Czegoś brakuje w pakiecie, więc stara się dodać to co jest 
                     {
-                        ;
-                    }
+                        Episode e = new Episode();
 
+                        if (result["overview"].ToString().Length > 0)
+                            e._overview = result["overview"].ToString();
+
+                        if (result["episodeName"].ToString().Length > 0)
+                            e._episodeName = result["episodeName"].ToString();
+
+                        if (result["airedSeason"].ToString().Length > 0)
+                            e._seasonNumber = Convert.ToInt32(result["airedSeason"].ToString());
+
+                        if (result["id"].ToString().Length > 0)
+                            e._id = Convert.ToInt32(result["id"].ToString());
+
+                        if (result["firstAired"].ToString().Length > 0)
+                            e._aired = Convert.ToDateTime(result["firstAired"].ToString());
+
+                        if (result["lastUpdated"].ToString().Length > 0)
+                            e._lastUpdate = Convert.ToInt32(result["lastUpdated"].ToString());
+
+                        if (result["airedEpisodeNumber"].ToString().Length > 0)
+                            e._episodeNumber = Convert.ToInt32(result["airedEpisodeNumber"].ToString());
+
+                        if(e._id != 0 && e._episodeNumber != 0 && e._seasonNumber != 0)
+                            _episodeList.Add(e);
+                    }
                 }
             }
             catch (Exception e)

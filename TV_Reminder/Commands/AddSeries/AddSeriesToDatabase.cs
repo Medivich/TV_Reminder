@@ -59,7 +59,6 @@ namespace TV_Reminder.Commands
             foreach (Thread t in th)
                 t.Join();
 
-
             //Po dodaniu przez wątki list - sortowanie
             ep = ep.OrderBy(x => x._seasonNumber).ThenBy(y => y._episodeNumber).ToList();
 
@@ -74,11 +73,19 @@ namespace TV_Reminder.Commands
                 else
                     add.addTvSeries(main.SelectedSeries._seriesName, main.SelectedSeries._id, main.SelectedSeries._overview);
 
-
+                //{0001-01-01 00:00:00}
                 foreach(Episode e in ep)
                 {
-                    add.addEpisodes(main.SelectedSeries._id, e._seasonNumber, e._episodeNumber, e._episodeName, e._id, e._overview,
-                        e._lastUpdate, e._aired);
+                    try
+                    {
+                        add.addEpisodes(main.SelectedSeries._id, e._seasonNumber, e._episodeNumber, e._episodeName, e._id, e._overview,
+                            e._lastUpdate, e._aired);
+                    }
+                    catch(Exception x)
+                    {
+                        add.addEpisodes(main.SelectedSeries._id, e._seasonNumber, e._episodeNumber, e._episodeName, e._id, e._overview,
+                            e._lastUpdate);
+                    }   
                 }
             }
             catch(Exception e)

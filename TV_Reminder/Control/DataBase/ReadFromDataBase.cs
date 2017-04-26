@@ -138,6 +138,40 @@ namespace TV_Reminder.Control
             return ep;
         }
 
+        //Zwróć najstarszy, nieobejrzany odcinek
+        public Episode GetLastEpisode(int SeriesId)
+        {
+            Episode episode = new Episode();
+
+            SqlConnection Connect = new SqlConnection(DataBaseConnection.connString);
+            SqlCommand czytajnik = new SqlCommand("SELECT * FROM Episode where SeriesId = @SeriesId AND Aired = (SELECT MIN(Aired) FROM Episode where SeriesId = @SeriesId AND Watched = 0)", Connect);
+            czytajnik.Parameters.AddWithValue("@SeriesId", SeriesId);
+
+            Connect.Open();
+            SqlDataReader dr = czytajnik.ExecuteReader();
+
+            while (dr.Read())
+            {
+                if (dr["Id"] != DBNull.Value)
+                    episode._id = Convert.ToInt32(dr["Id"]);
+                if (dr["Number"] != DBNull.Value)
+                    episode._episodeNumber = Convert.ToInt32(dr["Number"]);
+                if (dr["Season"] != DBNull.Value)
+                    episode._seasonNumber = Convert.ToInt32(dr["Season"]);
+                if (dr["Overview"] != DBNull.Value)
+                    episode._overview = Convert.ToString(dr["Overview"]);
+                if (dr["Title"] != DBNull.Value)
+                    episode._episodeName = Convert.ToString(dr["Title"]);
+                if (dr["Watched"] != DBNull.Value)
+                    episode._watched = Convert.ToBoolean(dr["Watched"]);
+                if (dr["Aired"] != DBNull.Value)
+                    episode._aired = Convert.ToDateTime(dr["Aired"]);
+            }
+            Connect.Close();
+
+            return episode;
+        }
+
         public bool DatabaseConnected()
         {
             SqlConnection Connect = new SqlConnection(DataBaseConnection.connString);

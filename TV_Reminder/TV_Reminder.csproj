@@ -83,23 +83,27 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Commands\AbortSearch.cs" />
-    <Compile Include="Commands\AddSeriesToDatabase.cs" />
-    <Compile Include="Commands\DeleteSelectedSeries.cs" />
-    <Compile Include="Commands\GoToAddSeries.cs" />
-    <Compile Include="Commands\GoToTracked.cs" />
-    <Compile Include="Commands\GoToUnwatched.cs" />
+    <Compile Include="Commands\AddSeries\AbortSearch.cs" />
+    <Compile Include="Commands\AddSeries\AddSeriesToDatabase.cs" />
+    <Compile Include="Commands\SeriesDescription\AllAboveWatched.cs" />
+    <Compile Include="Commands\SeriesDescription\ChangeRating.cs" />
+    <Compile Include="Commands\Tracked\DeleteSelectedSeries.cs" />
+    <Compile Include="Commands\SeriesDescription\EpisodeWatchedSeriesDescription.cs" />
+    <Compile Include="Commands\Main\GoToAddSeries.cs" />
+    <Compile Include="Commands\Main\GoToTracked.cs" />
+    <Compile Include="Commands\Main\GoToUnwatched.cs" />
     <Compile Include="Commands\MotherCommand.cs" />
-    <Compile Include="Commands\SearchSeries.cs" />
-    <Compile Include="Commands\ShowSelectedSeries.cs" />
-    <Compile Include="Commands\UpdateManySeries.cs" />
-    <Compile Include="Commands\UpdateSelectedSeries.cs" />
-    <Compile Include="Control\AddToDataBase.cs" />
-    <Compile Include="Control\DeleteFromDataBase.cs" />
-    <Compile Include="Control\getJSONreply.cs" />
-    <Compile Include="Control\LogToTvdb.cs" />
-    <Compile Include="Control\ReadFromDataBase.cs" />
-    <Compile Include="Control\SearchTvdb.cs" />
+    <Compile Include="Commands\AddSeries\SearchSeries.cs" />
+    <Compile Include="Commands\Tracked\ShowSelectedSeries.cs" />
+    <Compile Include="Commands\Tracked\UpdateManySeries.cs" />
+    <Compile Include="Commands\Tracked\UpdateSelectedSeries.cs" />
+    <Compile Include="Control\DataBase\AddToDataBase.cs" />
+    <Compile Include="Control\DataBase\DeleteFromDataBase.cs" />
+    <Compile Include="Control\JSON\getJSONreply.cs" />
+    <Compile Include="Control\JSON\LogToTvdb.cs" />
+    <Compile Include="Control\DataBase\ReadFromDataBase.cs" />
+    <Compile Include="Control\JSON\SearchTvdb.cs" />
+    <Compile Include="Control\DataBase\UpdateDataBase.cs" />
     <Compile Include="Model\DataBaseConnection.cs" />
     <Compile Include="Model\Episode.cs" />
     <Compile Include="Model\Poster.cs" />
@@ -247,6 +251,11 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
+    <Resource Include="Other\Image\starEmpty.png" />
+    <Resource Include="Other\Image\starFull.png" />
+    <Resource Include="Other\Image\notAvailable.png" />
+    <Resource Include="Other\Image\Unwatched.png" />
+    <Resource Include="Other\Image\Watched.png" />
     <None Include="Other\DataBase\Tv_Reminder_Database.mdf">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>

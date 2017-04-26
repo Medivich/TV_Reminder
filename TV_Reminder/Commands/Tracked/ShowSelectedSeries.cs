@@ -30,7 +30,7 @@ namespace TV_Reminder.Commands
         override public void Execute(object parameter)
         {
             main.SeriesListVisibility = Visibility.Hidden;
-            main.Description = new SeriesDescription(main.selectedSeries._id);
+            main.Description = new TV_Reminder.View.SeriesDescription(main.selectedSeries._id);
         }
     }
 }

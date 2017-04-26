@@ -78,6 +78,30 @@ namespace TV_Reminder.Control
             }
         }
 
+        public void addEpisodes(int SeriesId, int Season, int Number, string Title, int Id, string Overview, int LastUpdate)
+        {
+            ReadFromDataBase rd = new ReadFromDataBase();
+            if (!rd.SeriesExist(Id))
+            {
+                SqlConnection Connect = new SqlConnection(DataBaseConnection.connString);
+                SqlCommand Command = new SqlCommand(@"Insert Into Episode(SeriesId, Season, Number, Title, Id, Overview, LastUpdate) 
+                                                        Values(@SeriesId, @Season, @Number, @Title, @Id, @Overview, @LastUpdate)", Connect);
+
+                Command.Parameters.AddWithValue("@SeriesId", SeriesId);
+                Command.Parameters.AddWithValue("@Season", Season);
+                Command.Parameters.AddWithValue("@Number", Number);
+                Command.Parameters.AddWithValue("@Title", Title != null ? Title : "");
+                Command.Parameters.AddWithValue("@Id", Id);
+                Command.Parameters.AddWithValue("@Overview", Overview != null ? Overview : "");
+                Command.Parameters.AddWithValue("@LastUpdate", LastUpdate);
+
+
+                Connect.Open();
+                Command.ExecuteNonQuery();
+                Connect.Close();
+            }
+        }
+
         public void printTvShows()
         {
             SqlConnection Connect = new SqlConnection(DataBaseConnection.connString);
