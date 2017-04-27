@@ -72,7 +72,7 @@
             <Label Content="Lista śledzonych seriali:" Foreground="White" FontSize="32"
                    HorizontalAlignment="Left" Margin="44,10,0,0" VerticalAlignment="Top" Height="55" Width="346"/>
 
-            <Button Content="Aktualizacja" Command="{Binding UpdateManySeriesButton}" 
+            <Button Content="Aktualizacja śledzonych" Command="{Binding UpdateManySeriesButton}" 
                     Template="{DynamicResource ButtonControlTemplate}" FontSize="20"
                     HorizontalAlignment="Left" Margin="672,16,0,0" VerticalAlignment="Top" Width="260" Height="90"/>
 
@@ -88,11 +88,19 @@
                     Template="{DynamicResource ButtonControlTemplate}" FontSize="20"
         	    HorizontalAlignment="Left" Margin="672,351,0,0" VerticalAlignment="Top" Width="260" Height="90"/>
 
-
-                <View:Loading Visibility="{Binding LoadingScreen}"/>
+            <View:Loading Visibility="{Binding LoadingScreen}"/>
+            
+            <ListBox ItemsSource="{Binding Log}" Visibility="{Binding LoadingScreen}"
+                     ScrollViewer.CanContentScroll="False" ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                     Margin="638,131,38,157" Background="#FF062703" BorderBrush="#FF21F300"  >
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding}" Foreground="White" FontSize="15"/>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+            
         </Grid>
         <UserControl Content="{Binding Description}"/>
     </Grid>
-    
-
 </UserControl>

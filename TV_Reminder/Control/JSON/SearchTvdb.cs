@@ -122,6 +122,14 @@ namespace TV_Reminder.Control
                 => main.EpisodeNumber = tvdbSearch["data"]["airedEpisodes"].ToObject<int>()));
         }
 
+        public int getOverallEpisodesNumber(int _seriesID)
+        {
+            string JSON = getReply("https://api.thetvdb.com/series/" + _seriesID + "/episodes/summary");
+            JObject tvdbSearch = JObject.Parse(JSON);
+
+            return tvdbSearch["data"]["airedEpisodes"].ToObject<int>();
+        }
+
         public List<Episode> getAllEpisodes(int seriesID, int page)
         {
             string JSON = getReply("https://api.thetvdb.com/series/" + seriesID + "/episodes?page=" + page);

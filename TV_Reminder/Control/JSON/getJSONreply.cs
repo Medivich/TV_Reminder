@@ -17,7 +17,7 @@ namespace TV_Reminder.Control
         {
             var httpWebRequest = (HttpWebRequest)WebRequest.Create(uri);
             httpWebRequest.Accept = "application/json";
-            httpWebRequest.Headers.Add("Authorization", "Bearer " + Model.Token.tvdb_token);
+            httpWebRequest.Headers.Add("Authorization", "Bearer " + Model.Token.token);
 
             try
             {

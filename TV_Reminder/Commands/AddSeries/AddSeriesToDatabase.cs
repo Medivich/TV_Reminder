@@ -46,46 +46,20 @@ namespace TV_Reminder.Commands
         //Tworzy wątki, które pobierają odcinki (w jednej paczce przechodzi max. 100 odcinków)
         private void add()
         {
-            List<Thread> th = new List<Thread>();
-
-            for (int i = 0; i < Math.Ceiling((decimal)main.EpisodeNumber / 100); i++)
-            {
-                Thread t = new Thread(new ParameterizedThreadStart(addEpisodes));
-                th.Add(t);
-                t.IsBackground = true;
-                t.Start(new ThreadParam(main.SelectedSeries._id, i + 1));
-            }
-
-            foreach (Thread t in th)
-                t.Join();
-
-            //Po dodaniu przez wątki list - sortowanie
-            ep = ep.OrderBy(x => x._seasonNumber).ThenBy(y => y._episodeNumber).ToList();
-
-            if(ep.Count > 0)
-                deleteSpecials();
+            DownloadEpisodes ED = new DownloadEpisodes();
+            ep = ED.getEpisodes(main.SelectedSeries._id);
      
             try
             {
                 AddToDataBase add = new AddToDataBase();
                 if(main.SelectedPoster != null)
-                    add.addTvSeries(main.SelectedSeries._seriesName, main.SelectedSeries._id, main.SelectedSeries._overview, main.SelectedPoster._memoryStream);
+                    add.addTvSeries(main.SelectedSeries, main.SelectedPoster._memoryStream);
                 else
-                    add.addTvSeries(main.SelectedSeries._seriesName, main.SelectedSeries._id, main.SelectedSeries._overview);
+                    add.addTvSeries(main.SelectedSeries);
 
-                //{0001-01-01 00:00:00}
                 foreach(Episode e in ep)
                 {
-                    try
-                    {
-                        add.addEpisodes(main.SelectedSeries._id, e._seasonNumber, e._episodeNumber, e._episodeName, e._id, e._overview,
-                            e._lastUpdate, e._aired);
-                    }
-                    catch(Exception x)
-                    {
-                        add.addEpisodes(main.SelectedSeries._id, e._seasonNumber, e._episodeNumber, e._episodeName, e._id, e._overview,
-                            e._lastUpdate);
-                    }   
+                    add.addEpisode(main.SelectedSeries._id, e); 
                 }
             }
             catch(Exception e)
@@ -96,56 +70,5 @@ namespace TV_Reminder.Commands
             Application.Current.Dispatcher.Invoke(new Action(() => main.setExist(true)));
             Application.Current.Dispatcher.Invoke(new Action(() => main.LoadingScreen = Visibility.Hidden));
         }
-
-        private void deleteSpecials()
-        {
-          
-            if (ep[0]._seasonNumber == 0)
-            {
-                int j = 0;
-                bool cont = true;
-                while (cont)
-                {
-                    if (ep[j]._seasonNumber != 0)
-                    {
-                        cont = false;
-                    }
-                    else
-                        j++;
-                }
-
-                ep.RemoveRange(0, j);
-            }
-        }
- 
-
-        public void sumEpisodes(List<Episode> input)
-        {
-            lock (thisLock)
-            {
-                ep.AddRange(input);
-            }
-        }
-
-
-        private void addEpisodes(object threadParam)
-        {
-            ThreadParam context = (ThreadParam)threadParam;
-            SearchTvdb S = new SearchTvdb();          
-            sumEpisodes(S.getAllEpisodes(context._id, context._page));
-        }
-
-        class ThreadParam
-        {
-            public int _id;
-            public int _page;
-
-            public ThreadParam(int id, int page)
-            {
-                this._id = id;
-                this._page = page;
-            }
-        }
-
     }
 }

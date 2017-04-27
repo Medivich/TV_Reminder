@@ -14,19 +14,21 @@ namespace TV_Reminder.Control
 {
     class AddToDataBase
     {
-        public void addTvSeries(string Name, int Id, string Overview)
+        public void addTvSeries(Series s)
         {
             ReadFromDataBase rd = new ReadFromDataBase();
 
-            if (!rd.SeriesExist(Id))
+            if (!rd.SeriesExist(s._id))
             {
                 SqlConnection Connect = new SqlConnection(DataBaseConnection.connString);
-                SqlCommand Command = new SqlCommand(@"Insert Into Series(Name, Id, Overview) 
-                                                    Values(@Name, @Id, @Overview)", Connect);
+                SqlCommand Command = new SqlCommand(@"Insert Into Series(Name, Id, Overview, LastUpdate) 
+                                                    Values(@Name, @Id, @Overview, @LastUpdate)", Connect);
 
-                Command.Parameters.AddWithValue("@Name", Name);
-                Command.Parameters.AddWithValue("@Id", Id);
-                Command.Parameters.AddWithValue("@Overview", Overview);
+                Command.Parameters.AddWithValue("@Name", s._seriesName);
+                Command.Parameters.AddWithValue("@Id", s._id);
+                Command.Parameters.AddWithValue("@Overview", s._overview);
+                Command.Parameters.AddWithValue("@LastUpdate", s._lastUpdated);
+
 
                 Connect.Open();
                 Command.ExecuteNonQuery();
@@ -34,18 +36,19 @@ namespace TV_Reminder.Control
             }
         }
 
-        public void addTvSeries(string Name, int Id, string Overview, byte[] Poster)
+        public void addTvSeries(Series s, byte[] Poster)
         {
             ReadFromDataBase rd = new ReadFromDataBase();
-            if (!rd.SeriesExist(Id))
+            if (!rd.SeriesExist(s._id))
             {
                 SqlConnection Connect = new SqlConnection(DataBaseConnection.connString);
-                SqlCommand Command = new SqlCommand(@"Insert Into Series(Name, Id, Overview, Poster) 
-                                                        Values(@Name, @Id, @Overview, @Poster)", Connect);
+                SqlCommand Command = new SqlCommand(@"Insert Into Series(Name, Id, Overview, Poster, LastUpdate) 
+                                                        Values(@Name, @Id, @Overview, @Poster, @LastUpdate)", Connect);
 
-                Command.Parameters.AddWithValue("@Name", Name);
-                Command.Parameters.AddWithValue("@Id", Id);
-                Command.Parameters.AddWithValue("@Overview", Overview);
+                Command.Parameters.AddWithValue("@Name", s._seriesName);
+                Command.Parameters.AddWithValue("@Id", s._id);
+                Command.Parameters.AddWithValue("@Overview", s._overview);
+                Command.Parameters.AddWithValue("@LastUpdate", s._lastUpdated);
                 Command.Parameters.AddWithValue("@Poster", Poster);
 
                 Connect.Open();
@@ -54,52 +57,54 @@ namespace TV_Reminder.Control
             }
         }
 
-        public void addEpisodes(int SeriesId, int Season, int Number, string Title, int Id, string Overview, int LastUpdate, DateTime Aired)
+        //Zmienić jak wyżej
+        public void addEpisode(int SeriesId, Episode e)
         {
-            ReadFromDataBase rd = new ReadFromDataBase();
-            if (!rd.SeriesExist(Id))
-            {
-                SqlConnection Connect = new SqlConnection(DataBaseConnection.connString);
-                SqlCommand Command = new SqlCommand(@"Insert Into Episode(SeriesId, Season, Number, Title, Id, Overview, LastUpdate, Aired) 
-                                                        Values(@SeriesId, @Season, @Number, @Title, @Id, @Overview, @LastUpdate, @Aired)", Connect);
-
-                Command.Parameters.AddWithValue("@SeriesId", SeriesId);
-                Command.Parameters.AddWithValue("@Season", Season);
-                Command.Parameters.AddWithValue("@Number", Number);
-                Command.Parameters.AddWithValue("@Title", Title != null ? Title : "");
-                Command.Parameters.AddWithValue("@Id", Id);
-                Command.Parameters.AddWithValue("@Overview", Overview != null ? Overview : "");
-                Command.Parameters.AddWithValue("@LastUpdate", LastUpdate);
-                Command.Parameters.AddWithValue("@Aired", Aired);
-
-                Connect.Open();
-                Command.ExecuteNonQuery();
-                Connect.Close();
-            }
+            if (e._aired.Year > 1950)
+                addEpisodeWithDate(SeriesId, e);
+            else
+                addEpisodeWithoutDate(SeriesId, e);
         }
 
-        public void addEpisodes(int SeriesId, int Season, int Number, string Title, int Id, string Overview, int LastUpdate)
+        private void addEpisodeWithDate(int SeriesId, Episode e)
         {
             ReadFromDataBase rd = new ReadFromDataBase();
-            if (!rd.SeriesExist(Id))
-            {
-                SqlConnection Connect = new SqlConnection(DataBaseConnection.connString);
-                SqlCommand Command = new SqlCommand(@"Insert Into Episode(SeriesId, Season, Number, Title, Id, Overview, LastUpdate) 
-                                                        Values(@SeriesId, @Season, @Number, @Title, @Id, @Overview, @LastUpdate)", Connect);
+            SqlConnection Connect = new SqlConnection(DataBaseConnection.connString);
+            SqlCommand Command = new SqlCommand(@"Insert Into Episode(SeriesId, Season, Number, Title, Id, Overview, LastUpdate, Aired) 
+                                                    Values(@SeriesId, @Season, @Number, @Title, @Id, @Overview, @LastUpdate, @Aired)", Connect);
 
-                Command.Parameters.AddWithValue("@SeriesId", SeriesId);
-                Command.Parameters.AddWithValue("@Season", Season);
-                Command.Parameters.AddWithValue("@Number", Number);
-                Command.Parameters.AddWithValue("@Title", Title != null ? Title : "");
-                Command.Parameters.AddWithValue("@Id", Id);
-                Command.Parameters.AddWithValue("@Overview", Overview != null ? Overview : "");
-                Command.Parameters.AddWithValue("@LastUpdate", LastUpdate);
+            Command.Parameters.AddWithValue("@SeriesId", SeriesId);
+            Command.Parameters.AddWithValue("@Season", e._seasonNumber);
+            Command.Parameters.AddWithValue("@Number", e._episodeNumber);
+            Command.Parameters.AddWithValue("@Title", e._episodeName != null ? e._episodeName : "");
+            Command.Parameters.AddWithValue("@Id", e._id);
+            Command.Parameters.AddWithValue("@Overview", e._overview != null ? e._overview : "");
+            Command.Parameters.AddWithValue("@LastUpdate", e._lastUpdate);
+            Command.Parameters.AddWithValue("@Aired", e._aired);
 
+            Connect.Open();
+            Command.ExecuteNonQuery();
+            Connect.Close();
+        }
 
-                Connect.Open();
-                Command.ExecuteNonQuery();
-                Connect.Close();
-            }
+        private void addEpisodeWithoutDate(int SeriesId, Episode e)
+        {
+            ReadFromDataBase rd = new ReadFromDataBase();
+            SqlConnection Connect = new SqlConnection(DataBaseConnection.connString);
+            SqlCommand Command = new SqlCommand(@"Insert Into Episode(SeriesId, Season, Number, Title, Id, Overview, LastUpdate) 
+                                                    Values(@SeriesId, @Season, @Number, @Title, @Id, @Overview, @LastUpdate)", Connect);
+
+            Command.Parameters.AddWithValue("@SeriesId", SeriesId);
+            Command.Parameters.AddWithValue("@Season", e._seasonNumber);
+            Command.Parameters.AddWithValue("@Number", e._episodeNumber);
+            Command.Parameters.AddWithValue("@Title", e._episodeName != null ? e._episodeName : "");
+            Command.Parameters.AddWithValue("@Id", e._id);
+            Command.Parameters.AddWithValue("@Overview", e._overview != null ? e._overview : "");
+            Command.Parameters.AddWithValue("@LastUpdate", e._lastUpdate);
+
+            Connect.Open();
+            Command.ExecuteNonQuery();
+            Connect.Close();
         }
 
         public void printTvShows()

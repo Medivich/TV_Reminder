@@ -21,6 +21,7 @@ namespace TV_Reminder.ViewModel
         Series _selectedSeries { get; set; }
         private Visibility _loadingScreen = Visibility.Hidden, _seriesListVisibility = Visibility.Visible;
         private UserControl _description = null;
+        private ObservableCollection<string> _log = new ObservableCollection<string>();
 
         public TrackedViewModel()
         {
@@ -95,9 +96,6 @@ namespace TV_Reminder.ViewModel
             }
         }
 
-
-
-
         private void loadSeries(object main)
         {
             try
@@ -120,6 +118,31 @@ namespace TV_Reminder.ViewModel
                 Application.Current.Dispatcher.Invoke(new Action(() => vm.LoadingScreen = Visibility.Hidden));
             }
         }
+        
+        public void clearLog()
+        {
+            Log.Clear();
+        }
+
+        public void addToLog(string message)
+        {
+            _log.Add(message);
+            OnPropertyChanged("Log");
+        }
+
+        public ObservableCollection<string> Log
+        {
+            set
+            {
+                this._log = value;
+                OnPropertyChanged("Log");
+            }
+            get
+            {
+                return this._log;
+            }
+        }
+
 
         private ICommand DeleteSelectedSeriesCommand;
 

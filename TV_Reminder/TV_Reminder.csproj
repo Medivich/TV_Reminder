@@ -99,6 +99,7 @@
     <Compile Include="Commands\Tracked\UpdateSelectedSeries.cs" />
     <Compile Include="Control\DataBase\AddToDataBase.cs" />
     <Compile Include="Control\DataBase\DeleteFromDataBase.cs" />
+    <Compile Include="Control\DownloadEpisodes.cs" />
     <Compile Include="Control\JSON\getJSONreply.cs" />
     <Compile Include="Control\JSON\LogToTvdb.cs" />
     <Compile Include="Control\DataBase\ReadFromDataBase.cs" />

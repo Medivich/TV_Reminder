@@ -37,8 +37,8 @@ namespace TV_Reminder.Control
                     s._id = Convert.ToInt32(dr["Id"]);
                 if (dr["Overview"] != DBNull.Value) 
                     s._overview = Convert.ToString(dr["Overview"]);
-                if (dr["Update"] != DBNull.Value) 
-                    s._update = Convert.ToBoolean(dr["Update"]);
+                if (dr["ShouldUpdate"] != DBNull.Value)
+                    s._update = Convert.ToBoolean(dr["ShouldUpdate"]);
                 if (dr["Rating"] != DBNull.Value)
                     s._rating = Convert.ToInt32(dr["Rating"]);
 
@@ -70,6 +70,44 @@ namespace TV_Reminder.Control
             return exist;
         }
 
+        public bool EpisodeExist(int EpisodeId)
+        {
+            ObservableCollection<Series> SeriesList = new ObservableCollection<Series>();
+
+            SqlConnection Connect = new SqlConnection(DataBaseConnection.connString);
+            SqlCommand czytajnik = new SqlCommand("SELECT Id FROM Episode where Id = @EpisodeId", Connect);
+            czytajnik.Parameters.AddWithValue("@EpisodeId", EpisodeId);
+
+            Connect.Open();
+            SqlDataReader dr = czytajnik.ExecuteReader();
+            bool exist = false;
+            while (dr.Read())
+            {
+                if (Convert.ToInt32(dr["Id"]) == EpisodeId)
+                    exist = true;
+            }
+            Connect.Close();
+
+            return exist;
+        }
+
+        public int EpisodeLastUpdate(int EpisodeId)
+        {
+            SqlConnection Connect = new SqlConnection(DataBaseConnection.connString);
+            SqlCommand czytajnik = new SqlCommand("SELECT LastUpdate FROM Episode where Id = @EpisodeId", Connect);
+            czytajnik.Parameters.AddWithValue("@EpisodeId", EpisodeId);
+
+            Connect.Open();
+            SqlDataReader dr = czytajnik.ExecuteReader();
+
+            int _lastUpdate = 0;
+            while (dr.Read())
+                _lastUpdate = Convert.ToInt32(dr["LastUpdate"]);
+
+            Connect.Close();
+            return _lastUpdate;
+        }
+
         public Series GetTvSeries(int id)
         {
             Series s = new Series();
@@ -91,8 +129,8 @@ namespace TV_Reminder.Control
                     s._id = Convert.ToInt32(dr["Id"]);
                 if (dr["Overview"] != DBNull.Value)
                     s._overview = Convert.ToString(dr["Overview"]);
-                if (dr["Update"] != DBNull.Value)
-                    s._update = Convert.ToBoolean(dr["Update"]);
+                if (dr["ShouldUpdate"] != DBNull.Value)
+                    s._update = Convert.ToBoolean(dr["ShouldUpdate"]);
                 if (dr["Rating"] != DBNull.Value)
                     s._rating = Convert.ToInt32(dr["Rating"]);
             }

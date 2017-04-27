@@ -9,6 +9,7 @@ using System.Windows.Controls;
 using System.Windows.Forms;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using TV_Reminder.Control;
 
 namespace TV_Reminder.Model
 {
@@ -26,6 +27,9 @@ namespace TV_Reminder.Model
         [JsonProperty("id")]
         public int _id { get; set; }
 
+        [JsonProperty("lastUpdated")]
+        public int _lastUpdated { get; set; }
+
         public int _rating { get; set; }
 
         public bool _update { get; set; }
@@ -36,6 +40,8 @@ namespace TV_Reminder.Model
         {
             set
             {
+                UpdateDataBase UD = new UpdateDataBase();
+                UD.ChangeTvSeriesUpdate(this._id, value);
                 this._update = value;
             }
             get
@@ -58,11 +64,12 @@ namespace TV_Reminder.Model
         }
 
         [JsonConstructor]
-        public Series(string seriesName, string overview, int id)
+        public Series(string seriesName, string overview, int id, int lastUpdated)
         {
             this._id = id;
             this._seriesName = seriesName;
             this._overview = overview;
+            this._lastUpdated = lastUpdated;
         }
     }
 }

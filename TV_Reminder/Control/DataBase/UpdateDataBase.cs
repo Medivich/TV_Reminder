@@ -23,6 +23,19 @@ namespace TV_Reminder.Control
             Connect.Close();
         }
 
+        public void ChangeTvSeriesUpdate(int SeriesId, bool Update)
+        {
+            SqlConnection Connect = new SqlConnection(DataBaseConnection.connString);
+            SqlCommand Command = new SqlCommand("Update Series set ShouldUpdate = @Update WHERE Id = @SeriesId", Connect);
+
+            Command.Parameters.AddWithValue("@SeriesId", SeriesId);
+            Command.Parameters.AddWithValue("@Update", Update);
+
+            Connect.Open();
+            Command.ExecuteNonQuery();
+            Connect.Close();
+        }
+
         public void SetWatched(int EpisodeId, bool Watched)
         {
             SqlConnection Connect = new SqlConnection(DataBaseConnection.connString);
@@ -46,6 +59,25 @@ namespace TV_Reminder.Control
             Command.Parameters.AddWithValue("@SeriesId", SeriesId);
             Command.Parameters.AddWithValue("@SeasonNumber", SeasonNumber);
             Command.Parameters.AddWithValue("@Watched", Watched);
+
+            Connect.Open();
+            Command.ExecuteNonQuery();
+            Connect.Close();
+        }
+
+        public void UpdateEpisode(Episode ep)
+        {
+            SqlConnection Connect = new SqlConnection(DataBaseConnection.connString);
+            SqlCommand Command = new SqlCommand(@"Update Episode set Overview = @Overview, Title = @Title, Aired = @Aired, 
+                        LastUpdate = @LastUpdate WHERE Id = @EpisodeId", Connect);
+
+            Command.Parameters.AddWithValue("@EpisodeId", ep._id);
+            Command.Parameters.AddWithValue("@Overview", ep._overview);
+            Command.Parameters.AddWithValue("@Title", ep._episodeName);
+            Command.Parameters.AddWithValue("@LastUpdate", ep._lastUpdate);
+
+            if (ep._aired.Year > 1950)
+                Command.Parameters.AddWithValue("@Aired", ep._aired);
 
             Connect.Open();
             Command.ExecuteNonQuery();
