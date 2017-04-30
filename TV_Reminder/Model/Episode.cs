@@ -38,7 +38,6 @@ namespace TV_Reminder.Model
         [JsonProperty("lastUpdated")]
         public int _lastUpdate { get; set; }
 
-
         [JsonConstructor]
         public Episode(string overview, string episodeName, int airedEpisodeNumber, int id, DateTime firstAired, int lastUpdated)
         {
@@ -67,6 +66,7 @@ namespace TV_Reminder.Model
         }
 
         private bool _isSelected;
+
         public bool IsSelected
         {
             get { return _isSelected; }
@@ -74,10 +74,19 @@ namespace TV_Reminder.Model
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
+
         protected void NotifyPropertyChanged([CallerMemberName] string propertyName = "")
         {
             if (PropertyChanged != null)
                 PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+        }
+
+        public string EpisodeName
+        {
+            get
+            {
+                return "\"" + _episodeName + "\"";
+            }
         }
 
         public string Aired

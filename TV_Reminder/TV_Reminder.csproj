@@ -97,6 +97,9 @@
     <Compile Include="Commands\Tracked\ShowSelectedSeries.cs" />
     <Compile Include="Commands\Tracked\UpdateManySeries.cs" />
     <Compile Include="Commands\Tracked\UpdateSelectedSeries.cs" />
+    <Compile Include="Commands\Unwatched\LookFor.cs" />
+    <Compile Include="Commands\Unwatched\Undo.cs" />
+    <Compile Include="Commands\Unwatched\Watched.cs" />
     <Compile Include="Control\DataBase\AddToDataBase.cs" />
     <Compile Include="Control\DataBase\DeleteFromDataBase.cs" />
     <Compile Include="Control\DownloadEpisodes.cs" />
@@ -110,11 +113,13 @@
     <Compile Include="Model\Poster.cs" />
     <Compile Include="Model\Series.cs" />
     <Compile Include="Model\Token.cs" />
+    <Compile Include="Model\Wrapper.cs" />
     <Compile Include="ViewModel\AddSeriesViewModel.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
     <Compile Include="ViewModel\MotherViewModel.cs" />
     <Compile Include="ViewModel\SeriesDescriptionViewModel.cs" />
     <Compile Include="ViewModel\TrackedViewModel.cs" />
+    <Compile Include="ViewModel\UnwatchedViewModel.cs" />
     <Compile Include="View\AddSeries.xaml.cs">
       <DependentUpon>AddSeries.xaml</DependentUpon>
     </Compile>

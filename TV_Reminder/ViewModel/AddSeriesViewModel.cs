@@ -22,6 +22,8 @@ namespace TV_Reminder.ViewModel
     {
         ObservableCollection<Series> _seriesList = new ObservableCollection<Series>();
         ObservableCollection<Poster> _posterList = new ObservableCollection<Poster>();
+        ObservableCollection<byte[]> _bannerList = new ObservableCollection<byte[]>();
+
         private AddSeriesViewModel main;
 
         string _searchQuery;
@@ -45,10 +47,6 @@ namespace TV_Reminder.ViewModel
 
         public string SeriesExist
         {
-            set
-            {
-                ;
-            }
             get
             {
                 if (_seriesExist)
@@ -58,6 +56,22 @@ namespace TV_Reminder.ViewModel
             }
 
         }   
+
+        public byte[] SelectedBanner
+        {
+            set
+            {
+                if (value != null)
+                    _selectedSeries._banner = value;
+            }
+            get
+            {
+                if (_selectedSeries != null && _selectedSeries._banner != null)
+                    return _selectedSeries._banner;
+                else
+                    return null;
+            }
+        }
  
 
         public ObservableCollection<Poster> PosterList
@@ -76,6 +90,19 @@ namespace TV_Reminder.ViewModel
             get
             {
                 return _posterList;
+            }
+        }
+
+        public ObservableCollection<byte[]> BannerList
+        {
+            set
+            {
+                _bannerList = value;
+                OnPropertyChanged("BannerList");
+            }
+            get
+            {
+                return _bannerList;
             }
         }
 
@@ -131,6 +158,7 @@ namespace TV_Reminder.ViewModel
                 if (value != null)
                 {
                     PosterList.Clear();
+                    BannerList.Clear();
                     _selectedSeries = value;
                     ReplyList = Visibility.Hidden;
                     _searchQuery = _selectedSeries._seriesName;
@@ -144,13 +172,17 @@ namespace TV_Reminder.ViewModel
                     posterSearcher.IsBackground = true;
                     posterSearcher.Start();
 
+                    Thread bannerSearcher = new Thread(searchForBann);
+                    bannerSearcher.IsBackground = true;
+                    bannerSearcher.Start();
+
                     Thread episodeNumberSearcher = new Thread(searchForEpisodeNumber);
                     episodeNumberSearcher.IsBackground = true;
                     episodeNumberSearcher.Start();
 
                     SeriesInfo = Visibility.Visible;
 
-                    OnPropertyChanged("SelectedSeries", "SearchQuery", "PosterList", "SeriesExist");
+                    OnPropertyChanged("SelectedSeries", "SearchQuery", "PosterList", "BannerList", "SeriesExist");
                 }
             }
             get
@@ -163,6 +195,12 @@ namespace TV_Reminder.ViewModel
         {
             SearchTvdb S = new SearchTvdb();
             S.SearchForAllPosters(_selectedSeries._id, this);
+        }
+
+        private void searchForBann()
+        {
+            SearchTvdb S = new SearchTvdb();
+            S.SearchForAllBanners(_selectedSeries._id, this);
         }
 
         private void searchForEpisodeNumber()

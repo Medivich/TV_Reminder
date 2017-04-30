@@ -74,9 +74,17 @@
                    VerticalAlignment="Top" Height="26" Width="215"/>
 
         <TextBlock HorizontalAlignment="Left" Margin="456,234,0,0" Foreground="White" TextWrapping="Wrap" Visibility="{Binding SeriesInfo}"
-                   Text="{Binding SelectedSeries._overview}" VerticalAlignment="Top" Height="267" Width="499" Background="#A5041B02"/>
+                   Text="{Binding SelectedSeries._overview}" VerticalAlignment="Top" Height="160" Width="499" Background="#A5041B02"/>
 
-
+        <ListBox ItemsSource="{Binding BannerList}" Visibility="{Binding SeriesInfo}"
+                 ScrollViewer.CanContentScroll="False" SelectedItem="{Binding SelectedBanner, UpdateSourceTrigger=PropertyChanged}"
+                 Margin="420,400,25,10" Background="#FF062703" BorderBrush="#FF21F300"  >
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <Image Source="{Binding}" MaxWidth="500" MaxHeight="200"/>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
 
 
         <DockPanel HorizontalAlignment="Left" Height="45" LastChildFill="False" Margin="44,25,0,0" VerticalAlignment="Top" Width="573">

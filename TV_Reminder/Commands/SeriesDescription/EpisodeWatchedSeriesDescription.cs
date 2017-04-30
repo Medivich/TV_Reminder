@@ -21,8 +21,11 @@ namespace TV_Reminder.Commands
         override public void Execute(object parameter)
         {
             UpdateDataBase UBD = new UpdateDataBase();
-            UBD.SetWatched(main.SelectedEpisode._id, true);
-            main.UpdateTree();
+            if (main.SelectedEpisode != null)
+            {
+                UBD.SetWatched(main.SelectedEpisode._id, true);
+                main.UpdateTree();
+            }
         }
     }
 }

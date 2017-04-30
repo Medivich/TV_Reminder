@@ -52,10 +52,7 @@ namespace TV_Reminder.Commands
             try
             {
                 AddToDataBase add = new AddToDataBase();
-                if(main.SelectedPoster != null)
-                    add.addTvSeries(main.SelectedSeries, main.SelectedPoster._memoryStream);
-                else
-                    add.addTvSeries(main.SelectedSeries);
+                add.addTvSeries(main.SelectedSeries);
 
                 foreach(Episode e in ep)
                 {

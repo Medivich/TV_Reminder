@@ -65,6 +65,28 @@ namespace TV_Reminder.Control
             Connect.Close();
         }
 
+        public void addPoster(int SeriesId, byte[] poster)
+        {
+            SqlConnection Connect = new SqlConnection(DataBaseConnection.connString);
+            SqlCommand Poster = new SqlCommand(@"Update Series set Poster = @Poster WHERE Id = @SeriesId", Connect);
+            Poster.Parameters.AddWithValue("@SeriesId", SeriesId);
+            Poster.Parameters.AddWithValue("@Poster", poster);
+            Connect.Open();
+            Poster.ExecuteNonQuery();
+            Connect.Close();
+        }
+
+        public void addBanner(int SeriesId, byte[] banner)
+        {
+            SqlConnection Connect = new SqlConnection(DataBaseConnection.connString);
+            SqlCommand Poster = new SqlCommand(@"Update Series set Banner = @Banner WHERE Id = @SeriesId", Connect);
+            Poster.Parameters.AddWithValue("@SeriesId", SeriesId);
+            Poster.Parameters.AddWithValue("@Banner", banner);
+            Connect.Open();
+            Poster.ExecuteNonQuery();
+            Connect.Close();
+        }
+
         public void UpdateEpisode(Episode ep)
         {
             SqlConnection Connect = new SqlConnection(DataBaseConnection.connString);
@@ -72,8 +94,8 @@ namespace TV_Reminder.Control
                         LastUpdate = @LastUpdate WHERE Id = @EpisodeId", Connect);
 
             Command.Parameters.AddWithValue("@EpisodeId", ep._id);
-            Command.Parameters.AddWithValue("@Overview", ep._overview);
-            Command.Parameters.AddWithValue("@Title", ep._episodeName);
+            Command.Parameters.AddWithValue("@Overview", ep._overview != null ? ep._overview : "");
+            Command.Parameters.AddWithValue("@Title", ep._overview != null ? ep._overview : "");
             Command.Parameters.AddWithValue("@LastUpdate", ep._lastUpdate);
 
             if (ep._aired.Year > 1950)

@@ -18,6 +18,14 @@ namespace TV_Reminder.Commands.SeriesDescription
             this.main = main;
         }
 
+        override public bool CanExecute(object parameter)
+        {
+            if (main.SelectedEpisode != null)
+                return true;
+            else
+                return false;
+        }
+
         override public void Execute(object parameter)
         {
             UpdateDataBase UBD = new UpdateDataBase();

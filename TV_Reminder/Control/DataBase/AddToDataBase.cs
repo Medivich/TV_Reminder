@@ -33,27 +33,15 @@ namespace TV_Reminder.Control
                 Connect.Open();
                 Command.ExecuteNonQuery();
                 Connect.Close();
-            }
-        }
 
-        public void addTvSeries(Series s, byte[] Poster)
-        {
-            ReadFromDataBase rd = new ReadFromDataBase();
-            if (!rd.SeriesExist(s._id))
-            {
-                SqlConnection Connect = new SqlConnection(DataBaseConnection.connString);
-                SqlCommand Command = new SqlCommand(@"Insert Into Series(Name, Id, Overview, Poster, LastUpdate) 
-                                                        Values(@Name, @Id, @Overview, @Poster, @LastUpdate)", Connect);
+                UpdateDataBase UB = new UpdateDataBase();
 
-                Command.Parameters.AddWithValue("@Name", s._seriesName);
-                Command.Parameters.AddWithValue("@Id", s._id);
-                Command.Parameters.AddWithValue("@Overview", s._overview);
-                Command.Parameters.AddWithValue("@LastUpdate", s._lastUpdated);
-                Command.Parameters.AddWithValue("@Poster", Poster);
+                if (s._poster != null)
+                    UB.addPoster(s._id, s._poster);
 
-                Connect.Open();
-                Command.ExecuteNonQuery();
-                Connect.Close();
+                if (s._banner != null)
+                    UB.addBanner(s._id, s._banner);
+
             }
         }
 

@@ -13,7 +13,7 @@ namespace TV_Reminder.Control
         private Object thisLock = new Object();
         private List<Episode> ep = new List<Episode>();
 
-        //Pobiera asynchronicznie  wszystkie odcinki i zwraca ich list
+        //Pobiera asynchronicznie  wszystkie odcinki i zwraca ich liste
         public List<Episode> getEpisodes(int seriesID)
         {
             List<Thread> th = new List<Thread>();

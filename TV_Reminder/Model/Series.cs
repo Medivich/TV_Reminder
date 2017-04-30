@@ -1,6 +1,8 @@
 ﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
@@ -35,6 +37,8 @@ namespace TV_Reminder.Model
         public bool _update { get; set; }
 
         public byte[] _poster { get; set; }
+
+        public byte[] _banner { get; set; }
 
         public bool Update
         {

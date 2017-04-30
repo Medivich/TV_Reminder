@@ -5,6 +5,8 @@ using System.Text;
 using TV_Reminder.ViewModel;
 using TV_Reminder.View;
 using System.Windows.Input;
+using System.Threading;
+using TV_Reminder.Control;
 
 namespace TV_Reminder.Commands
 {
@@ -21,7 +23,21 @@ namespace TV_Reminder.Commands
 
         override public void Execute(object parameter)
         {
-            main.content = new Unwatched();
+            main.content = new Loading();
+
+            Thread thr = new Thread(checkDataBaseConnection);
+            thr.IsBackground = true;
+            thr.Start();
+        }
+
+        void checkDataBaseConnection()
+        {
+            ReadFromDataBase RD = new ReadFromDataBase();
+
+            if (RD.DatabaseConnected())
+                main.content.Dispatcher.Invoke(new Action(() => main.content = new View.Unwatched()));
+            else
+                main.content.Dispatcher.Invoke(new Action(() => main.content = new Hello()));
         }
     }
 }

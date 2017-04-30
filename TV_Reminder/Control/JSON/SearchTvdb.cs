@@ -111,6 +111,31 @@ namespace TV_Reminder.Control
             }
         }
 
+        //Wyszukuje plakaty i dodaje je po kolei do _BannerList
+        public void SearchForAllBanners(int _seriesID, AddSeriesViewModel main)
+        {
+            string JSON = getReply("https://api.thetvdb.com/series/" + _seriesID + "/images/query?keyType=series");
+            if (JSON != null)
+            {
+                JObject tvdbSearch = JObject.Parse(JSON);
+                IList<JToken> results = tvdbSearch["data"].Children().ToList();
+
+                foreach (JToken result in results)
+                {
+                    Poster p = result.ToObject<Poster>();
+
+                    byte[] array;
+                    using (WebClient client = new WebClient())
+                    {
+                        array = client.DownloadData(new Uri("http://thetvdb.com/banners/" + p.fileName));
+                    }
+
+                    Application.Current.Dispatcher.Invoke(DispatcherPriority.Background, new Action(() =>
+                        main.BannerList.Add(array)));
+                }
+            }
+        }
+
 
         //Zwraca ilosc odcinkow
         public void getOverallEpisodesNumber(int _seriesID, AddSeriesViewModel main)
