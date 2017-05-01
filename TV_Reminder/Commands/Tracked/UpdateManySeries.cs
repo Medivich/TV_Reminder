@@ -30,6 +30,7 @@ namespace TV_Reminder.Commands
             t0.Start();
         }
 
+        //Aktualizuje wszystkie zaznaczone seriale i tworzy log z procesu
         private void getEpisodes()
         {
             Application.Current.Dispatcher.Invoke(new Action(() => main.clearLog()));

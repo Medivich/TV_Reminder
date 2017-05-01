@@ -14,6 +14,7 @@ namespace TV_Reminder.Control
 {
     class AddToDataBase
     {
+        //Dodaje serial do bazy
         public void addTvSeries(Series s)
         {
             ReadFromDataBase rd = new ReadFromDataBase();
@@ -34,6 +35,7 @@ namespace TV_Reminder.Control
                 Command.ExecuteNonQuery();
                 Connect.Close();
 
+                //Wstawia baner, plakat jeśli istnieją
                 UpdateDataBase UB = new UpdateDataBase();
 
                 if (s._poster != null)
@@ -45,7 +47,6 @@ namespace TV_Reminder.Control
             }
         }
 
-        //Zmienić jak wyżej
         public void addEpisode(int SeriesId, Episode e)
         {
             if (e._aired.Year > 1950)
@@ -54,6 +55,7 @@ namespace TV_Reminder.Control
                 addEpisodeWithoutDate(SeriesId, e);
         }
 
+        //Dodaje epizod (jak data poprawna)
         private void addEpisodeWithDate(int SeriesId, Episode e)
         {
             ReadFromDataBase rd = new ReadFromDataBase();
@@ -75,6 +77,7 @@ namespace TV_Reminder.Control
             Connect.Close();
         }
 
+        //Dodaje epizod (jak data niepoprawna)
         private void addEpisodeWithoutDate(int SeriesId, Episode e)
         {
             ReadFromDataBase rd = new ReadFromDataBase();
@@ -92,23 +95,6 @@ namespace TV_Reminder.Control
 
             Connect.Open();
             Command.ExecuteNonQuery();
-            Connect.Close();
-        }
-
-        public void printTvShows()
-        {
-            SqlConnection Connect = new SqlConnection(DataBaseConnection.connString);
-            SqlCommand cmd = new SqlCommand("select * from Series", Connect);
-
-            Debug.WriteLine("TV showy");
-            Connect.Open();
-            SqlDataReader dr = cmd.ExecuteReader();
-            while (dr.Read())
-            {
-                Debug.WriteLine(dr["Name"]);
-                Debug.WriteLine(dr["Id"]);
-                Debug.WriteLine(dr["Overview"]);
-            }
             Connect.Close();
         }
     }

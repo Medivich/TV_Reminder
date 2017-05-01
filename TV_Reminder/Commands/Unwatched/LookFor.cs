@@ -28,11 +28,13 @@ namespace TV_Reminder.Commands.Unwatched
             GoogleSearch GS = new GoogleSearch();
             GS.findInGoogle(main.SelectedWrapper._seriesName + " S" + main.SelectedWrapper._episode.SeasonNumber + "E" + main.SelectedWrapper._episode.EpisodeNumber);
             
+            //Oznacza epizod jak obejrzany
             UpdateDataBase UD = new UpdateDataBase();
             UD.SetWatched(main.SelectedWrapper._episode._id, true);
-
+            //Usuwa epizod z listy
             main.WrapperList.Remove(main.SelectedWrapper);
 
+            //Dodaje kolejny epizod
             ReadFromDataBase RD = new ReadFromDataBase();
             if (!main.ShowAll)
             {
@@ -46,7 +48,7 @@ namespace TV_Reminder.Commands.Unwatched
                     main._lastAdded = w;
                 }
             }
-
+            //Zapisuje usuniety epizod, oznacza, co zostało dodane (zeby móc cofnąć akcję)
             main._selected = false;
             main._undo = true;
             main._undoWrapper = main.SelectedWrapper;

@@ -10,6 +10,7 @@ namespace TV_Reminder.Control
 {
     class DeleteFromDataBase
     {
+        //Usuwa serial
         public void deleteSeries(int Id)
         {
             SqlConnection Connect = new SqlConnection(DataBaseConnection.connString);
@@ -22,6 +23,7 @@ namespace TV_Reminder.Control
             Connect.Close();
         }
 
+        //Usuwa odcinki
         public void deleteEpisodes(int SeriesId)
         {
             SqlConnection Connect = new SqlConnection(DataBaseConnection.connString);
@@ -31,17 +33,6 @@ namespace TV_Reminder.Control
 
             Connect.Open();
             CommandDel.ExecuteNonQuery();
-            Connect.Close();
-        }
-
-        public void trun()
-        {
-            SqlConnection Connect = new SqlConnection(DataBaseConnection.connString);
-            string sqlTrunc = "TRUNCATE TABLE Series";
-            SqlCommand cmd = new SqlCommand(sqlTrunc, Connect);
-
-            Connect.Open();
-            cmd.ExecuteNonQuery();
             Connect.Close();
         }
     }

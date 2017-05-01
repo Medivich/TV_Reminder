@@ -32,7 +32,7 @@ namespace TV_Reminder.Commands
             main.LoadingScreen = Visibility.Visible;
             main.ReplyList = Visibility.Hidden;
             main.FoundSeries = 0;
-            // Zaczyna nowy wątek, żeby w międzyczasie UI było updatowane
+            // Zaczyna nowy wątek, żeby w międzyczasie UI było aktualizowane
             Thread t = new Thread(search);
             t.IsBackground = true;
             t.Start();        

@@ -55,9 +55,7 @@ namespace TV_Reminder.Commands
                 add.addTvSeries(main.SelectedSeries);
 
                 foreach(Episode e in ep)
-                {
-                    add.addEpisode(main.SelectedSeries._id, e); 
-                }
+                    add.addEpisode(main.SelectedSeries._id, e);
             }
             catch(Exception e)
             {

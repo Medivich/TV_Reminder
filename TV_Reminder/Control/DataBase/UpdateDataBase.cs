@@ -10,6 +10,7 @@ namespace TV_Reminder.Control
 {
     class UpdateDataBase
     {
+        //Zmienia ocenę serii
         public void ChangeTvSeriesRating(int SeriesId, int rate)
         {
             SqlConnection Connect = new SqlConnection(DataBaseConnection.connString);                  
@@ -23,6 +24,7 @@ namespace TV_Reminder.Control
             Connect.Close();
         }
 
+        //Ustawia czy dana seria ma być aktualizowana
         public void ChangeTvSeriesUpdate(int SeriesId, bool Update)
         {
             SqlConnection Connect = new SqlConnection(DataBaseConnection.connString);
@@ -36,6 +38,7 @@ namespace TV_Reminder.Control
             Connect.Close();
         }
 
+        //Ustawia zmienną "obejrzany" danego odcinka
         public void SetWatched(int EpisodeId, bool Watched)
         {
             SqlConnection Connect = new SqlConnection(DataBaseConnection.connString);
@@ -49,7 +52,8 @@ namespace TV_Reminder.Control
             Connect.Close();
         }
 
-        public void AllAboveWatched(int SeriesId, int EpisodeNumber, int SeasonNumber, bool Watched)//Id = @EpisodeId
+        //Wszystkie odcinki poniżej SxEx z danego serialu są oznaczane jako obejrzane (Watched)
+        public void AllBelowWatched(int SeriesId, int EpisodeNumber, int SeasonNumber, bool Watched)
         {
             SqlConnection Connect = new SqlConnection(DataBaseConnection.connString);
             SqlCommand Command = new SqlCommand(@"Update Episode set Watched = @Watched WHERE SeriesId = @SeriesId AND (Season < @SeasonNumber 
@@ -65,6 +69,7 @@ namespace TV_Reminder.Control
             Connect.Close();
         }
 
+        //Dodaje plakat do serii
         public void addPoster(int SeriesId, byte[] poster)
         {
             SqlConnection Connect = new SqlConnection(DataBaseConnection.connString);
@@ -76,6 +81,7 @@ namespace TV_Reminder.Control
             Connect.Close();
         }
 
+        //Dodaje baner do serii
         public void addBanner(int SeriesId, byte[] banner)
         {
             SqlConnection Connect = new SqlConnection(DataBaseConnection.connString);
@@ -87,6 +93,7 @@ namespace TV_Reminder.Control
             Connect.Close();
         }
 
+        //Aktualizuje odcinek
         public void UpdateEpisode(Episode ep)
         {
             SqlConnection Connect = new SqlConnection(DataBaseConnection.connString);

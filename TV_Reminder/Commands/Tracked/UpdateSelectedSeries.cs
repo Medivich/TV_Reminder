@@ -40,6 +40,7 @@ namespace TV_Reminder.Commands
             t0.Start();
         }
 
+        //Aktualizuje pojedyncza serie
         private void getEpisodes()
         {
             List<Episode> ep = new List<Episode>();

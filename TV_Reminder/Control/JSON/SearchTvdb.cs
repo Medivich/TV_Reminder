@@ -86,7 +86,7 @@ namespace TV_Reminder.Control
             return null;                
         }
         
-        //Wyszukuje plakaty i dodaje je po kolei do _PosterList
+        //Wyszukuje plakaty i dodaje je odrazu do _PosterList
         public void SearchForAllPosters(int _seriesID, AddSeriesViewModel main)
         {
             string JSON = getReply("https://api.thetvdb.com/series/" + _seriesID + "/images/query?keyType=poster");
@@ -111,7 +111,7 @@ namespace TV_Reminder.Control
             }
         }
 
-        //Wyszukuje plakaty i dodaje je po kolei do _BannerList
+        //Wyszukuje banery i dodaje je odrazu do _BannerList
         public void SearchForAllBanners(int _seriesID, AddSeriesViewModel main)
         {
             string JSON = getReply("https://api.thetvdb.com/series/" + _seriesID + "/images/query?keyType=series");
@@ -136,17 +136,7 @@ namespace TV_Reminder.Control
             }
         }
 
-
-        //Zwraca ilosc odcinkow
-        public void getOverallEpisodesNumber(int _seriesID, AddSeriesViewModel main)
-        {
-            string JSON = getReply("https://api.thetvdb.com/series/" + _seriesID + "/episodes/summary");
-            JObject tvdbSearch = JObject.Parse(JSON);
-
-            Application.Current.Dispatcher.Invoke(DispatcherPriority.Background, new Action(()
-                => main.EpisodeNumber = tvdbSearch["data"]["airedEpisodes"].ToObject<int>()));
-        }
-
+        //Pobiera ogólną ilość odcinków
         public int getOverallEpisodesNumber(int _seriesID)
         {
             string JSON = getReply("https://api.thetvdb.com/series/" + _seriesID + "/episodes/summary");
@@ -155,6 +145,7 @@ namespace TV_Reminder.Control
             return tvdbSearch["data"]["airedEpisodes"].ToObject<int>();
         }
 
+        //Pobiera listę odcinków (max 100 odcinków na stronę)
         public List<Episode> getAllEpisodes(int seriesID, int page)
         {
             string JSON = getReply("https://api.thetvdb.com/series/" + seriesID + "/episodes?page=" + page);

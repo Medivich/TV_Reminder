@@ -20,6 +20,7 @@ namespace TV_Reminder.ViewModel
 {
     class AddSeriesViewModel : MotherViewModel
     {
+        //Listy - znalezionych seriali, plakatów, banerów
         ObservableCollection<Series> _seriesList = new ObservableCollection<Series>();
         ObservableCollection<Poster> _posterList = new ObservableCollection<Poster>();
         ObservableCollection<byte[]> _bannerList = new ObservableCollection<byte[]>();
@@ -33,18 +34,6 @@ namespace TV_Reminder.ViewModel
         int _foundSeries = 0;
         bool _abortSearch = false, _seriesExist = false;
         
-
-        public void setExist(bool exist)
-        {
-            this._seriesExist = exist;
-            OnPropertyChanged("SeriesExist");
-        }
-
-        public bool getExist()
-        {
-            return this._seriesExist;
-        }
-
         public string SeriesExist
         {
             get
@@ -151,7 +140,7 @@ namespace TV_Reminder.ViewModel
             }
         }
 
-        public Series SelectedSeries
+        public Series SelectedSeries // Po wyszukaniu i kliknieciu wybranego serialu
         {
             set
             {
@@ -164,18 +153,20 @@ namespace TV_Reminder.ViewModel
                     _searchQuery = _selectedSeries._seriesName;
 
                     ReadFromDataBase RD = new ReadFromDataBase();
-                    _seriesExist = RD.SeriesExist(_selectedSeries._id);
-
+                    _seriesExist = RD.SeriesExist(_selectedSeries._id); // Sprawdza czy seria istnieje
 
                     main = this;
+                    //Zaczyna szukac plakatow
                     Thread posterSearcher = new Thread(searchForPost);
                     posterSearcher.IsBackground = true;
                     posterSearcher.Start();
 
+                    //Zaczyna szukac banerów
                     Thread bannerSearcher = new Thread(searchForBann);
                     bannerSearcher.IsBackground = true;
                     bannerSearcher.Start();
 
+                    //Pobiera ilosc odcinkow
                     Thread episodeNumberSearcher = new Thread(searchForEpisodeNumber);
                     episodeNumberSearcher.IsBackground = true;
                     episodeNumberSearcher.Start();
@@ -206,7 +197,8 @@ namespace TV_Reminder.ViewModel
         private void searchForEpisodeNumber()
         {
             SearchTvdb S = new SearchTvdb();
-            S.getOverallEpisodesNumber(_selectedSeries._id, this);
+            Application.Current.Dispatcher.Invoke( new Action(()
+                => main.EpisodeNumber = S.getOverallEpisodesNumber(_selectedSeries._id)));
         }
 
         public Poster SelectedPoster
@@ -225,7 +217,16 @@ namespace TV_Reminder.ViewModel
             }
         }
 
+        public void setExist(bool exist)
+        {
+            this._seriesExist = exist;
+            OnPropertyChanged("SeriesExist");
+        }
 
+        public bool getExist()
+        {
+            return this._seriesExist;
+        }
 
         public Visibility ReplyList
         {

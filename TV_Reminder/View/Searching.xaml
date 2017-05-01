@@ -5,46 +5,36 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              mc:Ignorable="d" 
              d:DesignHeight="600" d:DesignWidth="1000">
+    
     <UserControl.Resources>
-        <ControlTemplate x:Key="ButtonControlTemplate" TargetType="{x:Type Button}">
-            <Grid>
-                <Rectangle Stroke="LightGreen" RadiusX="90" RadiusY="10" StrokeThickness="3" VerticalAlignment="Top" Height="40" x:Name="rect">
-                    <Rectangle.Fill>
-                        <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-                            <GradientStop Color="Black" Offset="0"/>
-                            <GradientStop Color="DarkGreen" Offset="1"/>
-                        </LinearGradientBrush>
-                    </Rectangle.Fill>
-                </Rectangle>
-                <ContentPresenter VerticalAlignment="Center" HorizontalAlignment="Center"/>
-            </Grid>
-            <ControlTemplate.Triggers>
-                <Trigger Property="IsEnabled" Value="True">
-                    <Setter Property = "Foreground" Value="White"/>
-                </Trigger>
-                <Trigger Property="IsEnabled" Value="False">
-                    <Setter Property = "Foreground" Value="#FF888888"/>
-                    <Setter Property="Fill" Value="#FF222222" TargetName="rect"/>
-                    <Setter Property="Stroke" Value="DarkGreen" TargetName="rect"/>
-                </Trigger>
-                <Trigger Property="IsMouseOver" Value="True">
-                    <Setter Property="Stroke" Value="#c7f26f" TargetName="rect"/>
-                </Trigger>
-                <Trigger Property="IsPressed" Value="True">
-                    <Setter Property="Stroke" Value="White" TargetName="rect"/>
-                </Trigger>
-            </ControlTemplate.Triggers>
-        </ControlTemplate>
-  
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="Dictionary/Resource.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
     </UserControl.Resources>
 
     <Grid>
 
-        <Button Content="Przerwij" FontSize="22" HorizontalAlignment="Left" Command="{Binding AbortSearchButton}"
-                Template="{DynamicResource ButtonControlTemplate}" Margin="629,180,0,0" VerticalAlignment="Top" Width="169" Height="42"/>
+        <Button Content="Przerwij" 
+                FontSize="22" 
+                HorizontalAlignment="Left" 
+                Command="{Binding AbortSearchButton}"
+                Template="{DynamicResource ButtonControlTemplate}" 
+                Margin="629,180,0,0" 
+                VerticalAlignment="Top" 
+                Width="169" 
+                Height="45"/>
 
-        <TextBlock HorizontalAlignment="Left" Text="{Binding FoundSeries, StringFormat = 'Pasujące seriale: {0}'}" 
-                   Foreground="White" FontSize="24" Margin="629,261,0,0" TextWrapping="Wrap" 
-                   VerticalAlignment="Top" Height="142" Width="331" FontWeight="Bold"/>
+        <TextBlock HorizontalAlignment="Left" 
+                   Text="{Binding FoundSeries, StringFormat = 'Pasujące seriale: {0}'}" 
+                   Foreground="White" 
+                   FontSize="24" 
+                   Margin="629,261,0,0" 
+                   TextWrapping="Wrap" 
+                   VerticalAlignment="Top" 
+                   Height="142" 
+                   Width="331" 
+                   FontWeight="Bold"/>
     </Grid>
 </UserControl>

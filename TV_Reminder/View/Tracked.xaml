@@ -12,90 +12,117 @@
     </UserControl.DataContext>
 
     <UserControl.Resources>
-        <ControlTemplate x:Key="ButtonControlTemplate" TargetType="{x:Type Button}">
-            <Grid>
-                <Rectangle Stroke="LightGreen" RadiusX="90" RadiusY="15" StrokeThickness="3" VerticalAlignment="Top"  x:Name="rect" Height="90">
-                    <Rectangle.Fill>
-                        <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-                            <GradientStop Color="Black" Offset="0"/>
-                            <GradientStop Color="DarkGreen" Offset="1"/>
-                        </LinearGradientBrush>
-                    </Rectangle.Fill>
-                </Rectangle>
-                <ContentPresenter VerticalAlignment="Center" HorizontalAlignment="Center"/>
-            </Grid>
-            <ControlTemplate.Triggers>
-                <Trigger Property="IsEnabled" Value="True">
-                    <Setter Property = "Foreground" Value="White"/>
-                </Trigger>
-                <Trigger Property="IsEnabled" Value="False">
-                    <Setter Property = "Foreground" Value="#FF888888"/>
-                    <Setter Property="Fill" Value="#FF222222" TargetName="rect"/>
-                    <Setter Property="Stroke" Value="DarkGreen" TargetName="rect"/>
-                </Trigger>
-                <Trigger Property="IsMouseOver" Value="True">
-                    <Setter Property="Stroke" Value="#c7f26f" TargetName="rect"/>
-                </Trigger>
-                <Trigger Property="IsPressed" Value="True">
-                    <Setter Property="Stroke" Value="White" TargetName="rect"/>
-                </Trigger>
-            </ControlTemplate.Triggers>
-        </ControlTemplate>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="Dictionary/Resource.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
     </UserControl.Resources>
 
     <Grid>
         <Grid Visibility="{Binding SeriesListVisibility}">
-            <ListBox x:Name="ListBox" ItemsSource="{Binding seriesList}"  SelectedItem="{Binding selectedSeries, UpdateSourceTrigger=PropertyChanged}"
-                     ScrollViewer.CanContentScroll="False" ScrollViewer.HorizontalScrollBarVisibility="Disabled"
-                     Margin="44,70,398,10" Background="#FF062703" BorderBrush="#FF21F300"  >
+            <ListBox x:Name="ListBox" ItemsSource="{Binding seriesList}" 
+                     SelectedItem="{Binding selectedSeries, UpdateSourceTrigger=PropertyChanged}"
+                     ScrollViewer.CanContentScroll="False" 
+                     ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                     Margin="44,70,398,10" 
+                     Background="#FF062703" 
+                     BorderBrush="#FF21F300"  >
                 <ListBox.ItemTemplate>
                     <DataTemplate>
-                        <StackPanel Orientation="Horizontal" Width="520">
-                            <Image Source="{Binding _poster}" MaxWidth="300" MaxHeight="400">
-                            </Image>
-                            <StackPanel Orientation="Vertical" VerticalAlignment="Stretch">
+                        <StackPanel Orientation="Horizontal" 
+                                    Width="520">
+                            <Image Source="{Binding _poster}" 
+                                   MaxWidth="300" 
+                                   MaxHeight="400"/>
+                            
+                            <StackPanel Orientation="Vertical" 
+                                        VerticalAlignment="Stretch">
                                 <CheckBox Margin="20,20,20,20" 
-                                          Content="Aktualizuj" Foreground="White" IsChecked="{Binding Update}" FontSize="11">
+                                          Content="Aktualizuj" 
+                                          Foreground="White" 
+                                          IsChecked="{Binding Update}"
+                                          FontSize="11">
                                     <CheckBox.LayoutTransform>
                                         <ScaleTransform ScaleX="1.5" ScaleY="1.5" />
                                     </CheckBox.LayoutTransform>
                                 </CheckBox>
 
-                                <TextBlock Text="{Binding _seriesName}" MaxWidth="250" Foreground="White" Margin="20,20,20,20" 
-                                           FontSize="26" FontWeight="Bold" TextWrapping="WrapWithOverflow"/>
+                                <TextBlock Text="{Binding _seriesName}"
+                                           MaxWidth="250"
+                                           Foreground="White" 
+                                           Margin="20,20,20,20" 
+                                           FontSize="26" 
+                                           FontWeight="Bold"
+                                           TextWrapping="WrapWithOverflow"/>
                             </StackPanel>
                         </StackPanel>
                     </DataTemplate>
                 </ListBox.ItemTemplate>
             </ListBox>
 
-            <Label Content="Lista śledzonych seriali:" Foreground="White" FontSize="32"
-                   HorizontalAlignment="Left" Margin="44,10,0,0" VerticalAlignment="Top" Height="55" Width="346"/>
+            <Label Content="Lista śledzonych seriali:"
+                   Foreground="White" 
+                   FontSize="32"
+                   HorizontalAlignment="Left"
+                   Margin="44,10,0,0" 
+                   VerticalAlignment="Top"
+                   Height="55"
+                   Width="346"/>
 
-            <Button Content="Aktualizacja śledzonych" Command="{Binding UpdateManySeriesButton}" 
-                    Template="{DynamicResource ButtonControlTemplate}" FontSize="20"
-                    HorizontalAlignment="Left" Margin="672,16,0,0" VerticalAlignment="Top" Width="260" Height="90"/>
+            <Button Content="Aktualizacja śledzonych"
+                    Command="{Binding UpdateManySeriesButton}" 
+                    Template="{DynamicResource ButtonControlTemplate}"
+                    FontSize="20"
+                    HorizontalAlignment="Left" 
+                    Margin="672,16,0,0"
+                    VerticalAlignment="Top"
+                    Width="260" 
+                    Height="49"/>
 
             <Button Content="Aktualizuj zaznaczony" Command="{Binding UpdateSelectedSeriesButton}" 
-                    Template="{DynamicResource ButtonControlTemplate}" FontSize="20"
-                    HorizontalAlignment="Left" Margin="672,131,0,0" VerticalAlignment="Top" Width="260" Height="90"/>
+                    Template="{DynamicResource ButtonControlTemplate}" 
+                    FontSize="20"
+                    HorizontalAlignment="Left" 
+                    Margin="672,131,0,0" 
+                    VerticalAlignment="Top"
+                    Width="260"
+                    Height="47"/>
 
-            <Button Content="Usuń zaznaczony" Command="{Binding DeleteSelectedSeriesButton}" 
-                    Template="{DynamicResource ButtonControlTemplate}" FontSize="20"
-        	    HorizontalAlignment="Left" Margin="672,464,0,0" VerticalAlignment="Top" Width="260" Height="90"/>
+            <Button Content="Usuń zaznaczony"
+                    Command="{Binding DeleteSelectedSeriesButton}" 
+                    Template="{DynamicResource ButtonControlTemplate}"
+                    FontSize="20"
+        	        HorizontalAlignment="Left" 
+                    Margin="672,464,0,0"
+                    VerticalAlignment="Top"
+                    Width="260" 
+                    Height="47"/>
 
-            <Button Content="Przegląd serialu" Command="{Binding ShowSelectedSeriesButton}"
-                    Template="{DynamicResource ButtonControlTemplate}" FontSize="20"
-        	    HorizontalAlignment="Left" Margin="672,351,0,0" VerticalAlignment="Top" Width="260" Height="90"/>
+            <Button Content="Przegląd serialu"
+                    Command="{Binding ShowSelectedSeriesButton}"
+                    Template="{DynamicResource ButtonControlTemplate}"
+                    FontSize="20"
+        	        HorizontalAlignment="Left"
+                    Margin="672,351,0,0" 
+                    VerticalAlignment="Top" 
+                    Width="260" 
+                    Height="47"/>
 
             <View:Loading Visibility="{Binding LoadingScreen}"/>
             
-            <ListBox ItemsSource="{Binding Log}" Visibility="{Binding LoadingScreen}"
-                     ScrollViewer.CanContentScroll="False" ScrollViewer.HorizontalScrollBarVisibility="Disabled"
-                     Margin="638,131,38,157" Background="#FF062703" BorderBrush="#FF21F300"  >
+            <ListBox ItemsSource="{Binding Log}" 
+                     Visibility="{Binding LoadingScreen}"
+                     ScrollViewer.CanContentScroll="False" 
+                     ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                     Margin="638,131,38,157" 
+                     Background="#FF062703" 
+                     BorderBrush="#FF21F300"  >
                 <ListBox.ItemTemplate>
                     <DataTemplate>
-                        <TextBlock Text="{Binding}" Foreground="White" FontSize="15"/>
+                        <TextBlock Text="{Binding}" 
+                                   Foreground="White" 
+                                   FontSize="15"/>
                     </DataTemplate>
                 </ListBox.ItemTemplate>
             </ListBox>

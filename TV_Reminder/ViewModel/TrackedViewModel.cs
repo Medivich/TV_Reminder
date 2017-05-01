@@ -31,6 +31,29 @@ namespace TV_Reminder.ViewModel
             t.Start(this); 
         }
 
+        private void loadSeries(object main) // Ładuje listę śledzonych seriali
+        {
+            try
+            {
+                TrackedViewModel vm = (TrackedViewModel)main;
+                ReadFromDataBase RD = new ReadFromDataBase();
+                ObservableCollection<Series> _seriesList = new ObservableCollection<Series>();
+                _seriesList = RD.getAllTvSeries();
+                _seriesList = new ObservableCollection<Series>(_seriesList.OrderBy(x => x._seriesName).ToList());
+
+                Application.Current.Dispatcher.Invoke(new Action(() => vm.seriesList = _seriesList));
+            }
+            catch (Exception)
+            {
+                ;
+            }
+            finally
+            {
+                TrackedViewModel vm = (TrackedViewModel)main;
+                Application.Current.Dispatcher.Invoke(new Action(() => vm.LoadingScreen = Visibility.Hidden));
+            }
+        }
+
         public ObservableCollection<Series> seriesList
         {
             get
@@ -93,29 +116,6 @@ namespace TV_Reminder.ViewModel
             get
             {
                 return _seriesListVisibility;
-            }
-        }
-
-        private void loadSeries(object main)
-        {
-            try
-            {
-                TrackedViewModel vm = (TrackedViewModel)main;
-                ReadFromDataBase RD = new ReadFromDataBase();
-                ObservableCollection<Series> _seriesList = new ObservableCollection<Series>();
-                _seriesList = RD.getAllTvSeries();
-                _seriesList = new ObservableCollection<Series>(_seriesList.OrderBy(x => x._seriesName).ToList());
-
-                Application.Current.Dispatcher.Invoke(new Action(() => vm.seriesList = _seriesList));
-            }
-            catch (Exception)
-            {
-                ;
-            }
-            finally
-            {
-                TrackedViewModel vm = (TrackedViewModel)main;
-                Application.Current.Dispatcher.Invoke(new Action(() => vm.LoadingScreen = Visibility.Hidden));
             }
         }
         

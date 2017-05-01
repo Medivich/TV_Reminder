@@ -40,6 +40,7 @@ namespace TV_Reminder.Model
 
         public byte[] _banner { get; set; }
 
+        //Czy serial ma być aktualizowany
         public bool Update
         {
             set

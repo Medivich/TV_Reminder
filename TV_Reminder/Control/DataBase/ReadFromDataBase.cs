@@ -16,6 +16,7 @@ namespace TV_Reminder.Control
 {
     class ReadFromDataBase
     {
+        //Pobiera wszystkie seriale
         public ObservableCollection<Series> getAllTvSeries()
         {
             ObservableCollection<Series> SeriesList = new ObservableCollection<Series>();
@@ -27,37 +28,14 @@ namespace TV_Reminder.Control
             SqlDataReader dr = czytajnik.ExecuteReader();
 
             while (dr.Read())
-            {
-                Series s = new Series();
+                SeriesList.Add(readSeries(dr));
 
-                if (dr["Name"] != DBNull.Value)
-                    s._seriesName = Convert.ToString(dr["Name"]);
-
-                if (dr["Poster"] != DBNull.Value)
-                    s._poster = (byte[])dr["Poster"];
-                else
-                    s._poster = null;
-
-                if (dr["Id"] != DBNull.Value) 
-                    s._id = Convert.ToInt32(dr["Id"]);
-                if (dr["Overview"] != DBNull.Value) 
-                    s._overview = Convert.ToString(dr["Overview"]);
-                if (dr["ShouldUpdate"] != DBNull.Value)
-                    s._update = Convert.ToBoolean(dr["ShouldUpdate"]);
-                if (dr["Rating"] != DBNull.Value)
-                    s._rating = Convert.ToInt32(dr["Rating"]);
-                if (dr["Banner"] != DBNull.Value)
-                    s._banner = (byte[])dr["Banner"];
-                else
-                    s._banner = null;
-
-                SeriesList.Add(s);
-            }
             Connect.Close();
 
             return SeriesList;
         }
 
+        //Sprawdza czy serial istnieje w bazie danych
         public bool SeriesExist(int id)
         {
             ObservableCollection<Series> SeriesList = new ObservableCollection<Series>();
@@ -70,15 +48,15 @@ namespace TV_Reminder.Control
             SqlDataReader dr = czytajnik.ExecuteReader();
             bool exist = false;
             while (dr.Read())
-            {
                 if (Convert.ToInt32(dr["Id"]) == id)
                     exist = true;
-            }
+
             Connect.Close();
 
             return exist;
         }
 
+        //Sprawdza czy odcinek istnieje w bazie danych
         public bool EpisodeExist(int EpisodeId)
         {
             ObservableCollection<Series> SeriesList = new ObservableCollection<Series>();
@@ -90,16 +68,17 @@ namespace TV_Reminder.Control
             Connect.Open();
             SqlDataReader dr = czytajnik.ExecuteReader();
             bool exist = false;
+
             while (dr.Read())
-            {
                 if (Convert.ToInt32(dr["Id"]) == EpisodeId)
                     exist = true;
-            }
+
             Connect.Close();
 
             return exist;
         }
 
+        //Zwraca kiedy odcinek byl aktualizowany ostatnio
         public int EpisodeLastUpdate(int EpisodeId)
         {
             SqlConnection Connect = new SqlConnection(DataBaseConnection.connString);
@@ -117,6 +96,7 @@ namespace TV_Reminder.Control
             return _lastUpdate;
         }
 
+        //Pobiera dane dotyczące serii
         public Series GetTvSeries(int id)
         {
             Series s = new Series();
@@ -129,50 +109,14 @@ namespace TV_Reminder.Control
             SqlDataReader dr = czytajnik.ExecuteReader();
 
             while (dr.Read())
-            {
-                if (dr["Name"] != DBNull.Value)
-                    s._seriesName = Convert.ToString(dr["Name"]);
-                if (dr["Poster"] != DBNull.Value)
-                    s._poster = (byte[])dr["Poster"];
-                else
-                    s._poster = null;
+                s = readSeries(dr);
 
-                if (dr["Id"] != DBNull.Value)
-                    s._id = Convert.ToInt32(dr["Id"]);
-                if (dr["Overview"] != DBNull.Value)
-                    s._overview = Convert.ToString(dr["Overview"]);
-                if (dr["ShouldUpdate"] != DBNull.Value)
-                    s._update = Convert.ToBoolean(dr["ShouldUpdate"]);
-                if (dr["Rating"] != DBNull.Value)
-                    s._rating = Convert.ToInt32(dr["Rating"]);
-            }
             Connect.Close();
 
             return s;
         }
 
-        public byte[] GetTvSeriesBanner(int id)
-        {
-            byte[] array = null;
-            Series s = new Series();
-
-            SqlConnection Connect = new SqlConnection(DataBaseConnection.connString);
-            SqlCommand czytajnik = new SqlCommand("SELECT * FROM Series where Id = @id", Connect);
-            czytajnik.Parameters.AddWithValue("@id", id);
-
-            Connect.Open();
-            SqlDataReader dr = czytajnik.ExecuteReader();
-
-            while (dr.Read())
-            {
-                if (dr["Banner"] != DBNull.Value)
-                    array = (byte[])dr["Banner"];
-            }
-            Connect.Close();
-
-            return array;
-        }
-
+        //Pobiera wszystkie odcinki
         public ObservableCollection<Episode> GetAllEpisodes(int SeriesId)
         {
             ObservableCollection<Episode> ep = new ObservableCollection<Episode>();
@@ -185,31 +129,14 @@ namespace TV_Reminder.Control
             SqlDataReader dr = czytajnik.ExecuteReader();
 
             while (dr.Read())
-            {
-                Episode episode = new Episode();
+                ep.Add(readEpisode(dr));
 
-                if (dr["Id"] != DBNull.Value)
-                    episode._id = Convert.ToInt32(dr["Id"]);
-                if (dr["Number"] != DBNull.Value)
-                    episode._episodeNumber = Convert.ToInt32(dr["Number"]);
-                if (dr["Season"] != DBNull.Value)
-                    episode._seasonNumber = Convert.ToInt32(dr["Season"]);
-                if (dr["Overview"] != DBNull.Value)
-                    episode._overview = Convert.ToString(dr["Overview"]);
-                if (dr["Title"] != DBNull.Value)
-                    episode._episodeName = Convert.ToString(dr["Title"]);
-                if (dr["Watched"] != DBNull.Value)
-                    episode._watched = Convert.ToBoolean(dr["Watched"]);
-                if (dr["Aired"] != DBNull.Value)
-                    episode._aired = Convert.ToDateTime(dr["Aired"]);
-
-                ep.Add(episode);
-            }
             Connect.Close();
 
             return ep;
         }
 
+        //Pobiera wszystkie dostępne, nieobejrzane odcinki
         public ObservableCollection<Episode> GetAllUnWatchedEpisodes(int SeriesId)
         {
             ObservableCollection<Episode> ep = new ObservableCollection<Episode>();
@@ -225,22 +152,7 @@ namespace TV_Reminder.Control
 
             while (dr.Read())
             {
-                Episode episode = new Episode();
-
-                if (dr["Id"] != DBNull.Value)
-                    episode._id = Convert.ToInt32(dr["Id"]);
-                if (dr["Number"] != DBNull.Value)
-                    episode._episodeNumber = Convert.ToInt32(dr["Number"]);
-                if (dr["Season"] != DBNull.Value)
-                    episode._seasonNumber = Convert.ToInt32(dr["Season"]);
-                if (dr["Overview"] != DBNull.Value)
-                    episode._overview = Convert.ToString(dr["Overview"]);
-                if (dr["Title"] != DBNull.Value)
-                    episode._episodeName = Convert.ToString(dr["Title"]);
-                if (dr["Watched"] != DBNull.Value)
-                    episode._watched = Convert.ToBoolean(dr["Watched"]);
-                if (dr["Aired"] != DBNull.Value)
-                    episode._aired = Convert.ToDateTime(dr["Aired"]);
+                Episode episode = readEpisode(dr);
 
                 if(episode._aired.Year > 1950)
                     ep.Add(episode);
@@ -250,6 +162,7 @@ namespace TV_Reminder.Control
             return ep;
         }
 
+        //Pobiera wszystkie odcinki wemitowane między <Start, End>
         public ObservableCollection<Episode> GetAllEpisodesBetween(int SeriesId, DateTime Start, DateTime End)
         {
             ObservableCollection<Episode> ep = new ObservableCollection<Episode>();
@@ -267,22 +180,7 @@ namespace TV_Reminder.Control
 
             while (dr.Read())
             {
-                Episode episode = new Episode();
-
-                if (dr["Id"] != DBNull.Value)
-                    episode._id = Convert.ToInt32(dr["Id"]);
-                if (dr["Number"] != DBNull.Value)
-                    episode._episodeNumber = Convert.ToInt32(dr["Number"]);
-                if (dr["Season"] != DBNull.Value)
-                    episode._seasonNumber = Convert.ToInt32(dr["Season"]);
-                if (dr["Overview"] != DBNull.Value)
-                    episode._overview = Convert.ToString(dr["Overview"]);
-                if (dr["Title"] != DBNull.Value)
-                    episode._episodeName = Convert.ToString(dr["Title"]);
-                if (dr["Watched"] != DBNull.Value)
-                    episode._watched = Convert.ToBoolean(dr["Watched"]);
-                if (dr["Aired"] != DBNull.Value)
-                    episode._aired = Convert.ToDateTime(dr["Aired"]);
+                Episode episode = readEpisode(dr);
 
                 if (episode._aired.Year > 1950)
                     ep.Add(episode);
@@ -305,28 +203,11 @@ namespace TV_Reminder.Control
             SqlDataReader dr = czytajnik.ExecuteReader();
 
             while (dr.Read())
-            {
-                Episode episode = new Episode();
+                ep.Add(readEpisode(dr));
 
-                if (dr["Id"] != DBNull.Value)
-                    episode._id = Convert.ToInt32(dr["Id"]);
-                if (dr["Number"] != DBNull.Value)
-                    episode._episodeNumber = Convert.ToInt32(dr["Number"]);
-                if (dr["Season"] != DBNull.Value)
-                    episode._seasonNumber = Convert.ToInt32(dr["Season"]);
-                if (dr["Overview"] != DBNull.Value)
-                    episode._overview = Convert.ToString(dr["Overview"]);
-                if (dr["Title"] != DBNull.Value)
-                    episode._episodeName = Convert.ToString(dr["Title"]);
-                if (dr["Watched"] != DBNull.Value)
-                    episode._watched = Convert.ToBoolean(dr["Watched"]);
-                if (dr["Aired"] != DBNull.Value)
-                    episode._aired = Convert.ToDateTime(dr["Aired"]);
-
-                ep.Add(episode);
-            }
             Connect.Close();
 
+            //Sortowanie
             ep = ep.OrderBy(x => x._seasonNumber).ThenBy(y => y._episodeNumber).ToList();
 
             if (ep.Count > 0 && ep[0]._aired.Year > 1950)
@@ -335,6 +216,7 @@ namespace TV_Reminder.Control
                 return null;
         }
 
+        //Pobiera najstarszy, nieobejrzany i dostępny odcinek
         public Episode GetLastAvaiableEpisode(int SeriesId)
         {
             List<Episode> ep = new List<Episode>();
@@ -348,26 +230,8 @@ namespace TV_Reminder.Control
             SqlDataReader dr = czytajnik.ExecuteReader();
 
             while (dr.Read())
-            {
-                Episode episode = new Episode();
-
-                if (dr["Id"] != DBNull.Value)
-                    episode._id = Convert.ToInt32(dr["Id"]);
-                if (dr["Number"] != DBNull.Value)
-                    episode._episodeNumber = Convert.ToInt32(dr["Number"]);
-                if (dr["Season"] != DBNull.Value)
-                    episode._seasonNumber = Convert.ToInt32(dr["Season"]);
-                if (dr["Overview"] != DBNull.Value)
-                    episode._overview = Convert.ToString(dr["Overview"]);
-                if (dr["Title"] != DBNull.Value)
-                    episode._episodeName = Convert.ToString(dr["Title"]);
-                if (dr["Watched"] != DBNull.Value)
-                    episode._watched = Convert.ToBoolean(dr["Watched"]);
-                if (dr["Aired"] != DBNull.Value)
-                    episode._aired = Convert.ToDateTime(dr["Aired"]);
-
-                ep.Add(episode);
-            }
+                ep.Add(readEpisode(dr));
+            
             Connect.Close();
 
             ep = ep.OrderBy(x => x._seasonNumber).ThenBy(y => y._episodeNumber).ToList();
@@ -378,6 +242,54 @@ namespace TV_Reminder.Control
                 return null;
         }
 
+        //Pobiera z bazy odcinek, sprawdza istnienie nieobowiązkowych komórek
+        private Episode readEpisode(SqlDataReader dr)
+        {
+            Episode episode = new Episode();
+
+            episode._id = Convert.ToInt32(dr["Id"]);
+            episode._episodeNumber = Convert.ToInt32(dr["Number"]);
+            episode._seasonNumber = Convert.ToInt32(dr["Season"]);
+            episode._watched = Convert.ToBoolean(dr["Watched"]);
+
+            if (dr["Overview"] != DBNull.Value)
+                episode._overview = Convert.ToString(dr["Overview"]);
+            if (dr["Title"] != DBNull.Value)
+                episode._episodeName = Convert.ToString(dr["Title"]);            
+            if (dr["Aired"] != DBNull.Value)
+                episode._aired = Convert.ToDateTime(dr["Aired"]);
+
+            return episode;
+        }
+
+        //Pobiera z bazy serial, sprawdza istnienie nieobowiązkowych komórek
+        private Series readSeries(SqlDataReader dr)
+        {
+            Series series = new Series();
+
+            series._id = Convert.ToInt32(dr["Id"]);
+            series._seriesName = Convert.ToString(dr["Name"]);
+            series._update = Convert.ToBoolean(dr["ShouldUpdate"]);
+            series._rating = Convert.ToInt32(dr["Rating"]);
+
+            if (dr["Overview"] != DBNull.Value)
+                series._overview = Convert.ToString(dr["Overview"]);
+
+            if (dr["Poster"] != DBNull.Value)
+                series._poster = (byte[])dr["Poster"];
+            else
+                series._poster = null;
+
+            if (dr["Banner"] != DBNull.Value)
+                series._banner = (byte[])dr["Banner"];
+            else
+                series._banner = null;
+
+            return series;
+        }
+
+
+        //Sprawdzenie połączenia
         public bool DatabaseConnected()
         {
             SqlConnection Connect = new SqlConnection(DataBaseConnection.connString);

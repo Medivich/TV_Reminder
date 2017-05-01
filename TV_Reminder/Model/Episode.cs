@@ -73,6 +73,7 @@ namespace TV_Reminder.Model
             set { _isSelected = value; NotifyPropertyChanged(); }
         }
 
+        //Event, żeby móc pobrać zaznaczony odcinek z kontrolki treeview
         public event PropertyChangedEventHandler PropertyChanged;
 
         protected void NotifyPropertyChanged([CallerMemberName] string propertyName = "")
@@ -93,8 +94,8 @@ namespace TV_Reminder.Model
         {
             get
             {
-                if (_aired.Year > 1950)
-                    return string.Format("Data emisji: {0:dd/MM/yyyy}", _aired);
+                if (_aired.Year > 1950) //Jeśli data poprawna
+                    return string.Format("Data emisji: {0:dd/MM/yyyy}", _aired); 
                 else
                     return "Data emisji: -";
             }

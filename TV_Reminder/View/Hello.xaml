@@ -7,14 +7,36 @@
              d:DesignHeight="600" d:DesignWidth="1000">
     <Grid>
         <TextBlock Text="Artur Stępniak
-                         TV Reminder" Foreground="White"
-                   HorizontalAlignment="Left" Margin="24,24,0,0" 
-                   FontSize="70" TextWrapping="Wrap" VerticalAlignment="Top" 
-                   Height="184" Width="570" FontFamily="Kristen ITC" />
+                         TV Reminder" 
+                   Foreground="White"
+                   HorizontalAlignment="Left" 
+                   Margin="24,24,0,0" 
+                   FontSize="70" 
+                   TextWrapping="Wrap" 
+                   VerticalAlignment="Top" 
+                   Height="184" 
+                   Width="570" 
+                   FontFamily="Kristen ITC" />
 
-        <TextBlock Text="Serialowy zarządca" HorizontalAlignment="Left" Margin="24,226,0,0" FontSize="40" TextWrapping="Wrap" Foreground="White"
-                   VerticalAlignment="Top" Height="97" Width="842" FontFamily="Kristen ITC" />
-        <TextBlock Text="Dane dotyczące seriali są pobierane z http://thetvdb.com/" HorizontalAlignment="Left" Margin="24,389,0,0" Foreground="White"
-                   FontSize="20" TextWrapping="Wrap" VerticalAlignment="Top" Height="201" Width="384" FontFamily="Kristen ITC" />
+        <TextBlock Text="Serialowy zarządca" 
+                   HorizontalAlignment="Left" 
+                   Margin="24,226,0,0" 
+                   FontSize="40" 
+                   TextWrapping="Wrap" 
+                   Foreground="White"
+                   VerticalAlignment="Top" 
+                   Height="97" 
+                   Width="842" 
+                   FontFamily="Kristen ITC" />
+        <TextBlock Text="Dane dotyczące seriali są pobierane z http://thetvdb.com/" 
+                   HorizontalAlignment="Left" 
+                   Margin="24,389,0,0" 
+                   Foreground="White"
+                   FontSize="20" 
+                   TextWrapping="Wrap" 
+                   VerticalAlignment="Top" 
+                   Height="201" 
+                   Width="384" 
+                   FontFamily="Kristen ITC" />
     </Grid>
 </UserControl>

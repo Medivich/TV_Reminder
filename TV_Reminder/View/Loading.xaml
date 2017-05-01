@@ -32,6 +32,10 @@
     </UserControl.Resources>
     
     <Grid Background="#BF020402">
-        <Image Margin="330,180,330,180" Style="{StaticResource Spinner}" Source="/TV_Reminder;component/Other/Image/loading.png" x:Name="load" RenderTransformOrigin="0.5,0.5"/>
+        <Image Margin="330,180,330,180" 
+               Style="{StaticResource Spinner}" 
+               Source="/TV_Reminder;component/Other/Image/loading.png" 
+               x:Name="load" 
+               RenderTransformOrigin="0.5,0.5"/>
     </Grid>
 </UserControl>

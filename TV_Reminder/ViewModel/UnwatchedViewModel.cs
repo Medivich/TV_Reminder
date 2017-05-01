@@ -35,7 +35,7 @@ namespace TV_Reminder.ViewModel
         }        
 
         public UnwatchedViewModel()
-        {
+        {         
             WrapperList = getLastUnwatched();
             WrapperList = SortListByRate(WrapperList);
             ChoosenDate = DateTime.Today.AddDays(7);

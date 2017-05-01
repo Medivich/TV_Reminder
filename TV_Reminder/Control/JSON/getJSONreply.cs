@@ -13,6 +13,7 @@ namespace TV_Reminder.Control
 {
     class getJSONreply
     {
+        //Pobiera odpowiedź z danego uri
         public string getReply(string uri)
         {
             var httpWebRequest = (HttpWebRequest)WebRequest.Create(uri);
