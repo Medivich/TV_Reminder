@@ -16,6 +16,8 @@ namespace TV_Reminder.Model
     {
         public int _rating { get; set; }
 
+        public int _seriesID { get; set; }
+
         public byte[] _banner { get; set; }
 
         public string _seriesName { get; set; }
@@ -24,8 +26,9 @@ namespace TV_Reminder.Model
 
         public bool _showBanners;
 
-        public Wrapper(Episode episode, byte[] banner, string seriesName, bool showBanners, int rating)
+        public Wrapper(Episode episode, byte[] banner, string seriesName, bool showBanners, int rating, int seriesID)
         {
+            this._seriesID = seriesID;
             this._seriesName = seriesName;
             this._episode = episode;
             this._banner = banner;

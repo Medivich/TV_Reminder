@@ -1,4 +1,4 @@
-﻿<UserControl x:Class="TV_Reminder.View.Unwatched"
+﻿<UserControl x:Class="TV_Reminder.View.Unwatched" xmlns:View="clr-namespace:TV_Reminder.View"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -48,6 +48,7 @@
                    VerticalAlignment="Center" Height="33" Width="346" FontSize="22"/>
 
         <ListBox ItemsSource="{Binding WrapperList}" x:Name="ListaSeriali" MaxWidth="600" 
+                 ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                  SelectedItem="{Binding SelectedWrapper, UpdateSourceTrigger=PropertyChanged}"
                  ScrollViewer.CanContentScroll="False" Margin="10,48,385,10" Background="#FF062703" BorderBrush="#FF21F300"  >
             <ListBox.ItemTemplate>
@@ -107,7 +108,7 @@
             </CheckBox.RenderTransform>
         </CheckBox>
 
-        <CheckBox Content="Sortuj po ocenach" Foreground="White" IsChecked="{Binding SortByRating}"
+        <CheckBox Content="Sortuj wg. ocen" Foreground="White" IsChecked="{Binding SortByRating}"
                   HorizontalAlignment="Left"  Margin="690,123,0,0" VerticalAlignment="Top" FontSize="12" 
                   Height="16" Width="196" RenderTransformOrigin="0.5,0.5">
             <CheckBox.RenderTransform>
@@ -139,7 +140,8 @@
                 Width="123" Height="46" Template="{DynamicResource ButtonControlTemplate}"  Command="{Binding WatchedButton}"/>
         <Button Content="Wyszukaj" HorizontalAlignment="Left" Margin="644,217,0,0" VerticalAlignment="Top"
                 Width="115" Height="45" Template="{DynamicResource ButtonControlTemplate}"  Command="{Binding LookForButton}"/>
-        <DatePicker HorizontalAlignment="Left" Margin="700,341,0,0" VerticalAlignment="Top" Height="32" Width="225" RenderTransformOrigin="0.5,0.5">
+        <DatePicker HorizontalAlignment="Left" Margin="700,341,0,0" VerticalAlignment="Top" SelectedDate="{Binding ChoosenDate, Mode=TwoWay}"
+                    Height="32" Width="225" RenderTransformOrigin="0.5,0.5">
             <DatePicker.RenderTransform>
                 <TransformGroup>
                     <ScaleTransform ScaleX="1.5" ScaleY="1.5"/>
@@ -150,14 +152,20 @@
             </DatePicker.RenderTransform>
         </DatePicker>
 
-        <ListBox 
+        <ListBox ItemsSource="{Binding EpisodesTillDate}"
                  ScrollViewer.CanContentScroll="False" Margin="644,374,10,0" Background="#FF062703" BorderBrush="#FF21F300"  >
             <ListBox.ItemTemplate>
                 <DataTemplate>
                     <StackPanel Orientation="Vertical">
-
                         <StackPanel Orientation="Horizontal">
-
+                            <TextBlock Text="{Binding _seriesName, StringFormat=' {0}:      '}"
+                                    FontSize="13" Foreground="White"/>
+                            <TextBlock Text="{Binding _episode.EpisodeName}" FontSize="13" Foreground="White"/>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="{Binding _episode.SeasonNumber, StringFormat=' S{0}'}" FontSize="13" Foreground="White"/>
+                            <TextBlock Text="{Binding _episode.EpisodeNumber, StringFormat='E{0}'}" FontSize="13" Foreground="White"/>
+                            <TextBlock Text="{Binding _episode.Aired, StringFormat=' {0}'}" FontSize="13" Foreground="White"/>
                         </StackPanel>
                     </StackPanel>
                 </DataTemplate>
@@ -166,6 +174,7 @@
         <TextBlock HorizontalAlignment="Left" Margin="644,297,0,0" TextWrapping="Wrap" Text="Odcinki, które pojawią się do dnia:" Foreground="White" 
                    VerticalAlignment="Top" Height="33" Width="346" FontSize="22"/>
         <TextBlock HorizontalAlignment="Left" Margin="1063,393,-70,0" TextWrapping="Wrap" Text="TextBlock" VerticalAlignment="Top"/>
-
     </Grid>
+
+
 </UserControl>

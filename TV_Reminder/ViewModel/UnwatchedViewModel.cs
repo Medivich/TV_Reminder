@@ -5,6 +5,7 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
@@ -17,14 +18,54 @@ namespace TV_Reminder.ViewModel
     class UnwatchedViewModel : MotherViewModel
     {
         ObservableCollection<Wrapper> _wrapperList = new ObservableCollection<Wrapper>();
+        ObservableCollection<Wrapper> _wrapperSoonList = new ObservableCollection<Wrapper>();
         bool _showAll = false, _sortByRating = true, _showBanners = true;
-
+        DateTime _choosenDate;
         public Wrapper _selectedWrapper;
+        public bool _selected = false, _undo = false;
+        public Wrapper _undoWrapper, _lastAdded;
+
+        public void reloadWrapperList()
+        {
+            System.Windows.Input.CommandManager.InvalidateRequerySuggested();
+            if (_sortByRating)
+                WrapperList = SortListByRate(_wrapperList);
+            else
+                WrapperList = SortListByName(_wrapperList);
+        }        
 
         public UnwatchedViewModel()
         {
             WrapperList = getLastUnwatched();
             WrapperList = SortListByRate(WrapperList);
+            ChoosenDate = DateTime.Today.AddDays(7);
+        }
+
+        public DateTime ChoosenDate
+        {
+            set
+            {
+                ObservableCollection<Wrapper> _List = new ObservableCollection<Wrapper>();
+
+                ReadFromDataBase RD = new ReadFromDataBase();
+                ObservableCollection<Series> _seriesList = RD.getAllTvSeries();
+
+                foreach (Series s in _seriesList)
+                {
+                    ObservableCollection<Episode> _episodeList = RD.GetAllEpisodesBetween(s._id, DateTime.Today, value);
+                    foreach (Episode e in _episodeList)
+                    {
+                        _List.Add(new Wrapper(e, s._banner, s._seriesName, _showBanners, s._rating, s._id));
+                    }
+                }
+                EpisodesTillDate = _List;
+                this._choosenDate = value;
+                OnPropertyChanged("ChoosenDate");
+            }
+            get
+            {
+                return this._choosenDate;
+            }
         }
 
         public bool ShowAll
@@ -32,9 +73,10 @@ namespace TV_Reminder.ViewModel
             set
             {
                 this._showAll = value;
-                WrapperList = getAllUnwatched();
                 ShowBanners = false;
-                OnPropertyChanged("ShowAll", "ShowOne");
+                OnPropertyChanged("ShowOne", "ShowAll");
+                WrapperList = getAllUnwatched();
+
             }
             get
             {
@@ -42,6 +84,18 @@ namespace TV_Reminder.ViewModel
             }
         }
 
+        public ObservableCollection<Wrapper> EpisodesTillDate
+        {
+            set
+            {
+                this._wrapperSoonList = value;
+                OnPropertyChanged("EpisodesTillDate");
+            }
+            get
+            {
+                return this._wrapperSoonList;
+            }
+        }
 
         private ObservableCollection<Wrapper> getLastUnwatched()
         {
@@ -51,9 +105,9 @@ namespace TV_Reminder.ViewModel
 
             foreach (Series s in _seriesList)
             {
-                Episode ep = RD.GetLastEpisode(s._id);
+                Episode ep = RD.GetLastAvaiableEpisode(s._id);
                 if (ep != null)
-                    _List.Add(new Wrapper(ep, s._banner, s._seriesName, _showBanners, s._rating));
+                    _List.Add(new Wrapper(ep, s._banner, s._seriesName, _showBanners, s._rating, s._id));
             }
 
             return _List;
@@ -71,7 +125,7 @@ namespace TV_Reminder.ViewModel
                 ObservableCollection<Episode> _episodeList = RD.GetAllUnWatchedEpisodes(s._id);
                 foreach(Episode e in _episodeList)
                 {
-                    _List.Add(new Wrapper(e, s._banner, s._seriesName, _showBanners, s._rating));
+                    _List.Add(new Wrapper(e, s._banner, s._seriesName, _showBanners, s._rating, s._id));
                 }          
             }
 
@@ -147,15 +201,14 @@ namespace TV_Reminder.ViewModel
             }
         }
 
-
         public Wrapper SelectedWrapper
         {
             set
             {
                 if (value != null)
                 {
+                    _selected = true;
                     this._selectedWrapper = value;
-                    Debug.WriteLine(value._episode._episodeName);
                     OnPropertyChanged("SelectedWrapper");
                 }
             }

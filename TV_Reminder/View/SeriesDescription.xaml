@@ -90,9 +90,10 @@
         <TextBlock Text="{Binding SelectedSeries._seriesName}"  Foreground="White" Margin="10,402,514,148"
                                            FontSize="26" FontWeight="Bold" TextWrapping="WrapWithOverflow"/>
 
-        <Button Content="Obejrzany" Command="{Binding EpisodeWatchedSeriesDescriptionButton}"
+        <Button Content="{Binding WatchedButton, UpdateSourceTrigger=PropertyChanged}" Command="{Binding EpisodeWatchedSeriesDescriptionButton}"
                 HorizontalAlignment="Left" Template="{DynamicResource ButtonControlTemplate}" FontSize="26"
-                Margin="825,503,0,0" VerticalAlignment="Top" Width="147" Height="69"/>
+                Margin="795,503,0,0" VerticalAlignment="Top" Width="177" Height="69"/>
+
         <Button Content="Wszystkie ponad obejrzane" Command="{Binding AllAboveWatchedButton}"
                 HorizontalAlignment="Left" Template="{DynamicResource ButtonControlTemplate}" FontSize="22"
         	Margin="517,503,0,0" VerticalAlignment="Top" Width="273" Height="69"/>

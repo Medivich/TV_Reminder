@@ -103,6 +103,7 @@
     <Compile Include="Control\DataBase\AddToDataBase.cs" />
     <Compile Include="Control\DataBase\DeleteFromDataBase.cs" />
     <Compile Include="Control\DownloadEpisodes.cs" />
+    <Compile Include="Control\GoogleSearch.cs" />
     <Compile Include="Control\JSON\getJSONreply.cs" />
     <Compile Include="Control\JSON\LogToTvdb.cs" />
     <Compile Include="Control\DataBase\ReadFromDataBase.cs" />
@@ -141,9 +142,6 @@
     <Compile Include="View\Unwatched.xaml.cs">
       <DependentUpon>Unwatched.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\Waiting.xaml.cs">
-      <DependentUpon>Waiting.xaml</DependentUpon>
-    </Compile>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -181,10 +179,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\Unwatched.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="View\Waiting.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

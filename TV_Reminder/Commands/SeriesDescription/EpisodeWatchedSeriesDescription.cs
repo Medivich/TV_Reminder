@@ -23,7 +23,10 @@ namespace TV_Reminder.Commands
             UpdateDataBase UBD = new UpdateDataBase();
             if (main.SelectedEpisode != null)
             {
-                UBD.SetWatched(main.SelectedEpisode._id, true);
+                if(main.SelectedEpisode._watched)
+                    UBD.SetWatched(main.SelectedEpisode._id, false);
+                else
+                    UBD.SetWatched(main.SelectedEpisode._id, true);
                 main.UpdateTree();
             }
         }

@@ -250,6 +250,48 @@ namespace TV_Reminder.Control
             return ep;
         }
 
+        public ObservableCollection<Episode> GetAllEpisodesBetween(int SeriesId, DateTime Start, DateTime End)
+        {
+            ObservableCollection<Episode> ep = new ObservableCollection<Episode>();
+
+            SqlConnection Connect = new SqlConnection(DataBaseConnection.connString);
+            SqlCommand czytajnik = new SqlCommand(@"SELECT * FROM Episode where SeriesId = @SeriesId 
+                    AND Watched = 0 AND Aired > @Start AND Aired < @End", Connect);
+
+            czytajnik.Parameters.AddWithValue("@SeriesId", SeriesId);
+            czytajnik.Parameters.AddWithValue("@Start", Start);
+            czytajnik.Parameters.AddWithValue("@End", End);
+
+            Connect.Open();
+            SqlDataReader dr = czytajnik.ExecuteReader();
+
+            while (dr.Read())
+            {
+                Episode episode = new Episode();
+
+                if (dr["Id"] != DBNull.Value)
+                    episode._id = Convert.ToInt32(dr["Id"]);
+                if (dr["Number"] != DBNull.Value)
+                    episode._episodeNumber = Convert.ToInt32(dr["Number"]);
+                if (dr["Season"] != DBNull.Value)
+                    episode._seasonNumber = Convert.ToInt32(dr["Season"]);
+                if (dr["Overview"] != DBNull.Value)
+                    episode._overview = Convert.ToString(dr["Overview"]);
+                if (dr["Title"] != DBNull.Value)
+                    episode._episodeName = Convert.ToString(dr["Title"]);
+                if (dr["Watched"] != DBNull.Value)
+                    episode._watched = Convert.ToBoolean(dr["Watched"]);
+                if (dr["Aired"] != DBNull.Value)
+                    episode._aired = Convert.ToDateTime(dr["Aired"]);
+
+                if (episode._aired.Year > 1950)
+                    ep.Add(episode);
+            }
+            Connect.Close();
+
+            return ep;
+        }
+
         //Zwróć najstarszy, nieobejrzany odcinek
         public Episode GetLastEpisode(int SeriesId)
         {
@@ -258,6 +300,49 @@ namespace TV_Reminder.Control
             SqlConnection Connect = new SqlConnection(DataBaseConnection.connString);
             SqlCommand czytajnik = new SqlCommand("SELECT * FROM Episode where SeriesId = @SeriesId AND Watched = 0", Connect);
             czytajnik.Parameters.AddWithValue("@SeriesId", SeriesId);
+
+            Connect.Open();
+            SqlDataReader dr = czytajnik.ExecuteReader();
+
+            while (dr.Read())
+            {
+                Episode episode = new Episode();
+
+                if (dr["Id"] != DBNull.Value)
+                    episode._id = Convert.ToInt32(dr["Id"]);
+                if (dr["Number"] != DBNull.Value)
+                    episode._episodeNumber = Convert.ToInt32(dr["Number"]);
+                if (dr["Season"] != DBNull.Value)
+                    episode._seasonNumber = Convert.ToInt32(dr["Season"]);
+                if (dr["Overview"] != DBNull.Value)
+                    episode._overview = Convert.ToString(dr["Overview"]);
+                if (dr["Title"] != DBNull.Value)
+                    episode._episodeName = Convert.ToString(dr["Title"]);
+                if (dr["Watched"] != DBNull.Value)
+                    episode._watched = Convert.ToBoolean(dr["Watched"]);
+                if (dr["Aired"] != DBNull.Value)
+                    episode._aired = Convert.ToDateTime(dr["Aired"]);
+
+                ep.Add(episode);
+            }
+            Connect.Close();
+
+            ep = ep.OrderBy(x => x._seasonNumber).ThenBy(y => y._episodeNumber).ToList();
+
+            if (ep.Count > 0 && ep[0]._aired.Year > 1950)
+                return ep[0];
+            else
+                return null;
+        }
+
+        public Episode GetLastAvaiableEpisode(int SeriesId)
+        {
+            List<Episode> ep = new List<Episode>();
+
+            SqlConnection Connect = new SqlConnection(DataBaseConnection.connString);
+            SqlCommand czytajnik = new SqlCommand("SELECT * FROM Episode where SeriesId = @SeriesId AND Watched = 0 AND Aired < @Today", Connect);
+            czytajnik.Parameters.AddWithValue("@SeriesId", SeriesId);
+            czytajnik.Parameters.AddWithValue("@Today", DateTime.Today);
 
             Connect.Open();
             SqlDataReader dr = czytajnik.ExecuteReader();

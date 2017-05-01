@@ -15,11 +15,11 @@ using System.Windows.Shapes;
 namespace TV_Reminder.View
 {
     /// <summary>
-    /// Interaction logic for Waiting.xaml
+    /// Interaction logic for AddTvSeries.xaml
     /// </summary>
-    public partial class Waiting : UserControl
+    public partial class AddSeries : UserControl
     {
-        public Waiting()
+        public AddSeries()
         {
             InitializeComponent();
         }
