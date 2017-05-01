@@ -51,9 +51,9 @@ namespace TV_Reminder.Control
                     main.FoundSeries = ++_found;
                 }
             }
-            catch (Exception e)
+            catch (Exception)
             {
-                MessageBox.Show(e.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show("Nie znalazłem pasujących seriali", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
 
             return _series;             
@@ -140,9 +140,13 @@ namespace TV_Reminder.Control
         public int getOverallEpisodesNumber(int _seriesID)
         {
             string JSON = getReply("https://api.thetvdb.com/series/" + _seriesID + "/episodes/summary");
-            JObject tvdbSearch = JObject.Parse(JSON);
-
-            return tvdbSearch["data"]["airedEpisodes"].ToObject<int>();
+            if (JSON != null)
+            {
+                JObject tvdbSearch = JObject.Parse(JSON);
+                return tvdbSearch["data"]["airedEpisodes"].ToObject<int>();
+            }
+            else
+                return 0;
         }
 
         //Pobiera listę odcinków (max 100 odcinków na stronę)

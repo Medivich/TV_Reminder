@@ -302,7 +302,7 @@ namespace TV_Reminder.ViewModel
             {
                 LoadingScreen = Visibility.Hidden;
                 SearchingScreen = Visibility.Hidden;
-                if (value != null)
+                if (value != null && value.Count > 0)
                 {
                     ReplyList = Visibility.Visible;
                     _seriesList = value;

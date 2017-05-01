@@ -41,9 +41,7 @@ namespace TV_Reminder.Commands
         void search()
         {
             SearchTvdb _search = new SearchTvdb();
-            ObservableCollection<Series> _Series = new ObservableCollection<Series>();
-            _Series = _search.SearchForSeries(main.SearchQuery, main);
-
+            ObservableCollection<Series> _Series = _search.SearchForSeries(main.SearchQuery, main);
             Application.Current.Dispatcher.Invoke(DispatcherPriority.Background,new Action(() => main.Series = _Series));
         }
     }
