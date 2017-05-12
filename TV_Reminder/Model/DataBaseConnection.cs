@@ -9,9 +9,9 @@ namespace TV_Reminder.Model
 {
     class DataBaseConnection
     {
-        public static string connString = @"Data Source=(LocalDB)\v11.0;AttachDbFilename="
+        public static string connString = @"Data Source = (LocalDB)\MSSQLLocalDB;AttachDbFilename="
                             + Path.GetDirectoryName(System.Windows.Forms.Application.ExecutablePath) +
-                            @"\Other\DataBase\Tv_Reminder_Database.mdf;Integrated Security=True;Connect Timeout=30";
+                            @"\Other\DataBase\Tv_Reminder_Database.mdf;Integrated Security=True";
 
         public string ConnString
         {

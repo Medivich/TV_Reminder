@@ -260,12 +260,14 @@
     <Resource Include="Other\Image\notAvailable.png" />
     <Resource Include="Other\Image\Unwatched.png" />
     <Resource Include="Other\Image\Watched.png" />
-    <None Include="Other\DataBase\Tv_Reminder_Database.mdf">
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Other\DataBase\TV_Reminder_Database.mdf">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <Content Include="Other\DataBase\Tv_Reminder_Database_log.ldf">
-      <DependentUpon>Tv_Reminder_Database.mdf</DependentUpon>
+    <Content Include="Other\DataBase\TV_Reminder_Database_log.ldf">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <DependentUpon>TV_Reminder_Database.mdf</DependentUpon>
     </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

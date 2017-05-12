@@ -48,18 +48,22 @@ namespace TV_Reminder.Commands
         {
             DownloadEpisodes ED = new DownloadEpisodes();
             ep = ED.getEpisodes(main.SelectedSeries._id);
-     
-            try
-            {
-                AddToDataBase add = new AddToDataBase();
-                add.addTvSeries(main.SelectedSeries);
 
-                foreach(Episode e in ep)
-                    add.addEpisode(main.SelectedSeries._id, e);
-            }
-            catch(Exception e)
+            ReadFromDataBase RD = new ReadFromDataBase();
+            if (RD.DatabaseConnected())
             {
-                MessageBox.Show(e.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                try
+                {
+                    AddToDataBase add = new AddToDataBase();
+                    add.addTvSeries(main.SelectedSeries);
+
+                    foreach (Episode e in ep)
+                        add.addEpisode(main.SelectedSeries._id, e);
+                }
+                catch (Exception e)
+                {
+                    MessageBox.Show(e.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
             }
 
             Application.Current.Dispatcher.Invoke(new Action(() => main.setExist(true)));
