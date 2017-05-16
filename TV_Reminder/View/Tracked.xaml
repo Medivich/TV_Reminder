@@ -35,7 +35,7 @@
                             <Image Source="{Binding _poster}" 
                                    MaxWidth="300" 
                                    MaxHeight="400"/>
-                            
+
                             <StackPanel Orientation="Vertical" 
                                         VerticalAlignment="Stretch">
                                 <CheckBox Margin="20,20,20,20" 
@@ -61,6 +61,27 @@
                 </ListBox.ItemTemplate>
             </ListBox>
 
+            <Label Content="Znajdź:"
+                   Foreground="White" 
+                   FontSize="32"
+                   HorizontalAlignment="Left"
+                   Margin="672,10,0,0" 
+                   VerticalAlignment="Top"
+                   Height="55"
+                   Width="260"/>
+
+            <TextBox x:Name="SearchEngine"  
+                     Text="{Binding Path=SearchQuery, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                     Foreground="White" 
+                     Height="45" 
+                     VerticalAlignment="Bottom" 
+                     BorderBrush="#FF21F52A" 
+                     Background="#FF062703"
+                     FontSize="18" 
+                     FontWeight="Bold" 
+                     HorizontalContentAlignment="Center" 
+                     VerticalContentAlignment="Center" Margin="672,0,68,485" />
+
             <Label Content="Lista śledzonych seriali:"
                    Foreground="White" 
                    FontSize="32"
@@ -75,7 +96,7 @@
                     Template="{DynamicResource ButtonControlTemplate}"
                     FontSize="20"
                     HorizontalAlignment="Left" 
-                    Margin="672,16,0,0"
+                    Margin="672,148,0,0"
                     VerticalAlignment="Top"
                     Width="260" 
                     Height="49"/>
@@ -84,10 +105,10 @@
                     Template="{DynamicResource ButtonControlTemplate}" 
                     FontSize="20"
                     HorizontalAlignment="Left" 
-                    Margin="672,131,0,0" 
+                    Margin="672,252,0,0" 
                     VerticalAlignment="Top"
                     Width="260"
-                    Height="47"/>
+                    Height="48"/>
 
             <Button Content="Usuń zaznaczony"
                     Command="{Binding DeleteSelectedSeriesButton}" 
@@ -110,7 +131,7 @@
                     Height="47"/>
 
             <View:Loading Visibility="{Binding LoadingScreen}"/>
-            
+
             <ListBox ItemsSource="{Binding Log}" 
                      Visibility="{Binding LoadingScreen}"
                      ScrollViewer.CanContentScroll="False" 
@@ -126,7 +147,7 @@
                     </DataTemplate>
                 </ListBox.ItemTemplate>
             </ListBox>
-            
+
         </Grid>
         <UserControl Content="{Binding Description}"/>
     </Grid>

@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Linq;
 using System.Windows.Input;
 using TV_Reminder.Commands;
 using TV_Reminder.Model;
@@ -11,6 +6,7 @@ using TV_Reminder.Control;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using TV_Reminder.Commands.SeriesDescription;
+using System.Windows;
 
 namespace TV_Reminder.ViewModel
 {
@@ -20,11 +16,51 @@ namespace TV_Reminder.ViewModel
 
         private Episode _selectedEpisode { get; set; }
 
-        //Obejrzany
-
+        ObservableCollection<Poster> _posterList = new ObservableCollection<Poster>();
+        ObservableCollection<byte[]> _bannerList = new ObservableCollection<byte[]>();
         ObservableCollection<Season> _seasonList = new ObservableCollection<Season>();
 
         private int _seriesId;
+
+        private Visibility _pickPoster = Visibility.Hidden;
+        private Visibility _pickBanner = Visibility.Hidden;
+
+        public Visibility PickImage
+        {
+            get
+            {
+                if (PickPoster == Visibility.Visible || PickBanner == Visibility.Visible)
+                    return Visibility.Visible;
+                else
+                    return Visibility.Hidden;
+            }
+        }
+
+        public Visibility PickPoster
+        {
+            set
+            {
+                this._pickPoster = value;
+                OnPropertyChanged("PickPoster", "PickImage");
+            }
+            get
+            {
+                return this._pickPoster;
+            }
+        }
+
+        public Visibility PickBanner
+        {
+            set
+            {
+                this._pickBanner = value;
+                OnPropertyChanged("PickBanner", "PickImage");
+            }
+            get
+            {
+                return this._pickBanner;
+            }
+        }
 
         public string WatchedButton
         {
@@ -34,6 +70,64 @@ namespace TV_Reminder.ViewModel
                     return "Nieobejrzany";
                 else
                     return "Obejrzany";
+            }
+        }
+
+        public void UpdatePosterList()
+        {
+            OnPropertyChanged("PosterList");
+        }
+
+        public void UpdateBannerList()
+        {
+            OnPropertyChanged("BannerList");
+        }
+
+        public ObservableCollection<Poster> PosterList
+        {
+            get
+            {
+                return _posterList;
+            }
+        }
+
+        public ObservableCollection<byte[]> BannerList
+        {
+            get
+            {
+                return _bannerList;
+            }
+        }
+
+        public Poster SelectedPoster
+        {
+            set
+            {
+                if (value != null)
+                {
+                    PickPoster = Visibility.Hidden;
+                    PosterList.Clear();
+                    SelectedSeries._poster = value._memoryStream;
+                    OnPropertyChanged("SelectedSeries");
+                    UpdateDataBase UB = new UpdateDataBase();
+                    UB.addPoster(seriesId, value._memoryStream);
+                }
+            }
+        }
+
+        public byte[] SelectedBanner
+        {
+            set
+            {
+                if (value != null)
+                {
+                    PickBanner = Visibility.Hidden;
+                    BannerList.Clear();
+                    SelectedSeries._banner = value;
+                    OnPropertyChanged("SelectedSeries");
+                    UpdateDataBase UB = new UpdateDataBase();
+                    UB.addBanner(seriesId, value);
+                }
             }
         }
 
@@ -210,7 +304,32 @@ namespace TV_Reminder.ViewModel
                     AllAboveWatchedCommand = new AllAboveWatched(this);
                 return AllAboveWatchedCommand;
             }
-        }  
+        }
+
+        private ICommand ChangeBannerCommand;
+
+        public ICommand ChangeBannerButton
+        {
+            get
+            {
+                if (ChangeBannerCommand == null)
+                    ChangeBannerCommand = new ChangeBanner(this);
+                return ChangeBannerCommand;
+            }
+        }
+
+        private ICommand ChangePosterCommand;
+
+        public ICommand ChangePosterButton
+        {
+            get
+            {
+                if (ChangePosterCommand == null)
+                    ChangePosterCommand = new ChangePoster(this);
+                return ChangePosterCommand;
+            }
+        }
+
         //Wewnętrzna klasa służąca do tworzenia drzewa seriali
         public class Season
         {

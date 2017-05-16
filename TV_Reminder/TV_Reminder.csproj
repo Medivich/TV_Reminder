@@ -89,6 +89,8 @@
     <Compile Include="Commands\AddSeries\AbortSearch.cs" />
     <Compile Include="Commands\AddSeries\AddSeriesToDatabase.cs" />
     <Compile Include="Commands\SeriesDescription\AllAboveWatched.cs" />
+    <Compile Include="Commands\SeriesDescription\ChangeBanner.cs" />
+    <Compile Include="Commands\SeriesDescription\ChangePoster.cs" />
     <Compile Include="Commands\SeriesDescription\ChangeRating.cs" />
     <Compile Include="Commands\Tracked\DeleteSelectedSeries.cs" />
     <Compile Include="Commands\SeriesDescription\EpisodeWatchedSeriesDescription.cs" />
@@ -127,6 +129,9 @@
     <Compile Include="View\AddSeries.xaml.cs">
       <DependentUpon>AddSeries.xaml</DependentUpon>
     </Compile>
+    <Compile Include="View\Dark.xaml.cs">
+      <DependentUpon>Dark.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\Hello.xaml.cs">
       <DependentUpon>Hello.xaml</DependentUpon>
     </Compile>
@@ -157,6 +162,10 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="View\Dark.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="View\Dictionary\Resource.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

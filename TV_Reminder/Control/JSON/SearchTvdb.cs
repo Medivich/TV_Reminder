@@ -111,6 +111,33 @@ namespace TV_Reminder.Control
             }
         }
 
+        //Wyszukuje plakaty i dodaje je odrazu do _PosterList
+        public void SearchForAllPosters(int _seriesID, SeriesDescriptionViewModel main)
+        {
+            string JSON = getReply("https://api.thetvdb.com/series/" + _seriesID + "/images/query?keyType=poster");
+            if (JSON != null)
+            {
+                JObject tvdbSearch = JObject.Parse(JSON);
+                IList<JToken> results = tvdbSearch["data"].Children().ToList();
+
+                foreach (JToken result in results)
+                {
+                    Poster p = result.ToObject<Poster>();
+
+                    byte[] array;
+                    using (WebClient client = new WebClient())
+                    {
+                        array = client.DownloadData(new Uri("http://thetvdb.com/banners/" + p.fileName));
+                    }
+
+                    Application.Current.Dispatcher.Invoke(DispatcherPriority.Background, new Action(() =>
+                        main.PosterList.Add(new Poster(array))));
+                    Application.Current.Dispatcher.Invoke(DispatcherPriority.Background, new Action(() =>
+                        main.UpdatePosterList()));
+                }
+            }
+        }
+
         //Wyszukuje banery i dodaje je odrazu do _BannerList
         public void SearchForAllBanners(int _seriesID, AddSeriesViewModel main)
         {
@@ -132,6 +159,33 @@ namespace TV_Reminder.Control
 
                     Application.Current.Dispatcher.Invoke(DispatcherPriority.Background, new Action(() =>
                         main.BannerList.Add(array)));
+                }
+            }
+        }
+
+        //Wyszukuje banery i dodaje je odrazu do _BannerList
+        public void SearchForAllBanners(int _seriesID, SeriesDescriptionViewModel main)
+        {
+            string JSON = getReply("https://api.thetvdb.com/series/" + _seriesID + "/images/query?keyType=series");
+            if (JSON != null)
+            {
+                JObject tvdbSearch = JObject.Parse(JSON);
+                IList<JToken> results = tvdbSearch["data"].Children().ToList();
+
+                foreach (JToken result in results)
+                {
+                    Poster p = result.ToObject<Poster>();
+
+                    byte[] array;
+                    using (WebClient client = new WebClient())
+                    {
+                        array = client.DownloadData(new Uri("http://thetvdb.com/banners/" + p.fileName));
+                    }
+
+                    Application.Current.Dispatcher.Invoke(DispatcherPriority.Background, new Action(() =>
+                        main.BannerList.Add(array)));
+                    Application.Current.Dispatcher.Invoke(DispatcherPriority.Background, new Action(() =>
+                        main.UpdateBannerList()));
                 }
             }
         }

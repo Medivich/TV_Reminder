@@ -35,6 +35,27 @@ namespace TV_Reminder.Control
             return SeriesList;
         }
 
+        //Pobiera wszystkie seriale
+        public ObservableCollection<Series> getTvSeriesByName(string name)
+        {
+            ObservableCollection<Series> SeriesList = new ObservableCollection<Series>();
+
+            SqlConnection Connect = new SqlConnection(DataBaseConnection.connString);
+            SqlCommand czytajnik = new SqlCommand("SELECT * FROM Series WHERE Name Like @name", Connect);
+            czytajnik.Parameters.AddWithValue("@name", "%" + name + "%");
+
+
+            Connect.Open();
+            SqlDataReader dr = czytajnik.ExecuteReader();
+
+            while (dr.Read())
+                SeriesList.Add(readSeries(dr));
+
+            Connect.Close();
+
+            return SeriesList;
+        }
+
         //Sprawdza czy serial istnieje w bazie danych
         public bool SeriesExist(int id)
         {
@@ -189,6 +210,7 @@ namespace TV_Reminder.Control
 
             return ep;
         }
+
 
         //Zwróć najstarszy, nieobejrzany odcinek
         public Episode GetLastEpisode(int SeriesId)

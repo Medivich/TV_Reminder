@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:vm="clr-namespace:TV_Reminder.ViewModel"
+             xmlns:View="clr-namespace:TV_Reminder.View"
              mc:Ignorable="d" 
              d:DesignHeight="600" d:DesignWidth="1000">
 
@@ -22,7 +23,7 @@
     <Grid>
 
         <TreeView ItemsSource="{Binding SeasonList}" 
-                  Margin="517,120,28,120" 
+                  Margin="517,120,28,148" 
                   Background="#FF062703" 
                   BorderBrush="#FF21F300" >
 
@@ -75,7 +76,6 @@
             </TreeView.ItemTemplate>
         </TreeView>
 
-
         <Image Source="{Binding SelectedSeries._poster}"
                MaxWidth="300" 
                MaxHeight="400" 
@@ -98,7 +98,27 @@
                 Template="{DynamicResource ButtonControlTemplate}"
                 HorizontalAlignment="Left"  
                 FontSize="26"
-                Margin="795,503,0,0"
+                Margin="795,470,0,0"
+                VerticalAlignment="Top"
+                Width="177" 
+                Height="47"/>
+
+        <Button Content="Zmień plakat" 
+                Command="{Binding ChangePosterButton}"
+                Template="{DynamicResource ButtonControlTemplate}"
+                HorizontalAlignment="Left"  
+                FontSize="26"
+                Margin="525,536,0,0"
+                VerticalAlignment="Top"
+                Width="177" 
+                Height="47"/>
+
+        <Button Content="Zmień baner" 
+                Command="{Binding ChangeBannerButton}"
+                Template="{DynamicResource ButtonControlTemplate}"
+                HorizontalAlignment="Left"  
+                FontSize="26"
+                Margin="795,536,0,0"
                 VerticalAlignment="Top"
                 Width="177" 
                 Height="47"/>
@@ -108,7 +128,7 @@
                 Template="{DynamicResource ButtonControlTemplate}"
                 HorizontalAlignment="Left" 
                 FontSize="22"
-        	    Margin="517,503,0,0" 
+        	    Margin="517,470,0,0" 
                 VerticalAlignment="Top" 
                 Width="273" 
                 Height="47"/>
@@ -169,6 +189,56 @@
             </Button.Template>
         </Button>
 
+        <View:Dark Visibility="{Binding PickImage}"/>
+
+        <ListBox ItemsSource="{Binding BannerList}" 
+                 Visibility="{Binding PickBanner}"
+                 ScrollViewer.CanContentScroll="False" 
+                 SelectedItem="{Binding SelectedBanner, UpdateSourceTrigger=PropertyChanged}"
+                 Margin="31,125,393,148" 
+                 Background="#FF062703" 
+                 BorderBrush="#FF21F300">
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <Image Source="{Binding}" 
+                           MaxWidth="500" 
+                           MaxHeight="200"/>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+
+        <ListBox ItemsSource="{Binding PosterList}" 
+                 SelectedItem="{Binding SelectedPoster, UpdateSourceTrigger=PropertyChanged}"
+                 ScrollViewer.CanContentScroll="False" 
+                 Visibility="{Binding PickPoster}"
+                 ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                 Margin="30,50,633,30" 
+                 Background="#FF062703" 
+                 BorderBrush="#FF199E04" 
+                 Width="300" >
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <StackPanel Orientation="Horizontal"
+                                MaxWidth="300">
+                        <Image Source="{Binding Post}" 
+                               MaxWidth="300" 
+                               MaxHeight="400">
+                        </Image>
+                    </StackPanel>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+            <ListBox.ItemContainerStyle>
+                <Style TargetType="ListBoxItem">
+                    <Setter Property="BorderBrush" Value="Black"/>
+                    <Style.Triggers>
+                        <Trigger Property="IsSelected" Value="True">
+                            <Setter Property="BorderThickness" Value="2"/>
+                            <Setter Property="BorderBrush" Value="White"/>
+                        </Trigger>
+                    </Style.Triggers>
+                </Style>
+            </ListBox.ItemContainerStyle>
+        </ListBox>
 
     </Grid>
 </UserControl>

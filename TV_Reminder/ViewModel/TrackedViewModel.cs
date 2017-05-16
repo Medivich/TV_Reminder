@@ -22,6 +22,7 @@ namespace TV_Reminder.ViewModel
         private Visibility _loadingScreen = Visibility.Hidden, _seriesListVisibility = Visibility.Visible;
         private UserControl _description = null;
         private ObservableCollection<string> _log = new ObservableCollection<string>();
+        private string _searchQuery;
 
         public TrackedViewModel()
         {
@@ -140,6 +141,33 @@ namespace TV_Reminder.ViewModel
             get
             {
                 return this._log;
+            }
+        }
+
+        public string SearchQuery
+        {
+            set
+            {
+                if (value != null)
+                {
+                    this._searchQuery = value;
+                    if (value.Length > 0)
+                    {
+                        ReadFromDataBase RD = new ReadFromDataBase();
+                        _seriesList = RD.getTvSeriesByName(value);
+                    }
+                    else
+                    {
+                        ReadFromDataBase RD = new ReadFromDataBase();
+                        _seriesList = RD.getAllTvSeries();
+                    }
+                    _seriesList = new ObservableCollection<Series>(_seriesList.OrderBy(x => x._seriesName).ToList());
+                }
+                OnPropertyChanged("SearchQuery", "seriesList");
+            }
+            get
+            {
+                return this._searchQuery;
             }
         }
 
