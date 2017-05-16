@@ -93,8 +93,16 @@ namespace TV_Reminder.Control
             Connect.Close();
         }
 
-        //Aktualizuje odcinek
         public void UpdateEpisode(Episode ep)
+        {
+            if (ep._aired.Year > 1950)
+                UpdateEpisodeWithDate(ep);
+            else
+                UpdateEpisodeWithoutDate(ep);
+        }
+
+        //Aktualizuje odcinek
+        private void UpdateEpisodeWithDate(Episode ep)
         {
             SqlConnection Connect = new SqlConnection(DataBaseConnection.connString);
             SqlCommand Command = new SqlCommand(@"Update Episode set Overview = @Overview, Title = @Title, Aired = @Aired, 
@@ -102,11 +110,26 @@ namespace TV_Reminder.Control
 
             Command.Parameters.AddWithValue("@EpisodeId", ep._id);
             Command.Parameters.AddWithValue("@Overview", ep._overview != null ? ep._overview : "");
-            Command.Parameters.AddWithValue("@Title", ep._overview != null ? ep._overview : "");
+            Command.Parameters.AddWithValue("@Title", ep._episodeName != null ? ep._episodeName : "");
             Command.Parameters.AddWithValue("@LastUpdate", ep._lastUpdate);
+            Command.Parameters.AddWithValue("@Aired", ep._aired);
 
-            if (ep._aired.Year > 1950)
-                Command.Parameters.AddWithValue("@Aired", ep._aired);
+            Connect.Open();
+            Command.ExecuteNonQuery();
+            Connect.Close();
+        }
+
+        //Aktualizuje odcinek
+        private void UpdateEpisodeWithoutDate(Episode ep)
+        {
+            SqlConnection Connect = new SqlConnection(DataBaseConnection.connString);
+            SqlCommand Command = new SqlCommand(@"Update Episode set Overview = @Overview, Title = @Title, 
+                        LastUpdate = @LastUpdate WHERE Id = @EpisodeId", Connect);
+
+            Command.Parameters.AddWithValue("@EpisodeId", ep._id);
+            Command.Parameters.AddWithValue("@Overview", ep._overview != null ? ep._overview : "");
+            Command.Parameters.AddWithValue("@Title", ep._episodeName != null ? ep._episodeName : "");
+            Command.Parameters.AddWithValue("@LastUpdate", ep._lastUpdate);
 
             Connect.Open();
             Command.ExecuteNonQuery();
