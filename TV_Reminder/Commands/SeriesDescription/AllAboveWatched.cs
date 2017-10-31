@@ -28,8 +28,7 @@ namespace TV_Reminder.Commands.SeriesDescription
 
         override public void Execute(object parameter)
         {
-            UpdateDataBase UBD = new UpdateDataBase();
-            UBD.AllBelowWatched(main.seriesId, main.SelectedEpisode._episodeNumber, main.SelectedEpisode._seasonNumber, true);
+            new UpdateDataBase().AllBelowWatched(main.seriesId, main.SelectedEpisode._episodeNumber, main.SelectedEpisode._seasonNumber, true);
             main.UpdateTree();
         }
     }

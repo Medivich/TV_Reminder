@@ -21,8 +21,7 @@ namespace TV_Reminder.Commands
 
         override public void Execute(object parameter)
         {
-            UpdateDataBase UBD = new UpdateDataBase();
-            UBD.ChangeTvSeriesRating(main.SelectedSeries._id, Convert.ToInt32(parameter));
+            new UpdateDataBase().ChangeTvSeriesRating(main.SelectedSeries._id, Convert.ToInt32(parameter));
             Application.Current.Dispatcher.Invoke(new Action(() => main.Rating = Convert.ToInt32(parameter)));
         }
     }

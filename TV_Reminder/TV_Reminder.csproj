@@ -92,6 +92,7 @@
     <Compile Include="Commands\SeriesDescription\ChangeBanner.cs" />
     <Compile Include="Commands\SeriesDescription\ChangePoster.cs" />
     <Compile Include="Commands\SeriesDescription\ChangeRating.cs" />
+    <Compile Include="Commands\Tracked\ClearDatabase.cs" />
     <Compile Include="Commands\Tracked\DeleteSelectedSeries.cs" />
     <Compile Include="Commands\SeriesDescription\EpisodeWatchedSeriesDescription.cs" />
     <Compile Include="Commands\Main\GoToAddSeries.cs" />

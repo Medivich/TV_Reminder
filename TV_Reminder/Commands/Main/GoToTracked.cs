@@ -36,7 +36,7 @@ namespace TV_Reminder.Commands
             ReadFromDataBase RD = new ReadFromDataBase();
 
             if (RD.DatabaseConnected())
-                main.content.Dispatcher.Invoke(new Action(() => main.content = new Tracked()));
+                main.content.Dispatcher.Invoke(new Action(() => main.content = new View.Tracked()));
             else
                 main.content.Dispatcher.Invoke(new Action(() => main.content = new Hello())); 
         }

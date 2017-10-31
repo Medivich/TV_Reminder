@@ -69,6 +69,20 @@ namespace TV_Reminder.Control
             Connect.Close();
         }
 
+        //Wszystkie odcinki poniżej SxEx z danego serialu są oznaczane jako obejrzane (Watched)
+        public void AllWatched(int SeriesId, bool Watched)
+        {
+            SqlConnection Connect = new SqlConnection(DataBaseConnection.connString);
+            SqlCommand Command = new SqlCommand(@"Update Episode set Watched = @Watched WHERE SeriesId = @SeriesId", Connect);
+
+            Command.Parameters.AddWithValue("@SeriesId", SeriesId);
+            Command.Parameters.AddWithValue("@Watched", Watched);
+
+            Connect.Open();
+            Command.ExecuteNonQuery();
+            Connect.Close();
+        }
+
         //Dodaje plakat do serii
         public void addPoster(int SeriesId, byte[] poster)
         {

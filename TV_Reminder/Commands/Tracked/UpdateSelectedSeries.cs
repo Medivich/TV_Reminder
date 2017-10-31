@@ -42,12 +42,11 @@ namespace TV_Reminder.Commands
             ReadFromDataBase RD = new ReadFromDataBase();
             UpdateDataBase UD = new UpdateDataBase();
             AddToDataBase AD = new AddToDataBase();
-            DownloadEpisodes DE = new DownloadEpisodes();
 
             Application.Current.Dispatcher.Invoke(new Action(() => main.clearLog()));
             Application.Current.Dispatcher.Invoke(new Action(() => main.addToLog("Pobieram " + main.selectedSeries._seriesName)));
 
-            ep = DE.getEpisodes(main.selectedSeries._id);
+            ep = new DownloadEpisodes().getEpisodes(main.selectedSeries._id);
 
             Application.Current.Dispatcher.Invoke(new Action(() => main.addToLog("Aktualizuję " + main.selectedSeries._seriesName)));
 

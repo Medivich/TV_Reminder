@@ -31,8 +31,7 @@ namespace TV_Reminder.Commands.SeriesDescription
 
         public void addPosters()
         {
-            SearchTvdb st = new SearchTvdb();
-            st.SearchForAllBanners(main.seriesId, main);
+            new SearchTvdb().SearchForAllBanners(main.seriesId, main);
         }
     }
 }

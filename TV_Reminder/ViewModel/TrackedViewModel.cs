@@ -10,6 +10,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using TV_Reminder.Commands;
+using TV_Reminder.Commands.Tracked;
 using TV_Reminder.Control;
 using TV_Reminder.Model;
 
@@ -217,6 +218,18 @@ namespace TV_Reminder.ViewModel
                 if (UpdateManySeriesCommand == null)
                     UpdateManySeriesCommand = new UpdateManySeries(this);
                 return UpdateManySeriesCommand;
+            }
+        }
+
+        private ICommand ClearDatabaseCommand;
+
+        public ICommand ClearDatabaseButton
+        {
+            get
+            {
+                if (ClearDatabaseCommand == null)
+                    ClearDatabaseCommand = new ClearDatabase(this);
+                return ClearDatabaseCommand;
             }
         }
     }

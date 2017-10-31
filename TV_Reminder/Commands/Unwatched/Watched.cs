@@ -25,8 +25,7 @@ namespace TV_Reminder.Commands.Unwatched
 
         override public void Execute(object parameter)
         {
-            UpdateDataBase UD = new UpdateDataBase();
-            UD.SetWatched(main.SelectedWrapper._episode._id, true);   
+            new UpdateDataBase().SetWatched(main.SelectedWrapper._episode._id, true);   
 
             main.WrapperList.Remove(main.SelectedWrapper);
 

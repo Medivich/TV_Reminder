@@ -105,17 +105,17 @@
                     Template="{DynamicResource ButtonControlTemplate}" 
                     FontSize="20"
                     HorizontalAlignment="Left" 
-                    Margin="672,252,0,0" 
+                    Margin="672,224,0,0" 
                     VerticalAlignment="Top"
                     Width="260"
-                    Height="48"/>
+                    Height="48" RenderTransformOrigin="0.502,0.469"/>
 
             <Button Content="Usuń zaznaczony"
                     Command="{Binding DeleteSelectedSeriesButton}" 
                     Template="{DynamicResource ButtonControlTemplate}"
                     FontSize="20"
         	        HorizontalAlignment="Left" 
-                    Margin="672,464,0,0"
+                    Margin="672,383,0,0"
                     VerticalAlignment="Top"
                     Width="260" 
                     Height="47"/>
@@ -125,10 +125,20 @@
                     Template="{DynamicResource ButtonControlTemplate}"
                     FontSize="20"
         	        HorizontalAlignment="Left"
-                    Margin="672,351,0,0" 
+                    Margin="672,304,0,0" 
                     VerticalAlignment="Top" 
                     Width="260" 
-                    Height="47"/>
+                    Height="48"/>
+
+            <Button Content="Uporządkuj bazę"
+                    Command="{Binding ClearDatabaseButton}"
+                    Template="{DynamicResource ButtonControlTemplate}"
+                    FontSize="20"
+        	        HorizontalAlignment="Left"
+                    Margin="672,448,0,0" 
+                    VerticalAlignment="Top" 
+                    Width="260" 
+                    Height="48"/>
 
             <View:Loading Visibility="{Binding LoadingScreen}"/>
 
