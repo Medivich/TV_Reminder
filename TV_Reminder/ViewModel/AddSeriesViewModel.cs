@@ -184,21 +184,18 @@ namespace TV_Reminder.ViewModel
 
         private void searchForPost()
         {
-            SearchTvdb S = new SearchTvdb();
-            S.SearchForAllPosters(_selectedSeries._id, this);
+            new SearchTvdb().SearchForAllPosters(_selectedSeries._id, this);
         }
 
         private void searchForBann()
         {
-            SearchTvdb S = new SearchTvdb();
-            S.SearchForAllBanners(_selectedSeries._id, this);
+            new SearchTvdb().SearchForAllBanners(_selectedSeries._id, this);
         }
 
         private void searchForEpisodeNumber()
         {
-            SearchTvdb S = new SearchTvdb();
             Application.Current.Dispatcher.Invoke( new Action(()
-                => main.EpisodeNumber = S.getOverallEpisodesNumber(_selectedSeries._id)));
+                => main.EpisodeNumber = new SearchTvdb().getOverallEpisodesNumber(_selectedSeries._id)));
         }
 
         public Poster SelectedPoster
@@ -311,6 +308,7 @@ namespace TV_Reminder.ViewModel
             }
         }
 
+        #region Obsluga przyciskow
         private ICommand SearchSeriesCommand;
 
         public ICommand SearchButton
@@ -345,6 +343,7 @@ namespace TV_Reminder.ViewModel
                     AddToDatabaseCommand = new AddSeriesToDatabase(this);
                 return AddToDatabaseCommand;
             }
-        }   
+        }
+        #endregion
     }
 }

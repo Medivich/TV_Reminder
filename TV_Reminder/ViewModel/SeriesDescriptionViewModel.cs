@@ -109,8 +109,7 @@ namespace TV_Reminder.ViewModel
                     PosterList.Clear();
                     SelectedSeries._poster = value._memoryStream;
                     OnPropertyChanged("SelectedSeries");
-                    UpdateDataBase UB = new UpdateDataBase();
-                    UB.addPoster(seriesId, value._memoryStream);
+                    new UpdateDataBase().addPoster(seriesId, value._memoryStream);
                 }
             }
         }
@@ -125,8 +124,7 @@ namespace TV_Reminder.ViewModel
                     BannerList.Clear();
                     SelectedSeries._banner = value;
                     OnPropertyChanged("SelectedSeries");
-                    UpdateDataBase UB = new UpdateDataBase();
-                    UB.addBanner(seriesId, value);
+                    new UpdateDataBase().addBanner(seriesId, value);
                 }
             }
         }
@@ -135,8 +133,7 @@ namespace TV_Reminder.ViewModel
         {
             get
             {
-                ReadFromDataBase RD = new ReadFromDataBase();
-                _selectedEpisode = RD.GetLastEpisode(seriesId);
+                _selectedEpisode = new ReadFromDataBase().GetLastEpisode(seriesId);
                 if (_selectedEpisode == null)
                     return "Wszystkie dostępne odcinki zostały obejrzane";
                 return "Następny: S" + _selectedEpisode.SeasonNumber + "E" + _selectedEpisode.EpisodeNumber + " \"" + _selectedEpisode._episodeName + "\""; 
@@ -216,9 +213,8 @@ namespace TV_Reminder.ViewModel
         {
             ObservableCollection<Season> seasonListTemp = new ObservableCollection<Season>();
 
-            ReadFromDataBase RD = new ReadFromDataBase();
-            SelectedSeries = RD.GetTvSeries(_seriesId);
-            ObservableCollection<Episode> _episodeList = RD.GetAllEpisodes(_seriesId);
+            SelectedSeries = new ReadFromDataBase().GetTvSeries(_seriesId);
+            ObservableCollection<Episode> _episodeList = new ReadFromDataBase().GetAllEpisodes(_seriesId);
 
             //Wyliczanie ilości sezonów
             int seasonNo = 0;
@@ -269,7 +265,7 @@ namespace TV_Reminder.ViewModel
         public string Star4 { get { return CheckRating(4); } }
         public string Star5 { get { return CheckRating(5); } }
 
-
+        #region Obsluga przyciskow
         private ICommand EpisodeWatchedSeriesDescriptionCommand;
 
         public ICommand EpisodeWatchedSeriesDescriptionButton
@@ -329,6 +325,7 @@ namespace TV_Reminder.ViewModel
                 return ChangePosterCommand;
             }
         }
+        #endregion
 
         //Wewnętrzna klasa służąca do tworzenia drzewa seriali
         public class Season

@@ -34,8 +34,7 @@ namespace TV_Reminder.Commands
 
         void getToken()
         {
-            LogToTvdb L = new LogToTvdb();
-            if((Model.Token.tvdb_token = L.GetToken()) != null)
+            if((Model.Token.tvdb_token = new LogToTvdb().GetToken()) != null)
                 main.content.Dispatcher.Invoke(new Action(() => main.content = new AddSeries()));      
             else
                 main.content.Dispatcher.Invoke(new Action(() => main.content = new Hello()));   

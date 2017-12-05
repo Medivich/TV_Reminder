@@ -23,6 +23,7 @@ namespace TV_Reminder.ViewModel
             }
         }
 
+        #region Obsluga przyciskow
         private ICommand GoToAddSeries;
 
         public ICommand AddSeries
@@ -58,6 +59,7 @@ namespace TV_Reminder.ViewModel
                 return GoToTracked;
             }
         }
-        
+        #endregion
     }
+    
 }

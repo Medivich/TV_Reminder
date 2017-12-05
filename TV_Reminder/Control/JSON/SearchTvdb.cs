@@ -59,6 +59,8 @@ namespace TV_Reminder.Control
             return _series;             
         }
 
+        #region Przeszukiwanie plakatow i banerow
+
         //Zwraca najnowszy plakat
         private byte[] SearchForPosters(int _seriesID)
         {
@@ -189,6 +191,7 @@ namespace TV_Reminder.Control
                 }
             }
         }
+        #endregion
 
         //Pobiera ogólną ilość odcinków
         public int getOverallEpisodesNumber(int _seriesID)

@@ -244,7 +244,9 @@ namespace TV_Reminder.Control
             List<Episode> ep = new List<Episode>();
 
             SqlConnection Connect = new SqlConnection(DataBaseConnection.connString);
-            SqlCommand czytajnik = new SqlCommand("SELECT * FROM Episode where SeriesId = @SeriesId AND Watched = 0 AND Aired < @Today", Connect);
+            SqlCommand czytajnik = new SqlCommand("SELECT * FROM Episode " +
+                                                  "where SeriesId = @SeriesId AND Watched = 0 AND Aired < @Today " +
+                                                  "ORDER BY CONVERT(DATE, Aired) ASC", Connect);
             czytajnik.Parameters.AddWithValue("@SeriesId", SeriesId);
             czytajnik.Parameters.AddWithValue("@Today", DateTime.Today);
 

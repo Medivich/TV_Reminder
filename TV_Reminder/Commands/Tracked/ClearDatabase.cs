@@ -32,12 +32,12 @@ namespace TV_Reminder.Commands.Tracked
         private void clear()
         {
             Application.Current.Dispatcher.Invoke(new Action(() => main.clearLog()));
-            AddToDataBase AD = new AddToDataBase();
-            UpdateDataBase UP = new UpdateDataBase();
+            
             foreach (Series s in main.seriesList)
             {
                 if (s._update)
                 {
+                    AddToDataBase AD = new AddToDataBase();
                     List<Episode> ep = new List<Episode>();
                     Episode last = new ReadFromDataBase().GetLastAvaiableEpisode(s._id);
                     
@@ -52,9 +52,9 @@ namespace TV_Reminder.Commands.Tracked
                         AD.addEpisode(s._id, e);
 
                     if (last != null)
-                        UP.AllBelowWatched(s._id, last._episodeNumber, last._seasonNumber, true);
+                        new UpdateDataBase().AllBelowWatched(s._id, last._episodeNumber, last._seasonNumber, true);
                     else
-                        UP.AllWatched(s._id, true);
+                        new UpdateDataBase().AllWatched(s._id, true);
                 }
                 else
                     Application.Current.Dispatcher.Invoke(new Action(() => main.addToLog("Pomijam " + s._seriesName)));

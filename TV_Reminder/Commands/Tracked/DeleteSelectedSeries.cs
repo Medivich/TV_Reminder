@@ -29,9 +29,8 @@ namespace TV_Reminder.Commands
 
         override public void Execute(object parameter)
         {
-            DeleteFromDataBase DD = new DeleteFromDataBase();
-            DD.deleteEpisodes(main.selectedSeries._id);
-            DD.deleteSeries(main.selectedSeries._id);
+            new DeleteFromDataBase().deleteEpisodes(main.selectedSeries._id);
+            new DeleteFromDataBase().deleteSeries(main.selectedSeries._id);
 
             Application.Current.Dispatcher.Invoke(new Action(() => main.seriesList.Remove(main.selectedSeries)));
             Application.Current.Dispatcher.Invoke(new Action(() => main.selectedSeries = null));

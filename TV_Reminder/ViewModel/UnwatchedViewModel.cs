@@ -46,13 +46,11 @@ namespace TV_Reminder.ViewModel
             set
             {
                 ObservableCollection<Wrapper> _List = new ObservableCollection<Wrapper>();
-
-                ReadFromDataBase RD = new ReadFromDataBase();
-                ObservableCollection<Series> _seriesList = RD.getAllTvSeries();
+                ObservableCollection<Series> _seriesList = new ReadFromDataBase().getAllTvSeries();
 
                 foreach (Series s in _seriesList)
                 {
-                    ObservableCollection<Episode> _episodeList = RD.GetAllEpisodesBetween(s._id, DateTime.Today, value);
+                    ObservableCollection<Episode> _episodeList = new ReadFromDataBase().GetAllEpisodesBetween(s._id, DateTime.Today, value);
                     foreach (Episode e in _episodeList)
                     {
                         _List.Add(new Wrapper(e, s._banner, s._seriesName, _showBanners, s._rating, s._id));
@@ -130,16 +128,6 @@ namespace TV_Reminder.ViewModel
             }
 
             return _List;
-        }
-
-        private ObservableCollection<Wrapper> SortListByRate(ObservableCollection<Wrapper> _in)
-        {
-            return new ObservableCollection<Wrapper>(_in.OrderByDescending(x => x._rating).ThenBy(y => y._seriesName).ToList());
-        }
-
-        private ObservableCollection<Wrapper> SortListByName(ObservableCollection<Wrapper> _in)
-        {
-            return new ObservableCollection<Wrapper>(_in.OrderBy(y => y._seriesName).ToList());
         }
 
         public bool ShowOne
@@ -234,6 +222,19 @@ namespace TV_Reminder.ViewModel
             }
         }
 
+        #region Sortowanie list
+        private ObservableCollection<Wrapper> SortListByRate(ObservableCollection<Wrapper> _in)
+        {
+            return new ObservableCollection<Wrapper>(_in.OrderByDescending(x => x._rating).ThenBy(y => y._seriesName).ToList());
+        }
+
+        private ObservableCollection<Wrapper> SortListByName(ObservableCollection<Wrapper> _in)
+        {
+            return new ObservableCollection<Wrapper>(_in.OrderBy(y => y._seriesName).ToList());
+        }
+        #endregion
+
+        #region Obsluga przyciskow
         private ICommand UndoCommand;
 
         public ICommand UndoButton
@@ -269,5 +270,6 @@ namespace TV_Reminder.ViewModel
                 return LookForCommand;
             }
         }
+        #endregion
     }
 }

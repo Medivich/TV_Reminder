@@ -11,6 +11,7 @@ using TV_Reminder.Control;
 using TV_Reminder.Model;
 using TV_Reminder.ViewModel;
 
+
 namespace TV_Reminder.Commands
 {
     class AddSeriesToDatabase : MotherCommand
@@ -46,11 +47,9 @@ namespace TV_Reminder.Commands
         //Tworzy wątki, które pobierają odcinki (w jednej paczce przechodzi max. 100 odcinków)
         private void add()
         {
-            DownloadEpisodes ED = new DownloadEpisodes();
-            ep = ED.getEpisodes(main.SelectedSeries._id);
+            ep = new DownloadEpisodes().getEpisodes(main.SelectedSeries._id);
 
-            ReadFromDataBase RD = new ReadFromDataBase();
-            if (RD.DatabaseConnected())
+            if (new ReadFromDataBase().DatabaseConnected())
             {
                 try
                 {

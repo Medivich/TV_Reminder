@@ -33,9 +33,7 @@ namespace TV_Reminder.Commands
 
         void getToken()
         {
-            ReadFromDataBase RD = new ReadFromDataBase();
-
-            if (RD.DatabaseConnected())
+            if (new ReadFromDataBase().DatabaseConnected())
                 main.content.Dispatcher.Invoke(new Action(() => main.content = new View.Tracked()));
             else
                 main.content.Dispatcher.Invoke(new Action(() => main.content = new Hello())); 

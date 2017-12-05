@@ -33,10 +33,10 @@ namespace TV_Reminder.Commands.Unwatched
             main.WrapperList.Remove(main.SelectedWrapper);
 
             //Dodaje kolejny epizod
-            ReadFromDataBase RD = new ReadFromDataBase();
             if (!main.ShowAll)
             {
-                Wrapper w = new Wrapper(RD.GetLastAvaiableEpisode(main.SelectedWrapper._seriesID), main.SelectedWrapper._banner,
+                Wrapper w = new Wrapper(new ReadFromDataBase().GetLastAvaiableEpisode(main.SelectedWrapper._seriesID),
+                    main.SelectedWrapper._banner,
                     main.SelectedWrapper._seriesName, main.SelectedWrapper.ShowBanner,
                     main.SelectedWrapper._rating, main.SelectedWrapper._seriesID);
 

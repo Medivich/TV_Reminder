@@ -38,9 +38,9 @@ namespace TV_Reminder.ViewModel
             try
             {
                 TrackedViewModel vm = (TrackedViewModel)main;
-                ReadFromDataBase RD = new ReadFromDataBase();
+
                 ObservableCollection<Series> _seriesList = new ObservableCollection<Series>();
-                _seriesList = RD.getAllTvSeries();
+                _seriesList = new ReadFromDataBase().getAllTvSeries();
                 _seriesList = new ObservableCollection<Series>(_seriesList.OrderBy(x => x._seriesName).ToList());
 
                 Application.Current.Dispatcher.Invoke(new Action(() => vm.seriesList = _seriesList));
@@ -172,7 +172,7 @@ namespace TV_Reminder.ViewModel
             }
         }
 
-
+        #region Obsluga przyciskow
         private ICommand DeleteSelectedSeriesCommand;
 
         public ICommand DeleteSelectedSeriesButton
@@ -232,5 +232,6 @@ namespace TV_Reminder.ViewModel
                 return ClearDatabaseCommand;
             }
         }
+        #endregion
     }
 }
