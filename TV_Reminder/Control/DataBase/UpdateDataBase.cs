@@ -52,6 +52,39 @@ namespace TV_Reminder.Control
             Connect.Close();
         }
 
+        //Poprawki - nie da się obejrzeć niewyemitowanego odcinka
+        public void AllAboveUnwatched(int SeriesId, int EpisodeNumber, int SeasonNumber, bool Watched)
+        {
+            SqlConnection Connect = new SqlConnection(DataBaseConnection.connString);
+            SqlCommand Command = new SqlCommand(@"Update Episode set Watched = @Watched WHERE SeriesId = @SeriesId AND (Season > @SeasonNumber 
+                        OR (Season = @SeasonNumber AND Number > @EpisodeNumber) OR Aired > @Today)", Connect);
+
+            Command.Parameters.AddWithValue("@EpisodeNumber", EpisodeNumber);
+            Command.Parameters.AddWithValue("@SeriesId", SeriesId);
+            Command.Parameters.AddWithValue("@SeasonNumber", SeasonNumber);
+            Command.Parameters.AddWithValue("@Watched", Watched);
+            Command.Parameters.AddWithValue("@Today", DateTime.Today);
+
+            Connect.Open();
+            Command.ExecuteNonQuery();
+            Connect.Close();
+        }
+
+        //Poprawki - nie da się obejrzeć niewyemitowanego odcinka
+        public void AllNotAiredUnwatched(int SeriesId)
+        {
+            SqlConnection Connect = new SqlConnection(DataBaseConnection.connString);
+            SqlCommand Command = new SqlCommand(@"Update Episode set Watched = @Watched WHERE SeriesId = @SeriesId AND Aired > @Today", Connect);
+
+            Command.Parameters.AddWithValue("@SeriesId", SeriesId);
+            Command.Parameters.AddWithValue("@Watched", false);
+            Command.Parameters.AddWithValue("@Today", DateTime.Today);
+
+            Connect.Open();
+            Command.ExecuteNonQuery();
+            Connect.Close();
+        }
+
         //Wszystkie odcinki poniżej SxEx z danego serialu są oznaczane jako obejrzane (Watched)
         public void AllBelowWatched(int SeriesId, int EpisodeNumber, int SeasonNumber, bool Watched)
         {

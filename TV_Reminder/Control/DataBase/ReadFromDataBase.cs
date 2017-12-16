@@ -245,7 +245,7 @@ namespace TV_Reminder.Control
 
             SqlConnection Connect = new SqlConnection(DataBaseConnection.connString);
             SqlCommand czytajnik = new SqlCommand("SELECT * FROM Episode " +
-                                                  "where SeriesId = @SeriesId AND Watched = 0 AND Aired < @Today " +
+                                                  "where SeriesId = @SeriesId AND Watched = 0 AND (Aired < @Today OR Aired = @Today)" +
                                                   "ORDER BY CONVERT(DATE, Aired) ASC", Connect);
             czytajnik.Parameters.AddWithValue("@SeriesId", SeriesId);
             czytajnik.Parameters.AddWithValue("@Today", DateTime.Today);
@@ -311,6 +311,66 @@ namespace TV_Reminder.Control
 
             return series;
         }
+
+        #region statystyka
+
+        //Pobiera najstarszy, nieobejrzany i dostępny odcinek
+        public int GetEpisodeNo()
+        {
+            List<Episode> ep = new List<Episode>();
+
+            SqlConnection Connect = new SqlConnection(DataBaseConnection.connString);
+            SqlCommand czytajnik = new SqlCommand("SELECT COUNT(*) FROM Episode", Connect);
+
+            Connect.Open();
+            SqlDataReader dr = czytajnik.ExecuteReader();
+
+            dr.Read();
+            int no = Convert.ToInt32(dr[0]);
+
+            Connect.Close();
+      
+            return no;
+        }
+
+        public int GetSeriesNo()
+        {
+            List<Episode> ep = new List<Episode>();
+
+            SqlConnection Connect = new SqlConnection(DataBaseConnection.connString);
+            SqlCommand czytajnik = new SqlCommand("SELECT COUNT(*) FROM Series", Connect);
+
+            Connect.Open();
+            SqlDataReader dr = czytajnik.ExecuteReader();
+
+            dr.Read();
+            int no = Convert.ToInt32(dr[0]);
+
+            Connect.Close();
+
+            return no;
+        }
+
+        public int GetWatchedEpisodesNo(bool watched)
+        {
+            List<Episode> ep = new List<Episode>();
+
+            SqlConnection Connect = new SqlConnection(DataBaseConnection.connString);
+            SqlCommand czytajnik = new SqlCommand("SELECT COUNT(*) FROM Episode WHERE Watched = @Watched", Connect);
+            czytajnik.Parameters.AddWithValue("@Watched", watched);
+
+            Connect.Open();
+            SqlDataReader dr = czytajnik.ExecuteReader();
+
+            dr.Read();
+            int no = Convert.ToInt32(dr[0]);
+
+            Connect.Close();
+
+            return no;
+        }
+
+        #endregion
 
 
         //Sprawdzenie połączenia

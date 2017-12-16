@@ -24,6 +24,7 @@ namespace TV_Reminder.ViewModel
         private UserControl _description = null;
         private ObservableCollection<string> _log = new ObservableCollection<string>();
         private string _searchQuery;
+        private string _statystyka = "";
 
         public TrackedViewModel()
         {
@@ -44,6 +45,15 @@ namespace TV_Reminder.ViewModel
                 _seriesList = new ObservableCollection<Series>(_seriesList.OrderBy(x => x._seriesName).ToList());
 
                 Application.Current.Dispatcher.Invoke(new Action(() => vm.seriesList = _seriesList));
+
+                string con = "";
+                con += "Dodane seriale: " + new ReadFromDataBase().GetSeriesNo() + "\n";
+                con += "Dodane odcinki: " + new ReadFromDataBase().GetEpisodeNo() + "\n";
+                con += "Obejrzane odcinki: " + new ReadFromDataBase().GetWatchedEpisodesNo(true) + "\n";
+                con += "Nieobejrzane odcinki: " + new ReadFromDataBase().GetWatchedEpisodesNo(false) + "\n";
+                
+                Application.Current.Dispatcher.Invoke(new Action(() => Statystyka = con));
+
             }
             catch (Exception)
             {
@@ -66,6 +76,19 @@ namespace TV_Reminder.ViewModel
             {
                 this._seriesList = value;
                 OnPropertyChanged("seriesList");
+            }
+        }
+
+        public string Statystyka
+        {
+            get
+            {
+                return this._statystyka;
+            }
+            set
+            {
+                this._statystyka = value;
+                OnPropertyChanged("Statystyka");
             }
         }
 

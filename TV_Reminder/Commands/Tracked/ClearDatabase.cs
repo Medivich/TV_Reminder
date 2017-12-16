@@ -37,9 +37,10 @@ namespace TV_Reminder.Commands.Tracked
             {
                 if (s._update)
                 {
+                    
                     AddToDataBase AD = new AddToDataBase();
                     List<Episode> ep = new List<Episode>();
-                    Episode last = new ReadFromDataBase().GetLastAvaiableEpisode(s._id);
+                    Episode last = new ReadFromDataBase().GetLastEpisode(s._id);
                     
                     Application.Current.Dispatcher.Invoke(new Action(() => main.addToLog("Pobieram " + s._seriesName)));
                     ep = new DownloadEpisodes().getEpisodes(s._id);
@@ -52,9 +53,15 @@ namespace TV_Reminder.Commands.Tracked
                         AD.addEpisode(s._id, e);
 
                     if (last != null)
+                    {
                         new UpdateDataBase().AllBelowWatched(s._id, last._episodeNumber, last._seasonNumber, true);
+                        new UpdateDataBase().AllAboveUnwatched(s._id, last._episodeNumber, last._seasonNumber, false);
+                    }
                     else
+                    {
                         new UpdateDataBase().AllWatched(s._id, true);
+                        new UpdateDataBase().AllNotAiredUnwatched(s._id);
+                    }
                 }
                 else
                     Application.Current.Dispatcher.Invoke(new Action(() => main.addToLog("Pomijam " + s._seriesName)));

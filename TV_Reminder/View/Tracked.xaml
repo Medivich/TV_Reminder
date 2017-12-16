@@ -65,7 +65,7 @@
                    Foreground="White" 
                    FontSize="32"
                    HorizontalAlignment="Left"
-                   Margin="672,10,0,0" 
+                   Margin="672,0,0,0" 
                    VerticalAlignment="Top"
                    Height="55"
                    Width="260"/>
@@ -80,7 +80,7 @@
                      FontSize="18" 
                      FontWeight="Bold" 
                      HorizontalContentAlignment="Center" 
-                     VerticalContentAlignment="Center" Margin="672,0,68,485" />
+                     VerticalContentAlignment="Center" Margin="672,0,68,500" />
 
             <Label Content="Lista śledzonych seriali:"
                    Foreground="White" 
@@ -96,16 +96,16 @@
                     Template="{DynamicResource ButtonControlTemplate}"
                     FontSize="20"
                     HorizontalAlignment="Left" 
-                    Margin="672,148,0,0"
+                    Margin="672,120,0,0"
                     VerticalAlignment="Top"
                     Width="260" 
-                    Height="49"/>
+                    Height="48"/>
 
             <Button Content="Aktualizuj zaznaczony" Command="{Binding UpdateSelectedSeriesButton}" 
                     Template="{DynamicResource ButtonControlTemplate}" 
                     FontSize="20"
                     HorizontalAlignment="Left" 
-                    Margin="672,224,0,0" 
+                    Margin="672,186,0,0" 
                     VerticalAlignment="Top"
                     Width="260"
                     Height="48" RenderTransformOrigin="0.502,0.469"/>
@@ -115,17 +115,17 @@
                     Template="{DynamicResource ButtonControlTemplate}"
                     FontSize="20"
         	        HorizontalAlignment="Left" 
-                    Margin="672,383,0,0"
+                    Margin="672,318,0,0"
                     VerticalAlignment="Top"
                     Width="260" 
-                    Height="47"/>
+                    Height="48"/>
 
             <Button Content="Przegląd serialu"
                     Command="{Binding ShowSelectedSeriesButton}"
                     Template="{DynamicResource ButtonControlTemplate}"
                     FontSize="20"
         	        HorizontalAlignment="Left"
-                    Margin="672,304,0,0" 
+                    Margin="672,253,0,0" 
                     VerticalAlignment="Top" 
                     Width="260" 
                     Height="48"/>
@@ -135,7 +135,7 @@
                     Template="{DynamicResource ButtonControlTemplate}"
                     FontSize="20"
         	        HorizontalAlignment="Left"
-                    Margin="672,448,0,0" 
+                    Margin="672,385,0,0" 
                     VerticalAlignment="Top" 
                     Width="260" 
                     Height="48"/>
@@ -157,6 +157,13 @@
                     </DataTemplate>
                 </ListBox.ItemTemplate>
             </ListBox>
+            <Label HorizontalAlignment="Left" 
+                   Margin="672,462,0,0" 
+                   VerticalAlignment="Top"/>
+            <Label Content="{Binding Statystyka}" 
+                       FontSize="22" 
+                       FontWeight="Bold" 
+                       Foreground="White" Margin="612,443,10,10"/>
 
         </Grid>
         <UserControl Content="{Binding Description}"/>

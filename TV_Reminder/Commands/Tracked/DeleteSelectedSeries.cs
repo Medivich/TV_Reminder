@@ -34,6 +34,14 @@ namespace TV_Reminder.Commands
 
             Application.Current.Dispatcher.Invoke(new Action(() => main.seriesList.Remove(main.selectedSeries)));
             Application.Current.Dispatcher.Invoke(new Action(() => main.selectedSeries = null));
+
+            string con = "";
+            con += "Dodane seriale: " + new ReadFromDataBase().GetSeriesNo() + "\n";
+            con += "Dodane odcinki: " + new ReadFromDataBase().GetEpisodeNo() + "\n";
+            con += "Obejrzane odcinki: " + new ReadFromDataBase().GetWatchedEpisodesNo(true) + "\n";
+            con += "Nieobejrzane odcinki: " + new ReadFromDataBase().GetWatchedEpisodesNo(false) + "\n";
+
+            Application.Current.Dispatcher.Invoke(new Action(() => main.Statystyka = con));
         }
     }
 }
